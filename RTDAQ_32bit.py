@@ -10,6 +10,7 @@ Feb 2019
 """
 
 from ctypes import *
+import numpy as np
 import sys, glob
 import string
 from matplotlib import pyplot as plt
@@ -111,7 +112,7 @@ class RTDAQApp(QtWidgets.QDialog):
         ax.set_xlabel("Time")
         ax.set_ylabel("mV")
 
-        lineLabel = 'Potentiometer Value'
+        lineLabel = 'Analog Value'
         timeText = ax.text(0.50, 0.95, '', transform=ax.transAxes)
         lines = ax.plot([], [], label=lineLabel)[0]
         lineValueText = ax.text(0.50, 0.90, '', transform=ax.transAxes)
@@ -133,9 +134,10 @@ class RTDAQApp(QtWidgets.QDialog):
 
     def AnalogDataThread(self):    # retrieve data
         time.sleep(1.0)  # give some buffer time for retrieving data
-        data_in = c_int16()
+        data_in = c_float()
         while (self.bAcquiring):
             if AIOUSB.ADC_GetChannelV(-3, 0, byref(data_in)) is 0:
+                data_in.value = np.sin(float(time.time()))
                 self.fData = bytearray(struct.pack("f", data_in.value))
                 self.bRx = True
             else:
