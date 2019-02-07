@@ -6,17 +6,17 @@ Set USB data to:
     Elements    PCA (Potential, sample rate, etc.)
     ACCESS      USB-AO16-16A (x-y-z position settings into PI E-664 LVPZT Servo)
 E.Yafuso
-Jan 2019
+Feb 2019
 """
 
 from ctypes import *
-import usb.core
-import sys, glob, serial.tools.list_ports
+import sys, glob
 import string
-from collections import deque
 from matplotlib import pyplot as plt
+from matplotlib import animation as animation
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
-import _thread, time
+import collections, struct
+import threading, time
 
 WINDOWS = False
 if sys.platform.startswith('win'):
@@ -50,17 +50,28 @@ class RTDAQApp(QtWidgets.QDialog):
         QtWidgets.QDialog.__init__(self)
         self.ui = Ui_RTDAQ()
         self.ui.setupUi(self)
-
-        # Signals to slots
-        self.ui.bGetPorts.clicked.connect(self.get_ports)
-        self.ui.bQuit.clicked.connect(self.close)
+        if AIOUSB.DACSetBoardRange(-3, 2):  # 2 = 0-10V
+            self.bAcuiring = False
+            print("DAQ Error:")
+        else:
+            self.bAcquiring = True
 
         # Class attributes
-        AIOUSB.DACSetBoardRange(-3, 2) # 2 = 0-10V
-        self.bPlot()
+        self.maxLen = 100
+        self.fData = bytearray(2) #16-bit data from USB-AO16-16A
+        self.data = collections.deque([0] * 100, maxlen=100)
+        self.DAQThread = None
+        self.bRx = False
+        self.t0 = 0
+
+        # Signals to slots
+        self.ui.bGetPorts.clicked.connect(self.GetPorts)
+        self.ui.bAcquire.clicked.connect(self.bPlot)
+        self.ui.bQuit.clicked.connect(self.Done)
 
     # Find port
-    def get_ports(self):
+    def GetPorts(self):
+
         if WINDOWS:
             bitmask = windll.kernel32.GetLogicalDrives()
 
@@ -84,52 +95,69 @@ class RTDAQApp(QtWidgets.QDialog):
 
     def bPlot(self):
 
-        data = c_float()
-        analogData = AnalogData(100)
-        analogPlot = AnalogPlot(analogData)
+        maxPlotLength = 100
+        dataNumBytes = 2
+        self.ReadData()
 
-        while True:
-            try:
-                AIOUSB.ADC_GetChannelV(-3, 0, byref(data))
-                if (len(data) == 1):
-                    analogData.add(float(data.value))
-                    analogPlot.update(analogData)
-            except KeyboardInterrupt:
-                print('Keyboard interrupt. Exiting')
-                break
+        # Data Plotting...
+        pltInterval = 33 #30 fps for general screen updates
+        xmin = 0
+        xmax = maxPlotLength
+        ymin = -1
+        ymax = 1
+        self.fig = plt.figure('DAQ Position Feedback', figsize=(30,10))
+        ax = plt.axes(xlim=(xmin, xmax), ylim=(float(ymin - (ymax - ymin) / 10), float(ymax + (ymax - ymin) / 10)))
+        ax.set_title('Analog Data')
+        ax.set_xlabel("Time")
+        ax.set_ylabel("mV")
 
-# class that holds analog data for N samples
-class AnalogData:
+        lineLabel = 'Potentiometer Value'
+        timeText = ax.text(0.50, 0.95, '', transform=ax.transAxes)
+        lines = ax.plot([], [], label=lineLabel)[0]
+        lineValueText = ax.text(0.50, 0.90, '', transform=ax.transAxes)
+        self.FuncAnim = animation.FuncAnimation(self.fig,
+                                self.DatataPlot,
+                                fargs=(lines, lineValueText, lineLabel, timeText),
+                                interval=pltInterval)
+        plt.legend(loc="upper left")
+        plt.show()
 
-    def __init__(self, maxLen):
-        self.ax = deque([0.0] * maxLen)
-        self.maxLen = maxLen
+    def ReadData(self):
+        if self.DAQThread == None:
+            self.DAQThread = threading.Thread(target=self.AnalogDataThread)
+            self.DAQThread.start()
+            self.bAcuiring = True
+            # Block till we start receiving values
+            while self.bRx != True:
+                time.sleep(0.1)
 
-    # Ring buffer
-    def addToBuf(self, buf, val):
-        if len(buf) < self.maxLen:
-            buf.append(val)
-        else:
-            buf.pop()
-            buf.appendleft(val)
+    def AnalogDataThread(self):    # retrieve data
+        time.sleep(1.0)  # give some buffer time for retrieving data
+        data_in = c_int16()
+        while (self.bAcquiring):
+            if AIOUSB.ADC_GetChannelV(-3, 0, byref(data_in)) is 0:
+                self.fData = bytearray(struct.pack("f", data_in.value))
+                self.bRx = True
+            else:
+                self.fData.append(1)
 
-    # Add data
-    def add(self, data):
-        assert (len(data) == 1)
-        self.addToBuf(self.ax, data[0])
+    def DatataPlot(self, frame, lines, lineValueText, lineLabel, timeText):
+        t1 = time.perf_counter()
+        self.plotTimer = int((t1 - self.t0) * 1000)  # the first reading will be erroneous
+        self.t0 = t1
+        timeText.set_text('Plot Interval = ' + str(self.plotTimer) + 'ms')
+        value, = struct.unpack('f', self.fData)
+        self.data.append(value)
+        lines.set_data(range(self.maxLen), self.data)
+        lineValueText.set_text('[' + lineLabel + '] = ' + str(value))
 
-# plot class
-class AnalogPlot:
+    def Done(self):
+        self.bAcquiring = False
+        if self.DAQThread != None:
+            self.DAQThread.join()
+        plt.close('DAQ Position Feedback')
+        self.close()
 
-    def __init__(self, analogData):
-        # set plot to animated
-        plt.ion()
-        self.axline, = plt.plot(analogData.ax)
-        plt.ylim([0, 400])
-
-    def update(self, analogData):
-        self.axline.set_ydata(analogData.ax)
-        plt.draw()
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

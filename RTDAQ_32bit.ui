@@ -25,6 +25,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QPushButton" name="bAcquire">
+     <property name="text">
+      <string>Acquire and Plot</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QPushButton" name="bQuit">
      <property name="text">
       <string>Quit</string>
