@@ -107,7 +107,7 @@ class RTDAQApp(QtWidgets.QDialog):
         ymin = -1
         ymax = 1
         self.fig = plt.figure('DAQ Position Feedback', figsize=(30,10))
-        ax = plt.axes(xlim=(xmin, xmax), ylim=(float(ymin - (ymax - ymin) / 10), float(ymax + (ymax - ymin) / 10)))
+        ax = plt.axes(xlim=(xmin, xmax), ylim=(float(ymin-(ymax-ymin)/10), float(ymax+(ymax-ymin)/10)))
         ax.set_title('Analog Data')
         ax.set_xlabel("Time")
         ax.set_ylabel("mV")
