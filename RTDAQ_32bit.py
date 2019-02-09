@@ -9,12 +9,14 @@ E.Yafuso
 Feb 2019
 """
 
+
+from Video import *
+
 from ctypes import *
 import numpy as np
 import sys, glob
 import string
-from matplotlib import pyplot as plt
-from matplotlib import animation as animation
+from matplotlib import pyplot as plt, animation as animation
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 import collections, struct
 import threading, time
@@ -44,16 +46,16 @@ AIOUSB = CDLL("AIOUSB")
 ################# Main Dialog Window #####################
 ##########################################################
 
-Ui_RTDAQ = uic.loadUiType("RTDAQ_32bit.ui")[0]
-
 class RTDAQApp(QtWidgets.QDialog):
     def __init__(self):
         QtWidgets.QDialog.__init__(self)
+        Ui_RTDAQ = uic.loadUiType("RTDAQ_32bit.ui")[0]
         self.ui = Ui_RTDAQ()
         self.ui.setupUi(self)
+        self.bAcquiring = False
+
         if AIOUSB.DACSetBoardRange(-3, 2):  # 2 = 0-10V
-            self.bAcuiring = False
-            print("DAQ Error:")
+            print("DAQ Error: ACCES USB-AO16-16A Disconnected")
         else:
             self.bAcquiring = True
 
@@ -64,13 +66,15 @@ class RTDAQApp(QtWidgets.QDialog):
         self.DAQThread = None
         self.bRx = False
         self.t0 = 0
+        self.VidWin = VidWin()
 
         # Signals to slots
         self.ui.bGetPorts.clicked.connect(self.GetPorts)
         self.ui.bAcquire.clicked.connect(self.bPlot)
-        self.ui.bQuit.clicked.connect(self.Done)
+        app.aboutToQuit.connect(self.Close)
 
-    # Find port
+        self.show()
+
     def GetPorts(self):
 
         if WINDOWS:
@@ -95,7 +99,8 @@ class RTDAQApp(QtWidgets.QDialog):
 #        result = AIOUSB.DACDirect(-3, 0, 0)
 
     def bPlot(self):
-
+        if self.bAcquiring is False:
+            return
         maxPlotLength = 100
         dataNumBytes = 2
         self.ReadData()
@@ -153,16 +158,15 @@ class RTDAQApp(QtWidgets.QDialog):
         lines.set_data(range(self.maxLen), self.data)
         lineValueText.set_text('[' + lineLabel + '] = ' + str(value))
 
-    def Done(self):
+    def Close(self):
         self.bAcquiring = False
         if self.DAQThread != None:
             self.DAQThread.join()
         plt.close('DAQ Position Feedback')
-        self.close()
+        sys.exit()
 
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    window = RTDAQApp()
-    window.show()
+    AppWindow = RTDAQApp()
     sys.exit(app.exec_())

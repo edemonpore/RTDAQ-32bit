@@ -7,16 +7,13 @@ Feb 2019
 import sys
 import cv2
 from PyQt5 import QtGui, QtCore, QtWidgets, uic
-import pyqtgraph
 import threading, time
 
 
 class VidWin(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
-        Ui_VW = uic.loadUiType("VidWindow.ui")[0]
-
-        app.aboutToQuit.connect(self.Close)
+        Ui_VW = uic.loadUiType("VideoClass/VidWindow.ui")[0]
 
         self.fps = 30   #sample frames at 33 millisecond intervals
         self.ui = Ui_VW()
@@ -36,16 +33,20 @@ class VidWin(QtWidgets.QMainWindow):
 
     def LiveVideoThread(self):
         self.cam = cv2.VideoCapture(self.CamNum)
-        self.ui.lVideo.installEventFilter(self)
+        width = self.cam.get(cv2.CAP_PROP_FRAME_WIDTH)
+        height = self.cam.get(cv2.CAP_PROP_FRAME_HEIGHT)
+        self.fps = self.cam.get(cv2.CAP_PROP_FPS)
         self.ui.lVideo.setMinimumSize(1, 1)
+        self.ui.lVideo.installEventFilter(self)
 
         while self.bAcquiring is True:
             ret, frame = self.cam.read()
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             image = QtGui.QImage(frame,
-                               frame.shape[1],
-                               frame.shape[0],
-                               QtGui.QImage.Format_RGB888)
+                                 width,
+                                 height,
+                                 QtGui.QImage.Format_RGB888)
+
             self.PixMap = QtGui.QPixmap.fromImage(image)
             self.ui.lVideo.setPixmap(self.PixMap)
             time.sleep(1/self.fps)
@@ -60,11 +61,13 @@ class VidWin(QtWidgets.QMainWindow):
                                                         QtCore.Qt.SmoothTransformation))
         return super(VidWin, self).eventFilter(source, event)
 
-    def Close(self):
+    def closeEvent(self,event):
         self.bAcquiring = False
-        sys.exit(0)
+        self.close()
 
-if __name__ == "__main__":
+#Main function for class debugging
+"""if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     window = VidWin()
     sys.exit(app.exec_())
+"""
