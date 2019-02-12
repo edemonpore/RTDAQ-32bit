@@ -45,6 +45,7 @@ class VidWin(QtWidgets.QMainWindow):
                                  width,
                                  height,
                                  QtGui.QImage.Format_RGB888)
+
             self.PixMap = QtGui.QPixmap.fromImage(image)
             self.ui.lVideo.setPixmap(self.PixMap)
             time.sleep(1/self.fps)

@@ -1,16 +1,17 @@
 """ RTDAQ_32bit.py
-Acquire USB data from:
+Acquire USB data:
     Elements    PCA (current)
     ACCES       USB-AO16-16A (x-y analog position feedback)
-Set USB data to:
+Set USB data:
     Elements    PCA (Potential, sample rate, etc.)
-    ACCESS      USB-AO16-16A (x-y-z position settings into PI E-664 LVPZT Servo)
+    ACCES       USB-AO16-16A (x-y-z position settings into PI E-664 LVPZT Servo)
 E.Yafuso
 Feb 2019
 """
 
 
-from Video import *
+import Video
+import ACCES
 
 from ctypes import *
 import numpy as np
@@ -66,7 +67,7 @@ class RTDAQApp(QtWidgets.QDialog):
         self.DAQThread = None
         self.bRx = False
         self.t0 = 0
-        self.VidWin = VidWin()
+        self.VidWin = Video.VidWin()
 
         # Signals to slots
         self.ui.bGetPorts.clicked.connect(self.GetPorts)
