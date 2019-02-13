@@ -17,6 +17,8 @@ class VidWin(QtWidgets.QMainWindow):
         self.fps = 30   #sample frames at 33 millisecond intervals
         self.ui = Ui_VW()
         self.ui.setupUi(self)
+
+
         self.PixMap = QtGui.QPixmap()
         self.CamNum = 0
         self.CamThread = None
