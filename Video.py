@@ -17,14 +17,24 @@ class VidWin(QtWidgets.QMainWindow):
         self.fps = 30   #sample frames at 33 millisecond intervals
         self.ui = Ui_VW()
         self.ui.setupUi(self)
+        self.ui.vsIntegrate.setMinimum(0)
+        self.ui.vsIntegrate.setMaximum(100)
+        self.exposure = 33 #exposure setting in milliseconds
+        self.ui.vsIntegrate.setValue(self.exposure)
+        self.ui.lTs.setText(str(self.exposure))
 
-
+        self.ui.vsIntegrate.valueChanged.connect(self.setExposure)
         self.PixMap = QtGui.QPixmap()
+
         self.CamNum = 0
         self.CamThread = None
         self.bAcquiring = False
         self.doLiveVideo()
         self.show()
+
+    def setExposure(self):
+        temp = self.ui.vsIntegrate.value()
+        self.ui.lTs.setText(str(temp))
 
     def doLiveVideo(self):
         if self.CamThread == None:

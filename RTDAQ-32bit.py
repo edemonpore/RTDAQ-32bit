@@ -50,7 +50,7 @@ AIOUSB = CDLL("AIOUSB")
 class RTDAQApp(QtWidgets.QDialog):
     def __init__(self):
         QtWidgets.QDialog.__init__(self)
-        Ui_RTDAQ = uic.loadUiType("RTDAQ_32bit.ui")[0]
+        Ui_RTDAQ = uic.loadUiType("RTDAQ-32bit.ui")[0]
         self.ui = Ui_RTDAQ()
         self.ui.setupUi(self)
         self.bAcquiring = False
