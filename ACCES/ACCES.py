@@ -1,15 +1,14 @@
 """ ACCES.py
 Class for USB-AO16-16A
-Acquires USB data:
-    ACCES       USB-AO16-16A (x-y analog position feedback)
-Sets USB data:
-    ACCES      USB-AO16-16A (x-y-z position settings into PI E-664 LVPZT Servo)
+Acquires USB data:  x-y analog position feedback
+Sets USB data:      x-y-z position settings into PI E-664 LVPZT Servo
 E.Yafuso
 Feb 2019
 """
 
 import ctypes
 import sys
+import numpy as np
 import pyqtgraph
 from PyQt5 import QtWidgets, uic
 import collections, struct
@@ -18,7 +17,7 @@ import threading, time
 class ACCES(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
-        Ui_ACCES = uic.loadUiType("ACCES.ui")[0]
+        Ui_ACCES = uic.loadUiType("ACCESui.ui")[0]
         pyqtgraph.setConfigOption('background', 'k')
         self.ui = Ui_ACCES()
         self.ui.setupUi(self)
@@ -37,8 +36,10 @@ class ACCES(QtWidgets.QMainWindow):
         else:
             self.bAcquiring = True
 
+        self.bAcquiring = True
+
         # Class attributes
-        self.maxLen = 100
+        self.maxLen = 10
 
         self.xset = 0
         self.xsetdata = collections.deque([0], self.maxLen)
@@ -51,12 +52,11 @@ class ACCES(QtWidgets.QMainWindow):
         self.xdata  = collections.deque([0], self.maxLen)
         self.ydata  = collections.deque([0], self.maxLen)
         self.t      = collections.deque([0], self.maxLen)
-        self.DAQThread = threading.Thread(target=self.DataAcquisitionThread)
-        self.DAQThread.start()
-        self.PlotThread = threading.Thread(target=self.DataPlotThread)
-        self.PlotThread.start()
         self.setPI()
 
+        self.px = self.ui.XData.plot()
+        self.py = self.ui.YData.plot()
+        self.pz = self.ui.ZData.plot()
         self.ui.XData.setYRange(0, 100)
         self.ui.YData.setYRange(0, 100)
         self.ui.ZData.setYRange(0, 100)
@@ -75,6 +75,11 @@ class ACCES(QtWidgets.QMainWindow):
         self.ui.vsY.valueChanged.connect(self.setPI)
         self.ui.vsZ.valueChanged.connect(self.setPI)
 
+        self.DAQThread = threading.Thread(target=self.DataAcquisitionThread)
+        self.DAQThread.start()
+        time.sleep(2)
+        self.PlotThread = threading.Thread(target=self.DataPlotThread)
+        self.PlotThread.start()
         self.show()
 
     def setPI(self):
@@ -98,32 +103,32 @@ class ACCES(QtWidgets.QMainWindow):
 
     def DataAcquisitionThread(self):
         data_in = ctypes.c_float()
+        self.t0 = time.time()
         while (self.bAcquiring):
-            time.sleep(0.1)
-            self.t.append(float(time.time()))
-            if self.AIOUSB.ADC_GetChannelV(-3, 0, ctypes.byref(data_in)) is 0:
-                self.fData = bytearray(struct.pack("f", data_in.value))
-                value, = struct.unpack('f', self.fData)
-                self.xdata.append(value)
-            if self.AIOUSB.ADC_GetChannelV(-3, 1, ctypes.byref(data_in)) is 0:
-                self.fData = bytearray(struct.pack("f", data_in.value))
-                value, = struct.unpack('f', self.fData)
-                self.ydata.append(value)
+            time.sleep(0.01)
+            self.t.append(time.time()-self.t0)
+            value = 50*np.sin(time.time())+50
+            self.xdata.append(value)
+            self.ydata.append(value)
+            # if self.AIOUSB.ADC_GetChannelV(-3, 0, ctypes.byref(data_in)) is 0:
+            #     self.fData = bytearray(struct.pack("f", data_in.value))
+            #     value, = struct.unpack('f', self.fData)
+            #     self.xdata.append(value)
+            # if self.AIOUSB.ADC_GetChannelV(-3, 1, ctypes.byref(data_in)) is 0:
+            #     self.fData = bytearray(struct.pack("f", data_in.value))
+            #     value, = struct.unpack('f', self.fData)
+            #     self.ydata.append(value)
             self.xsetdata.append(self.xset)
-            self.xsetdata.append(self.yset)
-            self.xsetdata.append(self.zset)
+            self.ysetdata.append(self.yset)
+            self.zsetdata.append(self.zset)
 
     def DataPlotThread(self):
-        penx = pyqtgraph.mkPen(color='b', width=1)
-        penset = pyqtgraph.mkPen(color='r', width=1)
-        peny = pyqtgraph.mkPen(color='g', width=1)
         while (self.bAcquiring):
             time.sleep(0.33)
-            self.ui.XData.plot(self.xdata, pen=penx, clear=True)
-            self.ui.YData.plot(self.ydata, pen=peny, clear=True)
-            self.ui.XData.plot(self.xset, pen=penset, clear=True)
-            self.ui.YData.plot(self.yset, pen=penset, clear=True)
-            self.ui.ZData.plot(self.zset, pen=penset, clear=True)
+            self.px.setData(self.t, self.xdata, pen=(0, 0, 255))
+            #self.pxset = self.ui.XData.addItem(self.t, self.xsetdata)
+            self.py.setData(self.t, self.ydata, pen=(0, 255, 0))
+            self.pz.setData(self.t, self.zsetdata, pen=(127, 127, 127))
 
     def Close(self):
         self.bAcquiring = False
