@@ -17,6 +17,8 @@ class VidWin(QtWidgets.QMainWindow):
         self.fps = 30   #sample frames at 33 millisecond intervals
         self.ui = Ui_VW()
         self.ui.setupUi(self)
+
+
         self.PixMap = QtGui.QPixmap()
         self.CamNum = 0
         self.CamThread = None
@@ -45,7 +47,6 @@ class VidWin(QtWidgets.QMainWindow):
                                  width,
                                  height,
                                  QtGui.QImage.Format_RGB888)
-
             self.PixMap = QtGui.QPixmap.fromImage(image)
             self.ui.lVideo.setPixmap(self.PixMap)
             time.sleep(1/self.fps)

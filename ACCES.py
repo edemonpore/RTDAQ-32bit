@@ -115,15 +115,15 @@ class ACCES(QtWidgets.QMainWindow):
 
     def DataPlotThread(self):
         penx = pyqtgraph.mkPen(color='b', width=1)
+        penset = pyqtgraph.mkPen(color='r', width=1)
         peny = pyqtgraph.mkPen(color='g', width=1)
-        penz = pyqtgraph.mkPen(color='g', width=1)
         while (self.bAcquiring):
             time.sleep(0.33)
             self.ui.XData.plot(self.xdata, pen=penx, clear=True)
             self.ui.YData.plot(self.ydata, pen=peny, clear=True)
-            self.ui.XData.plot(self.xset, pen=penx, clear=True)
-            self.ui.YData.plot(self.yset, pen=penx, clear=True)
-            self.ui.ZData.plot(self.zset, pen=penz, clear=True)
+            self.ui.XData.plot(self.xset, pen=penset, clear=True)
+            self.ui.YData.plot(self.yset, pen=penset, clear=True)
+            self.ui.ZData.plot(self.zset, pen=penset, clear=True)
 
     def Close(self):
         self.bAcquiring = False
