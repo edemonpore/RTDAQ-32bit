@@ -14,16 +14,17 @@ Feb 2019
 # Set up acquisition thread
 # Display data
 # GUI control
+
 import ctypes
-import sys
-from PyQt5 import QtCore, QtGui, QtWidgets, uic
-import collections, struct
 import threading, time
 
-class EDL(QtWidgets.QMainWindow):
+class EDL():
     def __init__(self):
-        QtWidgets.QMainWindow.__init__(self)
-        Ui_EDL = uic.loadUiType("EDL.ui")[0]
-        self.ui = Ui_EDL()
-        self.ui.setupUi(self)
-        EDL = ctypes.CDLL("edl")
+        self.EDL = ctypes.CDLL("edl")
+        self.devices = []
+
+        self.EDL.init()
+        self.EDL.detectDevices(byref(self.devices))
+        print(self.devices)
+
+pca = EDL()
