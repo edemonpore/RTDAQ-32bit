@@ -18,13 +18,15 @@ Feb 2019
 import ctypes
 import threading, time
 
-class EDL():
+
+
+class PCA():
     def __init__(self):
-        self.EDL = ctypes.CDLL("edl")
+        self.EDL = ctypes.CDLL("e4")
         self.devices = []
 
         self.EDL.init()
-        self.EDL.detectDevices(byref(self.devices))
         print(self.devices)
 
-pca = EDL()
+PCA = PCA()
+
