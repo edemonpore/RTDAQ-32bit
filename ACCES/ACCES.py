@@ -7,7 +7,6 @@ Feb 2019
 """
 
 import ctypes
-import sys
 import pandas
 import numpy as np
 import pyqtgraph
@@ -71,7 +70,6 @@ class ACCES(QtWidgets.QMainWindow):
 
         #Signals to slots
         self.ui.actionOpen.triggered.connect(self.OpenScriptDialog)
-        self.ui.actionExit.triggered.connect(self.close)
 
         # Set up plotting widgets
         self.show()
@@ -189,12 +187,8 @@ class ACCES(QtWidgets.QMainWindow):
             self.py.setData(self.t, self.ydata, pen=(0, 255, 0))
             self.pz.setData(self.t, self.zsetdata, pen=(127, 127, 127))
 
-    def Close(self):
+    def closeEvent(self, event):
         self.bAcquiring = False
         if self.DAQThread != None:
             self.DAQThread.join()
-        sys.exit()
-
-    def closeEvent(self, event):
-        self.bAcquiring = False
-        self.Close()
+        event.accept()

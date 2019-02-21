@@ -4,7 +4,6 @@ EYafuso
 Feb 2019
 """
 
-import sys
 import cv2
 from PyQt5 import QtGui, QtCore, QtWidgets, uic
 import threading, time
@@ -73,4 +72,4 @@ class VidWin(QtWidgets.QMainWindow):
 
     def closeEvent(self,event):
         self.bAcquiring = False
-        self.close()
+        event.accept()

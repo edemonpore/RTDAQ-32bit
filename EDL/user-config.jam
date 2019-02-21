@@ -1,0 +1,27 @@
+#   user-config.jam
+#
+# Steps to build boost.python
+# Download and install latest boost.python into BOOST_ROOT
+# Copy/create user-config.jam to %HOMEPATH%
+# Set env vars:
+#	BOOST_ROOT
+#	PYTHON_ROOT
+# From BOOST_ROOT\tools\build, run:
+#	bootstrap.bat gcc
+#	b2 install --prefix="%BOOST_ROOT%\tmp"
+# From BOOST_ROOT, run:
+#	b2 --build-dir="%BOOST_ROOT%\tmp" --toolset=gcc --with-python stage
+# Filippo's build.bat:
+#	g++ -shared
+#	edl_pywrapper.cpp
+#	-I%PYTHON_ROOT%\include
+#	-I%BOOST_ROOT%
+#	-o edl_py.pyd
+#	-L%BOOST_ROOT%\stage\lib -lboost_python36-mgw53-mt-x32-1_67
+#	-L%PYTHON_ROOT%\libs" -lpython36
+#	-L. -IEDL -ledl
+
+
+using gcc ;
+
+using python ;
