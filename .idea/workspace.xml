@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2ea85eab-25af-4f66-80d0-1d8220b89f7d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACCES.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACCES/ACCES.py" beforeDir="false" afterPath="$PROJECT_DIR$/ACCES/ACCES.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACCES/debugACCES.py" beforeDir="false" afterPath="$PROJECT_DIR$/ACCES/debugACCES.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIOUSB.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EDL/EDL_PY/build_Demonpore.bat" beforeDir="false" afterPath="$PROJECT_DIR$/EDL/EDL_PY/build_Demonpore.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EDL/EDL_PY/edl_pywrapper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/EDL/EDL_PY/edl_pywrapper.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RTDAQ-32bit.py" beforeDir="false" afterPath="$PROJECT_DIR$/RTDAQ-32bit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RTDAQ-32bitui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/RTDAQ-32bitui.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Video.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/VideoClass/Video.py" beforeDir="false" afterPath="$PROJECT_DIR$/VideoClass/Video.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VideoClass/debugVideo.py" beforeDir="false" afterPath="$PROJECT_DIR$/VideoClass/debugVideo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ftd2xx.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/libMPSSE.dll" beforeDir="false" />
-    </list>
+    <list default="true" id="2ea85eab-25af-4f66-80d0-1d8220b89f7d" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,6 +60,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -91,7 +77,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
