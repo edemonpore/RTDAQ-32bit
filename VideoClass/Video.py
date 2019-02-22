@@ -29,7 +29,11 @@ class VidWin(QtWidgets.QMainWindow):
         self.CamThread = None
         self.bAcquiring = False
         self.doLiveVideo()
-        self.show()
+
+        self.bShow = True
+        self.bCanClose = False
+
+        self.MoveToStart()
 
     def setExposure(self):
         temp = self.ui.vsIntegrate.value()
@@ -62,6 +66,15 @@ class VidWin(QtWidgets.QMainWindow):
         self.cam.release()
         cv2.destroyAllWindows()
 
+    def MoveToStart(self):
+        ag = QtWidgets.QDesktopWidget().availableGeometry()
+        sg = QtWidgets.QDesktopWidget().screenGeometry()
+
+        vidwingeo = self.geometry()
+        x = 0 # ag.width() - vidwingeo.width()
+        y = 0 # 2 * ag.height() - sg.height() - vidwingeo.height()
+        self.move(x, y)
+
     def eventFilter(self, source, event):
         if (source is self.ui.lVideo and event.type() == QtCore.QEvent.Paint):
             self.ui.lVideo.setAlignment(QtCore.Qt.AlignCenter)
@@ -70,6 +83,13 @@ class VidWin(QtWidgets.QMainWindow):
                                                         QtCore.Qt.SmoothTransformation))
         return super(VidWin, self).eventFilter(source, event)
 
-    def closeEvent(self,event):
-        self.bAcquiring = False
-        event.accept()
+    def closeEvent(self, event):
+        if self.bCanClose:
+            self.bAcquiring = False
+            if self.CamThread != None:
+                self.CamThread.join()
+            event.accept()
+        else:
+            self.bShow = False
+            self.hide()
+            event.ignore()

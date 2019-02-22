@@ -11,7 +11,7 @@ import pandas
 import numpy as np
 import pyqtgraph
 from PyQt5 import QtWidgets, uic
-import collections
+import collections, struct
 import threading, time
 
 class ACCES(QtWidgets.QMainWindow):
@@ -25,14 +25,9 @@ class ACCES(QtWidgets.QMainWindow):
         self.bAcquiring = False
 
         if self.AIOUSB.DACSetBoardRange(-3, 2):  #2 = 0-10V
-            bReply = QtWidgets.QMessageBox.question(self,
+            bReply = QtWidgets.QMessageBox.information(self,
                                                     'AIOUSB ERROR',
-                                                    "USB-AO16-16A Disconnected. Exit?",
-                                                    QtWidgets.QMessageBox.Yes |
-                                                    QtWidgets.QMessageBox.No,
-                                                    QtWidgets.QMessageBox.No)
-            if bReply == QtWidgets.QMessageBox.Yes:
-                sys.exit(0)
+                                                    "USB-AO16-16A Disconnected.")
         else:
             self.bAcquiring = True
 
@@ -71,9 +66,6 @@ class ACCES(QtWidgets.QMainWindow):
         #Signals to slots
         self.ui.actionOpen.triggered.connect(self.OpenScriptDialog)
 
-        # Set up plotting widgets
-        self.show()
-
         self.ui.vsX.valueChanged.connect(self.setPI)
         self.ui.vsY.valueChanged.connect(self.setPI)
         self.ui.vsZ.valueChanged.connect(self.setPI)
@@ -83,7 +75,19 @@ class ACCES(QtWidgets.QMainWindow):
         time.sleep(2)
         self.PlotThread = threading.Thread(target=self.DataPlotThread)
         self.PlotThread.start()
-        self.show()
+
+        self.bShow = True
+        self.bCanClose = False
+        self.MoveToStart()
+
+    def MoveToStart(self):
+        ag = QtWidgets.QDesktopWidget().availableGeometry()
+        sg = QtWidgets.QDesktopWidget().screenGeometry()
+
+        vidwingeo = self.geometry()
+        x = 100  # ag.width() - vidwingeo.width()
+        y = 100  # 2 * ag.height() - sg.height() - vidwingeo.height()
+        self.move(x, y)
 
     def OpenScriptDialog(self):
         self.filename = QtWidgets.QFileDialog.getOpenFileName(self,
@@ -165,16 +169,16 @@ class ACCES(QtWidgets.QMainWindow):
         while (self.bAcquiring):
             time.sleep(0.01)
             self.t.append(time.time()-self.t0)
-            self.xdata.append(value)
-            self.ydata.append(value)
             if self.AIOUSB.ADC_GetChannelV(-3, 0, ctypes.byref(data_in)) is 0:
                 self.fData = bytearray(struct.pack("f", data_in.value))
                 value, = struct.unpack('f', self.fData)
                 self.xdata.append(value)
+            else: self.xdata.append(0)
             if self.AIOUSB.ADC_GetChannelV(-3, 1, ctypes.byref(data_in)) is 0:
                 self.fData = bytearray(struct.pack("f", data_in.value))
                 value, = struct.unpack('f', self.fData)
                 self.ydata.append(value)
+            else: self.ydata.append(0)
             self.xsetdata.append(self.xset)
             self.ysetdata.append(self.yset)
             self.zsetdata.append(self.zset)
@@ -188,7 +192,12 @@ class ACCES(QtWidgets.QMainWindow):
             self.pz.setData(self.t, self.zsetdata, pen=(127, 127, 127))
 
     def closeEvent(self, event):
-        self.bAcquiring = False
-        if self.DAQThread != None:
-            self.DAQThread.join()
-        event.accept()
+        if self.bCanClose:
+            self.bAcquiring = False
+            if self.DAQThread != None:
+                self.DAQThread.join()
+            event.accept()
+        else:
+            self.bShow = False
+            self.hide()
+            event.ignore()

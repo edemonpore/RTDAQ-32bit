@@ -7,31 +7,59 @@
     <x>0</x>
     <y>0</y>
     <width>980</width>
-    <height>948</height>
+    <height>984</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>RTDAQ</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QListWidget" name="lPorts"/>
-   </item>
-   <item>
-    <widget class="QPushButton" name="bGetPorts">
-     <property name="text">
-      <string>Scan Drives</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="bAcquire">
-     <property name="text">
-      <string>Acquire and Plot</string>
-     </property>
-    </widget>
-   </item>
-  </layout>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>19</x>
+     <y>19</y>
+     <width>951</width>
+     <height>941</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QListWidget" name="lPorts"/>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="bGetPorts">
+        <property name="text">
+         <string>Scan Drives</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="bVideo">
+        <property name="text">
+         <string>Video</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="bNanoControl">
+        <property name="text">
+         <string>Nano Control</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
  </widget>
  <resources/>
  <connections/>

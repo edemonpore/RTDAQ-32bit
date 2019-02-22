@@ -12,7 +12,7 @@ Feb 2019
 import sys, glob
 import string
 import ctypes
-from PyQt5 import QtCore, QtGui, QtWidgets, uic
+from PyQt5 import QtGui, QtWidgets, uic
 
 import Video
 import ACCES
@@ -37,17 +37,21 @@ else:
 class RTDAQApp(QtWidgets.QDialog):
     def __init__(self):
         QtWidgets.QDialog.__init__(self)
-        Ui_RTDAQ = uic.loadUiType("RTDAQ-32bit.ui")[0]
+        Ui_RTDAQ = uic.loadUiType("RTDAQ-32bitui.ui")[0]
         self.ui = Ui_RTDAQ()
         self.ui.setupUi(self)
         self.bAcquiring = False
 
-        # Externally developed classes
-        self.VidWin = Video.VidWin()
-        self.NanoControl = ACCES.ACCES()
-
         # Signals to slots
         self.ui.bGetPorts.clicked.connect(self.GetPorts)
+        self.ui.bNanoControl.clicked.connect(self.NanoWindowShow)
+        self.ui.bVideo.clicked.connect(self.VideoShow)
+
+        # Externally developed classes
+        self.VidWin = Video.VidWin()
+        self.VidWin.show()
+        self.NanoControl = ACCES.ACCES()
+        self.NanoControl.show()
 
         self.show()
 
@@ -67,14 +71,30 @@ class RTDAQApp(QtWidgets.QDialog):
             self.ui.lPorts.addItem('')
             if self.NanoControl.AIOUSB.GetDevices() != 0:
                 self.ui.lPorts.addItem('--Devices:--')
-                sn = c_longlong()
-                self.NanoControl.AIOUSB.GetDeviceSerialNumber(-3, byref(sn))
+                sn = ctypes.c_longlong()
+                self.NanoControl.AIOUSB.GetDeviceSerialNumber(-3, ctypes.byref(sn))
                 self.ui.lPorts.addItem("ACCES USB-AO16-16A  Serial: "+str(sn.value))
 
+    def NanoWindowShow(self):
+        if self.NanoControl.bShow:
+            self.NanoControl.hide()
+            self.NanoControl.bShow = False
+        else:
+            self.NanoControl.show()
+            self.NanoControl.bShow = True
+
+    def VideoShow(self):
+        if self.VidWin.bShow:
+            self.VidWin.hide()
+            self.VidWin.bShow = False
+        else:
+            self.VidWin.show()
+            self.VidWin.bShow = True
+
     def Close(self):
+        self.VidWin.bCanClose = self.NanoControl.bCanClose = True
         self.VidWin.close()
         self.NanoControl.close()
-        sys.exit()
 
     def closeEvent(self, event):
         reply = QtGui.QMessageBox.question(self,
@@ -87,7 +107,6 @@ class RTDAQApp(QtWidgets.QDialog):
             event.accept()
         else:
             event.ignore()
-
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

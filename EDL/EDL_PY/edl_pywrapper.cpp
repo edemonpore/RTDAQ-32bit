@@ -3,10 +3,6 @@
 
 #include "edl.h"
 
-#include <boost/python.hpp>
-
-using namespace boost::python;
-
 class EDL_PY : public EDL {
 public:
     EDL_PY() : EDL() {
