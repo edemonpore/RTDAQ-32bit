@@ -2,6 +2,8 @@
 #define EDL_PYWRAPPER_H
 
 #include "edl.h"
+#include <boost/python.hpp>
+
 
 class EDL_PY : public EDL {
 public:

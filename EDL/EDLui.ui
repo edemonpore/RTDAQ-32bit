@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1591</width>
+    <height>1456</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Elements PCA</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="1">
+     <widget class="QTabWidget" name="tabGraphs">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="Graphs">
+       <attribute name="title">
+        <string>Graphs</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="PlotWidget" name="IData"/>
+          </item>
+          <item row="1" column="0" alignment="Qt::AlignHCenter">
+           <widget class="QLabel" name="lTime">
+            <property name="text">
+             <string>Time</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Tab 2</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1591</width>
+     <height>38</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Run Script File</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlotWidget</class>
+   <extends>QGraphicsView</extends>
+   <header>pyqtgraph</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

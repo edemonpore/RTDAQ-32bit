@@ -7,26 +7,45 @@ Set USB data:
 E.Yafuso
 Feb 2019
 """
-# ToDo:
-# Find PCA and connect
-# Get PCA version
-# Initialize PCA
-# Set up acquisition thread
-# Display data
-# GUI control
 
-import ctypes
+
+#import edl_py
+from PyQt5 import QtWidgets, uic
+import pyqtgraph
+import collections, struct
 import threading, time
 
-
-
-class PCA():
+class PCA(QtWidgets.QMainWindow):
     def __init__(self):
-        self.EDL = ctypes.CDLL("e4")
-        self.devices = []
+        QtWidgets.QMainWindow.__init__(self)
+        Ui_EDL = uic.loadUiType("EDLui.ui")[0]
+        pyqtgraph.setConfigOption('background', 'k')
+        self.ui = Ui_EDL()
+        self.ui.setupUi(self)
+        self.bAcquiring = False
 
-        self.EDL.init()
-        print(self.devices)
+        # Class attributes
+        self.maxLen = 10
 
-PCA = PCA()
+        self.iset = 0
+        self.isetdata = collections.deque([0], self.maxLen)
 
+        self.fData  = bytearray(2)
+        self.idata  = collections.deque([0], self.maxLen)
+        self.t      = collections.deque([0], self.maxLen)
+
+        self.px = self.ui.IData.plot()
+        self.ui.IData.setYRange(0, 100)
+
+        self.bShow = True
+        self.bCanClose = False
+        self.MoveToStart()
+
+    def MoveToStart(self):
+        ag = QtWidgets.QDesktopWidget().availableGeometry()
+        sg = QtWidgets.QDesktopWidget().screenGeometry()
+
+        vidwingeo = self.geometry()
+        x = 200  # ag.width() - vidwingeo.width()
+        y = 100  # 2 * ag.height() - sg.height() - vidwingeo.height()
+        self.move(x, y)
