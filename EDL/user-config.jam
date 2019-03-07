@@ -8,12 +8,12 @@
 #	PYTHON_ROOT
 # From BOOST_ROOT\tools\build, run:
 #	bootstrap.bat gcc
-#	b2 install --prefix="%BOOST_ROOT%\tmp"
+#	b2 install --prefix="%BOOST_ROOT%\tools\build"
 # From BOOST_ROOT, run:
-#	b2 --build-dir="%BOOST_ROOT%\tmp" --toolset=gcc --with-python stage
+#	b2 --build-dir="%BOOST_ROOT%\tmp" --toolset=gcc --with-python --build-type=complete stage
 # Filippo's build.bat:
 #	g++ -shared
-#	edl_pywrapper.cpp
+#	edl_pywrapper.cpp 
 #	-I%PYTHON_ROOT%\include
 #	-I%BOOST_ROOT%
 #	-o edl_py.pyd
