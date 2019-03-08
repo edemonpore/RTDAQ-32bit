@@ -12,7 +12,7 @@
 # From BOOST_ROOT, run:
 #	b2 --build-dir="%BOOST_ROOT%\tmp" --toolset=gcc --with-python --build-type=complete stage
 # Filippo's build.bat:
-# g++ -shared edl_pywrapper.cpp -I"%PYTHON_ROOT%\include" -I"%BOOST_ROOT%" -o edl_py.pyd -L"%BOOST_ROOT%\stage\lib" -lboost_python37-mgw81-mt-x32-1_69 -L"%PYTHON_ROOT%\libs" -lpython37 -L. -IEDL -ledl
+# g++ -m32 -shared edl_pywrapper.cpp -I"%PYTHON_ROOT%\include" -I"%BOOST_ROOT%" -o edl_py.pyd -L"%BOOST_ROOT%\stage\lib" -llibboost_python37-mgw81-mt-x32-1_69 -L"%PYTHON_ROOT%\libs" -lpython37 -L. -IEDL -ledl
 
 
 using gcc ;

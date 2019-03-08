@@ -3,7 +3,7 @@
 
 #include "edl.h"
 #include <boost/python.hpp>
-
+#include <boost/list.hpp>
 
 class EDL_PY : public EDL {
 public:
@@ -64,6 +64,8 @@ public:
         return res;
     }
 };
+
+using namespace boost::python;
 
 BOOST_PYTHON_MODULE(edl_py) {
     Py_Initialize();
