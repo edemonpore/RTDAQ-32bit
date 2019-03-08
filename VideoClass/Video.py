@@ -7,11 +7,13 @@ Feb 2019
 import cv2
 from PyQt5 import QtGui, QtCore, QtWidgets, uic
 import threading, time
+import ctypes
 
 class VidWin(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
         Ui_VW = uic.loadUiType("VidWindow.ui")[0]
+        self.LumCam = ctypes.CDLL("lucamapi")
 
         self.fps = 30   #sample frames at 33 millisecond intervals
         self.ui = Ui_VW()
