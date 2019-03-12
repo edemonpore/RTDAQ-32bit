@@ -3,7 +3,7 @@ Class for USB-AO16-16A
 Acquires USB data:  x-y analog position feedback
 Sets USB data:      x-y-z position settings into PI E-664 LVPZT Servo
 E.Yafuso
-Feb 2019
+March 2019
 """
 
 import ctypes
@@ -32,27 +32,35 @@ class ACCES(QtWidgets.QMainWindow):
             self.bAcquiring = True
 
         # Class attributes
-        self.maxLen = 10
-
-        self.xset = 0 #setpoints are in microns
+        self.maxLen = 100
         self.xsetdata = collections.deque([0], self.maxLen)
-        self.yset = 0
         self.ysetdata = collections.deque([0], self.maxLen)
-        self.zset = 0
         self.zsetdata = collections.deque([0], self.maxLen)
-
-        self.fData  = bytearray(2)  # 16-bit data from USB-AO16-16A
         self.xdata  = collections.deque([0], self.maxLen)
         self.ydata  = collections.deque([0], self.maxLen)
         self.t      = collections.deque([0], self.maxLen)
+
+        self.xset = 0
+        self.yset = 0
+        self.zset = 0
         self.setPI()
 
-        self.px = self.ui.XData.plot()
-        self.py = self.ui.YData.plot()
-        self.pz = self.ui.ZData.plot()
-        self.ui.XData.setYRange(0, 100)
-        self.ui.YData.setYRange(0, 100)
-        self.ui.ZData.setYRange(0, 100)
+        self.px = self.ui.XData.addPlot()
+        self.px.setRange(yRange=[0, 100])
+        self.px.showGrid(x=True, y=True, alpha=.8)
+        self.px.setLabel('left', 'Position', 'microns')
+        self.px.setLabel('bottom', 'Time (s)')
+        self.py = self.ui.YData.addPlot()
+        self.py.setRange(yRange=[0, 100])
+        self.py.showGrid(x=True, y=True, alpha=.8)
+        self.py.setLabel('left', 'Position', 'microns')
+        self.py.setLabel('bottom', 'Time (s)')
+        self.pz = self.ui.ZData.addPlot()
+        self.pz.setRange(yRange=[0, 100])
+        self.pz.showGrid(x=True, y=True, alpha=.8)
+        self.pz.setLabel('left', 'Position', 'microns')
+        self.pz.setLabel('bottom', 'Time (s)')
+
         self.ui.vsX.setMinimum(0)
         self.ui.vsX.setMaximum(100)
         self.ui.vsX.setValue(self.xset/65535*100)
@@ -65,16 +73,12 @@ class ACCES(QtWidgets.QMainWindow):
 
         #Signals to slots
         self.ui.actionOpen.triggered.connect(self.OpenScriptDialog)
-
         self.ui.vsX.valueChanged.connect(self.setPI)
         self.ui.vsY.valueChanged.connect(self.setPI)
         self.ui.vsZ.valueChanged.connect(self.setPI)
 
         self.DAQThread = threading.Thread(target=self.DataAcquisitionThread)
         self.DAQThread.start()
-        time.sleep(2)
-        self.PlotThread = threading.Thread(target=self.DataPlotThread)
-        self.PlotThread.start()
 
         self.bShow = True
         self.bCanClose = False
@@ -89,6 +93,60 @@ class ACCES(QtWidgets.QMainWindow):
         y = 100  # 2 * ag.height() - sg.height() - vidwingeo.height()
         self.move(x, y)
 
+
+    def setPI(self):
+        temp = self.ui.vsX.value()
+        self.xset = int(temp*65535/100)
+        self.ui.lxset.setText(str(temp))
+        temp = self.ui.vsY.value()
+        self.yset = int(temp * 65535 / 100)
+        self.ui.lyset.setText(str(temp))
+        temp = self.ui.vsZ.value()
+        self.zset = int(temp * 65535 / 100)
+        self.ui.lzset.setText(str(temp))
+
+        DAQin = ctypes.c_int16()
+        DAQin.value = self.xset
+        result = self.AIOUSB.DACDirect(-3, 0, DAQin)
+        DAQin.value = self.yset
+        result = self.AIOUSB.DACDirect(-3, 1, DAQin)
+        DAQin.value = self.zset
+        result = self.AIOUSB.DACDirect(-3, 2, DAQin)
+
+    def DataAcquisitionThread(self):
+        data_in = ctypes.c_longdouble() # double-precision IEEE floating point data from ADC
+        counter = 0
+        self.t0 = time.time()
+        while (self.bAcquiring):
+            #time.sleep(0.01)
+            self.t.append(time.time()-self.t0)
+            if self.AIOUSB.ADC_GetChannelV(-3, 0, ctypes.byref(data_in)) is 0:
+                self.xdata.append(float(data_in.value)/5*100)
+            else: self.xdata.append(0)
+            if self.AIOUSB.ADC_GetChannelV(-3, 1, ctypes.byref(data_in)) is 0:
+                self.ydata.append(float(data_in.value)/5*100)
+            else: self.ydata.append(0)
+            self.xsetdata.append(self.xset*100/65535)
+            self.ysetdata.append(self.yset*100/65535)
+            self.zsetdata.append(self.zset*100/65535)
+            counter += 1
+            if counter > 0:
+                self.DataPlot()
+                counter = 0
+
+    def DataPlot(self):
+        # self.px.clear()
+        # self.py.clear()
+        # self.pz.clear()
+        self.px.addLegend()
+        self.py.addLegend()
+        self.pz.addLegend()
+        self.px.plot(self.t, self.xdata, pen=(0, 0, 255), linewidth=.5, name='x-pos')
+        self.px.plot(self.t, self.xsetdata, pen=(255, 0, 0), linewidth=.5, name='x-set')
+        self.py.plot(self.t, self.ydata, pen=(0, 255, 0), linewidth=.5, name='y-pos')
+        self.py.plot(self.t, self.ysetdata, pen=(255, 0, 0), linewidth=.5, name='y-set')
+        self.pz.plot(self.t, self.zsetdata, pen=(255, 0, 0), linewidth=.5, name='z-set')
+
     def OpenScriptDialog(self):
         self.filename = QtWidgets.QFileDialog.getOpenFileName(self,
                                                               'Open file',
@@ -102,7 +160,6 @@ class ACCES(QtWidgets.QMainWindow):
     def ExecuteScript(self):
         rows = self.scriptfile.shape[0]
         self.script = self.scriptfile.as_matrix()
-        print(self.script)
         for i in range(rows):
             cmd = self.script[i][0]
             if cmd != 'loop':
@@ -142,54 +199,6 @@ class ACCES(QtWidgets.QMainWindow):
             else:
                 self.zset = self.zset + temp
             self.setPI()
-
-
-    def setPI(self):
-        DAQin = ctypes.c_int16()
-        temp = self.ui.vsX.value()
-        self.xset = int(temp*65535/100)
-        self.ui.lxset.setText(str(temp))
-        temp = self.ui.vsY.value()
-        self.yset = int(temp * 65535 / 100)
-        self.ui.lyset.setText(str(temp))
-        temp = self.ui.vsZ.value()
-        self.zset = int(temp * 65535 / 100)
-        self.ui.lzset.setText(str(temp))
-
-        DAQin.value = self.xset
-        result = self.AIOUSB.DACDirect(-3, 0, DAQin)
-        DAQin.value = self.yset
-        result = self.AIOUSB.DACDirect(-3, 1, DAQin)
-        DAQin.value = self.zset
-        result = self.AIOUSB.DACDirect(-3, 2, DAQin)
-
-    def DataAcquisitionThread(self):
-        data_in = ctypes.c_float()
-        self.t0 = time.time()
-        while (self.bAcquiring):
-            time.sleep(0.01)
-            self.t.append(time.time()-self.t0)
-            if self.AIOUSB.ADC_GetChannelV(-3, 0, ctypes.byref(data_in)) is 0:
-                self.fData = bytearray(struct.pack("f", data_in.value))
-                value, = struct.unpack('f', self.fData)
-                self.xdata.append(value)
-            else: self.xdata.append(0)
-            if self.AIOUSB.ADC_GetChannelV(-3, 1, ctypes.byref(data_in)) is 0:
-                self.fData = bytearray(struct.pack("f", data_in.value))
-                value, = struct.unpack('f', self.fData)
-                self.ydata.append(value)
-            else: self.ydata.append(0)
-            self.xsetdata.append(self.xset)
-            self.ysetdata.append(self.yset)
-            self.zsetdata.append(self.zset)
-
-    def DataPlotThread(self):
-        while (self.bAcquiring):
-            time.sleep(0.33)
-            self.px.setData(self.t, self.xdata, pen=(0, 0, 255))
-            #self.pxset = self.ui.XData.addItem(self.t, self.xsetdata)
-            self.py.setData(self.t, self.ydata, pen=(0, 255, 0))
-            self.pz.setData(self.t, self.zsetdata, pen=(127, 127, 127))
 
     def closeEvent(self, event):
         if self.bCanClose:

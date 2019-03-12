@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2ea85eab-25af-4f66-80d0-1d8220b89f7d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/RTDAQ-32bit.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/RTDAQ-32bit.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACCES/ACCESui.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EDL/user-config.jam" beforeDir="false" afterPath="$PROJECT_DIR$/EDL/user-config.jam" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VideoClass/VidWindow.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACCES/ACCES.py" beforeDir="false" afterPath="$PROJECT_DIR$/ACCES/ACCES.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACCES/ACCESui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/ACCES/ACCESui.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACCESui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/ACCESui.ui" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,7 +13,35 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ACCES/ACCES.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="137" column="8" selection-start-line="137" selection-start-column="10" selection-end-line="139" selection-end-column="25" />
+              <folding>
+                <element signature="e#180#193#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ACCES/debugACCES.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>fData</find>
+      <find>print</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -26,15 +52,15 @@
         <option value="$PROJECT_DIR$/ACCES/debugACCES.py" />
         <option value="$PROJECT_DIR$/VideoClass/debugVideo.py" />
         <option value="$PROJECT_DIR$/RTDAQ-32bit.py" />
-        <option value="$PROJECT_DIR$/ACCES/ACCES.py" />
         <option value="$PROJECT_DIR$/VideoClass/Video.py" />
         <option value="$PROJECT_DIR$/LumeraCam/Lucam.py" />
+        <option value="$PROJECT_DIR$/ACCES/ACCES.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-22" />
-    <option name="width" value="1760" />
+    <option name="x" value="-26" />
+    <option name="width" value="2126" />
     <option name="height" value="2112" />
   </component>
   <component name="ProjectView">
@@ -42,6 +68,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -63,11 +90,10 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/LumeraCam" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/ACCES/debugACCES.py" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -82,7 +108,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.debugACCES">
     <configuration name="RTDAQ-32bit" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="RTDAQ-32bit" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -104,8 +130,30 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="debugACCES" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="RTDAQ-32bit" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ACCES" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ACCES/debugACCES.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.debugACCES" />
         <item itemvalue="Python.RTDAQ-32bit" />
       </list>
     </recent_temporary>
@@ -124,14 +172,15 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-11" y="0" width="880" height="1056" extended-state="0" />
+    <frame x="-13" y="0" width="1063" height="1056" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2606635" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21421616" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32890365" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32890365" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39977852" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -153,29 +202,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ACCES/debugACCES.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/RTDAQ-32bit.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="816">
           <caret line="54" selection-start-line="54" selection-end-line="54" />
           <folding>
             <element signature="e#296#312#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ACCES/ACCES.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="23" column="8" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="43" />
-          <folding>
-            <element signature="e#178#191#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -197,22 +229,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LumeraCam/debugLumenera.py">
+    <entry file="file://$PROJECT_DIR$/LumeraCam/debugLumenera.py" />
+    <entry file="file://$PROJECT_DIR$/LumeraCam/Lucam.py" />
+    <entry file="file://$PROJECT_DIR$/ACCES/debugACCES.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="8" lean-forward="true" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="9" />
-          <folding>
-            <element signature="e#26#45#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="119">
+          <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LumeraCam/Lucam.py">
+    <entry file="file://$PROJECT_DIR$/ACCES/ACCES.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+        <state relative-caret-position="391">
+          <caret line="137" column="8" selection-start-line="137" selection-start-column="10" selection-end-line="139" selection-end-column="25" />
           <folding>
-            <element signature="e#66#76#0" expanded="true" />
+            <element signature="e#180#193#0" expanded="true" />
           </folding>
         </state>
       </provider>
