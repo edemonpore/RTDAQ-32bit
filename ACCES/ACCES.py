@@ -32,7 +32,7 @@ class ACCES(QtWidgets.QMainWindow):
             self.bAcquiring = True
 
         # Class attributes
-        self.maxLen = 100
+        self.maxLen = 1000
         self.xsetdata = collections.deque([0], self.maxLen)
         self.ysetdata = collections.deque([0], self.maxLen)
         self.zsetdata = collections.deque([0], self.maxLen)
@@ -61,6 +61,15 @@ class ACCES(QtWidgets.QMainWindow):
         self.pz.setLabel('left', 'Position', 'microns')
         self.pz.setLabel('bottom', 'Time (s)')
 
+        self.px.addLegend()
+        self.py.addLegend()
+        self.pz.addLegend()
+        self.xplot = self.px.plot([], pen=(0, 0, 255), linewidth=.5, name='x-pos')
+        self.xsetplot = self.px.plot([], pen=(255, 0, 0), linewidth=.5, name='x-set')
+        self.yplot = self.py.plot([], pen=(0, 255, 0), linewidth=.5, name='y-pos')
+        self.ysetplot = self.py.plot([], pen=(255, 0, 0), linewidth=.5, name='y-set')
+        self.zsetplot = self.pz.plot([], pen=(255, 0, 0), linewidth=.5, name='z-set')
+
         self.ui.vsX.setMinimum(0)
         self.ui.vsX.setMaximum(100)
         self.ui.vsX.setValue(self.xset/65535*100)
@@ -87,10 +96,9 @@ class ACCES(QtWidgets.QMainWindow):
     def MoveToStart(self):
         ag = QtWidgets.QDesktopWidget().availableGeometry()
         sg = QtWidgets.QDesktopWidget().screenGeometry()
-
-        vidwingeo = self.geometry()
-        x = 100  # ag.width() - vidwingeo.width()
-        y = 100  # 2 * ag.height() - sg.height() - vidwingeo.height()
+        wingeo = self.geometry()
+        x = 100  # ag.width() - wingeo.width()
+        y = 100  # 2 * ag.height() - sg.height() - wingeo.height()
         self.move(x, y)
 
 
@@ -115,10 +123,10 @@ class ACCES(QtWidgets.QMainWindow):
 
     def DataAcquisitionThread(self):
         data_in = ctypes.c_longdouble() # double-precision IEEE floating point data from ADC
-        counter = 0
         self.t0 = time.time()
+        count = 0
         while (self.bAcquiring):
-            #time.sleep(0.01)
+            time.sleep(0.01)
             self.t.append(time.time()-self.t0)
             if self.AIOUSB.ADC_GetChannelV(-3, 0, ctypes.byref(data_in)) is 0:
                 self.xdata.append(float(data_in.value)/5*100)
@@ -129,23 +137,16 @@ class ACCES(QtWidgets.QMainWindow):
             self.xsetdata.append(self.xset*100/65535)
             self.ysetdata.append(self.yset*100/65535)
             self.zsetdata.append(self.zset*100/65535)
-            counter += 1
-            if counter > 0:
+            if count < 3:
                 self.DataPlot()
-                counter = 0
+                count = 0
 
     def DataPlot(self):
-        # self.px.clear()
-        # self.py.clear()
-        # self.pz.clear()
-        self.px.addLegend()
-        self.py.addLegend()
-        self.pz.addLegend()
-        self.px.plot(self.t, self.xdata, pen=(0, 0, 255), linewidth=.5, name='x-pos')
-        self.px.plot(self.t, self.xsetdata, pen=(255, 0, 0), linewidth=.5, name='x-set')
-        self.py.plot(self.t, self.ydata, pen=(0, 255, 0), linewidth=.5, name='y-pos')
-        self.py.plot(self.t, self.ysetdata, pen=(255, 0, 0), linewidth=.5, name='y-set')
-        self.pz.plot(self.t, self.zsetdata, pen=(255, 0, 0), linewidth=.5, name='z-set')
+        self.xplot.setData(self.t, self.xdata)
+        self.xsetplot.setData(self.t, self.xsetdata)
+        self.yplot.setData(self.t, self.ydata)
+        self.ysetplot.setData(self.t, self.ysetdata)
+        self.zsetplot.setData(self.t, self.zsetdata)
 
     def OpenScriptDialog(self):
         self.filename = QtWidgets.QFileDialog.getOpenFileName(self,
