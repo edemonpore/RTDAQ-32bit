@@ -137,7 +137,8 @@ class ACCES(QtWidgets.QMainWindow):
             self.xsetdata.append(self.xset*100/65535)
             self.ysetdata.append(self.yset*100/65535)
             self.zsetdata.append(self.zset*100/65535)
-            if count < 3:
+            count += 1
+            if count > 3:
                 self.DataPlot()
                 count = 0
 
