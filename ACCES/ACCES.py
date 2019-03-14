@@ -22,6 +22,9 @@ class ACCES(QtWidgets.QMainWindow):
         self.ui = Ui_ACCES()
         self.ui.setupUi(self)
         self.AIOUSB = ctypes.CDLL("AIOUSB")
+        self.AIOUSB.ADC_GetChannelV.argtypes = (ctypes.c_ulong, ctypes.c_ulong, ctypes.POINTER(ctypes.c_double))
+        self.AIOUSB.ADC_GetChannelV.restype = ctypes.c_ulong
+
         self.bAcquiring = False
 
         if self.AIOUSB.DACSetBoardRange(-3, 2):  #2 = 0-10V
