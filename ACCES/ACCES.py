@@ -13,6 +13,7 @@ import pyqtgraph
 from PyQt5 import QtWidgets, uic
 import collections, struct
 import threading, time
+import gc
 
 class ACCES(QtWidgets.QMainWindow):
     def __init__(self):
@@ -151,6 +152,7 @@ class ACCES(QtWidgets.QMainWindow):
         self.yplot.setData(self.t, self.ydata)
         self.ysetplot.setData(self.t, self.ysetdata)
         self.zsetplot.setData(self.t, self.zsetdata)
+        gc.collect()
 
     def OpenScriptDialog(self):
         self.filename = QtWidgets.QFileDialog.getOpenFileName(self,
