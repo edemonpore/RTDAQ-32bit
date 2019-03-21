@@ -54,20 +54,22 @@ class ACCES(QtWidgets.QMainWindow):
         self.px.showGrid(x=True, y=True, alpha=.8)
         self.px.setLabel('left', 'Position', 'microns')
         self.px.setLabel('bottom', 'Time (s)')
+        self.px.addLegend()
+
         self.py = self.ui.YData.addPlot()
         self.py.setRange(yRange=[0, 100])
         self.py.showGrid(x=True, y=True, alpha=.8)
         self.py.setLabel('left', 'Position', 'microns')
         self.py.setLabel('bottom', 'Time (s)')
+        self.py.addLegend()
+
         self.pz = self.ui.ZData.addPlot()
         self.pz.setRange(yRange=[0, 100])
         self.pz.showGrid(x=True, y=True, alpha=.8)
         self.pz.setLabel('left', 'Position', 'microns')
         self.pz.setLabel('bottom', 'Time (s)')
-
-        self.px.addLegend()
-        self.py.addLegend()
         self.pz.addLegend()
+
         self.xplot = self.px.plot([], pen=(0, 0, 255), linewidth=.5, name='x-pos')
         self.xsetplot = self.px.plot([], pen=(255, 0, 0), linewidth=.5, name='x-set')
         self.yplot = self.py.plot([], pen=(0, 255, 0), linewidth=.5, name='y-pos')
