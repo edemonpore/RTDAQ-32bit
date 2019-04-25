@@ -9,7 +9,7 @@
  * \brief Number of channels.
  * Usually there are #EDL_CHANNEL_NUM - 1 current channels and 1 voltage channel.
  */
-#define EDL_CHANNEL_NUM 2
+#define EDL_CHANNEL_NUM 5
 
 /*! \enum EdlCommandId_t
  * \brief Command IDs.
@@ -19,22 +19,32 @@ typedef enum {
     EdlCommandRange = 0, /*!< Radio type command. */
     EdlCommandSamplingRate = 1, /*!< Radio type command. */
     EdlCommandFinalBandwidth = 2, /*!< Radio type command. */
-    EdlCommandOffsetCompensation = 3, /*!< Checkbox type command. */
-    EdlCommandReset = 4, /*!< Checkbox type command. */
-    EdlCommandZAP = 5, /*!< PushButton type command. */
-    EdlCommandApplyProtocol = 6, /*!< PushButton type command. */
-    EdlCommandMainTrial = 7, /*!< Value type command. */
-    EdlCommandVhold = 8, /*!< Value type command. */
-    EdlCommandVfp = 9, /*!< Value type command. */
-    EdlCommandVstep = 10, /*!< Value type command. */
-    EdlCommandTstep = 11, /*!< Value type command. */
-    EdlCommandTpu = 12, /*!< Value type command. */
-    EdlCommandTpe = 13, /*!< Value type command. */
-    EdlCommandN = 14, /*!< Value type command. */
-    EdlCommandNe = 15, /*!< Value type command. */
-    EdlCommandVmax = 16, /*!< Value type command. */
-    EdlCommandVmin = 17, /*!< Value type command. */
-    EdlCommandSlope = 18, /*!< Value type command. */
+    EdlCommandZAPAllChannels = 3, /*!< PushButton type command. */
+    EdlCommandCompensateAllChannels = 4, /*!< CheckButton type command. */
+    EdlCommandResetOffsetCompensation = 5, /*!< PushButton type command. */
+    EdlCommandReset = 6, /*!< Checkbox type command. */
+    EdlCommandPulseAmplitude = 7, /*!< Value type command. */
+    EdlCommandPulseDuration = 8, /*!< Value type command. */
+    EdlCommandPulse = 9, /*!< PushButton type command. */
+    EdlCommandVoffsetCH1 = 10, /*!< Value type command. */
+    EdlCommandVoffsetCH2 = 11, /*!< Value type command. */
+    EdlCommandVoffsetCH3 = 12, /*!< Value type command. */
+    EdlCommandVoffsetCH4 = 13, /*!< Value type command. */
+    EdlCommandApplyProtocol = 14, /*!< PushButton type command. */
+    EdlCommandMainTrial = 15, /*!< Value type command. */
+    EdlCommandVhold = 16, /*!< Value type command. */
+    EdlCommandVpulse = 17, /*!< Value type command. */
+    EdlCommandVstep = 18, /*!< Value type command. */
+    EdlCommandVmax = 19, /*!< Value type command. */
+    EdlCommandVmin = 20, /*!< Value type command. */
+    EdlCommandThold = 21, /*!< Value type command. */
+    EdlCommandTpulse = 22, /*!< Value type command. */
+    EdlCommandTstep = 23, /*!< Value type command. */
+    EdlCommandN = 24, /*!< Value type command. */
+    EdlCommandNR = 25, /*!< Value type command. */
+    EdlCommandSlope = 26, /*!< Value type command. */
+    EdlCommandVamp = 27, /*!< Value type command. */
+    EdlCommandTPeriod = 28, /*!< Value type command. */
     EdlCommandIdNum /*!< Number of available command IDs. \note This is not a valid command ID. */
 } EdlCommandId_t;
 
@@ -42,7 +52,13 @@ typedef enum {
 #define EDL_RADIO_RANGE_200_PA 0
 
 /*! Value for EdlCommandStruct_t::radioId field using #EdlCommandRange command */
-#define EDL_RADIO_RANGE_20_NA 1
+#define EDL_RADIO_RANGE_2_NA 1
+
+/*! Value for EdlCommandStruct_t::radioId field using #EdlCommandRange command */
+#define EDL_RADIO_RANGE_20_NA 2
+
+/*! Value for EdlCommandStruct_t::radioId field using #EdlCommandRange command */
+#define EDL_RADIO_RANGE_200_NA 3
 
 
 /*! Value for EdlCommandStruct_t::radioId field using #EdlCommandSamplingRate command */

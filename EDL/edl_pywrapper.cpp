@@ -1,8 +1,11 @@
 #ifndef EDL_PYWRAPPER_H
 #define EDL_PYWRAPPER_H
 
-#include <edl.h>
-#include <list.hpp>
+#include "edl.h"
+
+#include <boost/python.hpp>
+
+using namespace boost::python;
 
 class EDL_PY : public EDL {
 public:
@@ -63,8 +66,6 @@ public:
         return res;
     }
 };
-
-using namespace boost::python;
 
 BOOST_PYTHON_MODULE(edl_py) {
     Py_Initialize();

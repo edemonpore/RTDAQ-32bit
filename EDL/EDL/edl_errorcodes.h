@@ -67,7 +67,7 @@ typedef enum {
                                                                      * \note Communicate such kind of errors to Elements s.r.l. info@elements-ic.com. */
     EdlWrongSignBitsNumError = EDL_CONFIG_ERRORS_OFFSET+0x0002, /*!< Error due to bad dll generation.
                                                                  * \note Communicate such kind of errors to Elements s.r.l. info@elements-ic.com. */
-    EdlUnknownError = 0xFFFF /*! Undefined error. */
+    EdlUnknownError = 0xFFFF /*!< Undefined error. */
 } EdlErrorCode_t;
 
 #endif // EDL_ERRORCODES_H

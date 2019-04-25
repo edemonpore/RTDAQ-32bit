@@ -1,12 +1,12 @@
 /*! \file edl_global.h
  * \brief Defines some utility global macros.
  */
- #ifndef EDL_GLOBAL_H
+#ifndef EDL_GLOBAL_H
 #define EDL_GLOBAL_H
 
 /*! \def EDLSHARED_EXPORT
  * \brief Macro used to export classes shared by the dll.
- * \note Defining macro \a EDL_LIBRARY will prevent poroject building.
+ * \note Defining macro \a EDL_LIBRARY will prevent project building.
  */
 
 #if defined(EDL_LIBRARY)

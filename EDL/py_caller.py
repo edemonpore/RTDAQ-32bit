@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 
 MINIMUM_DATA_PACKETS_TO_READ = 10
 
-currentData = []
+currentData = [[] for i in range(epc.EDL_PY_CHANNEL_NUM-1)]
 voltageData = []
 
 # Configure sampling rate, current range and bandwidth.
@@ -48,39 +48,35 @@ def compensateDigitalOffset(edl):
 	
 #	Start the digital compensation.
 	commandStruct.checkboxChecked = epc.EDL_PY_CHECKBOX_CHECKED
-	edl.setCommand(epc.EdlPyCommandOffsetCompensation, commandStruct, True)
+	edl.setCommand(epc.EdlPyCommandCompensateAllChannels, commandStruct, True)
 
 #	Wait for some seconds.
 	time.sleep(5.0)
 	
 #	Stop the digital compensation.
 	commandStruct.checkboxChecked = epc.EDL_PY_CHECKBOX_UNCHECKED
-	edl.setCommand(epc.EdlPyCommandOffsetCompensation, commandStruct, True)
+	edl.setCommand(epc.EdlPyCommandCompensateAllChannels, commandStruct, True)
 
-# Set the parameters and start a seal test protocol.
-def setSealTestProtocol(edl):
+# Set the parameters and start a triangular protocol.
+def setTriangularProtocol(edl):
 #   Declare an #EdlCommandStruct_t to be used as configuration for the commands.
 	commandStruct = edl_py.EdlCommandStruct_t()
 
-#   Select the seal test protocol: protocol 1.
-	commandStruct.value = 2.0
+#   Select the triangular protocol: protocol 1.
+	commandStruct.value = 1.0
 	edl.setCommand(epc.EdlPyCommandMainTrial, commandStruct, False)
 
 #   Set the vHold to 0mV.
 	commandStruct.value = 0.0
 	edl.setCommand(epc.EdlPyCommandVhold, commandStruct, False)
 
-#   Set the pulse amplitude to 50mV: 100mV positive to negative delta voltage.
+#   Set the triangular wave amplitude to 50mV: 100mV positive to negative delta voltage.
 	commandStruct.value = 50.0
-	edl.setCommand(epc.EdlPyCommandVstep, commandStruct, False)
+	edl.setCommand(epc.EdlPyCommandVamp, commandStruct, False)
 
-#   Set the pulse period to 20ms.
-	commandStruct.value = 20.0;
-	edl.setCommand(epc.EdlPyCommandTpu, commandStruct, False)
-
-#   Set the command period to 50ms.
-	commandStruct.value = 50.0;
-	edl.setCommand(epc.EdlPyCommandTpe, commandStruct, False)
+#   Set the triangular period to 100ms.
+	commandStruct.value = 100.0
+	edl.setCommand(epc.EdlPyCommandTPeriod, commandStruct, False)
 
 #   Apply the protocol.
 	edl.setCommand(epc.EdlPyCommandApplyProtocol, commandStruct, True)
@@ -148,8 +144,9 @@ def readAndSaveSomeData(edl):
 #		        The output vector consists of \a readPacketsNum data packets of #EDL_CHANNEL_NUM floating point data each.
 #				The first item in each data packet is the value voltage channel [mV];
 #				the following items are the values of the current channels either in pA or nA, depending on value assigned to #EdlCommandSamplingRate. */
-				voltageData.extend(data[1::2])
-				currentData.extend(data[::2])
+				voltageData.extend(data[0::epc.EDL_PY_CHANNEL_NUM])
+				for currentIdx in range(epc.EDL_PY_CHANNEL_NUM-1):
+					currentData[currentIdx].extend(data[currentIdx+1::epc.EDL_PY_CHANNEL_NUM])
 	
 		else:
 #			If the read was not performed wait 1 ms before trying to read again.
@@ -202,7 +199,7 @@ print("done")
 # Apply a seal test protocol.
 print("applying seal test protocol")
 
-setSealTestProtocol(edl)
+setTriangularProtocol(edl)
 
 res = readAndSaveSomeData(edl)
 if res != epc.EdlPySuccess:
@@ -213,10 +210,12 @@ dt = 256.0/1.25e6 # Real sampling rate is slightly lower than 5000kHz, the corre
 for i in range(0, len(voltageData)):
 	timeData.append(i*dt)
 
-plt.subplot(212)
+plt.subplot(epc.EDL_PY_CHANNEL_NUM, 1, 1)
 plt.plot(timeData, voltageData)
-plt.subplot(211)
-plt.plot(timeData, currentData)
+for i in range(epc.EDL_PY_CHANNEL_NUM-1):
+    plt.subplot(epc.EDL_PY_CHANNEL_NUM, 1, i+2)
+    plt.plot(timeData, currentData[i])
+    
 plt.show()
 
 # Try to disconnect the device.
