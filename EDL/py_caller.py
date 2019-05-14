@@ -57,29 +57,29 @@ def compensateDigitalOffset(edl):
 	commandStruct.checkboxChecked = epc.EDL_PY_CHECKBOX_UNCHECKED
 	edl.setCommand(epc.EdlPyCommandCompensateAllChannels, commandStruct, True)
 
-# Set the parameters and start a triangular protocol.
-def setTriangularProtocol(edl):
-#   Declare an #EdlCommandStruct_t to be used as configuration for the commands.
-	commandStruct = edl_py.EdlCommandStruct_t()
-
-#   Select the triangular protocol: protocol 1.
-	commandStruct.value = 1.0
-	edl.setCommand(epc.EdlPyCommandMainTrial, commandStruct, False)
-
-#   Set the vHold to 0mV.
-	commandStruct.value = 0.0
-	edl.setCommand(epc.EdlPyCommandVhold, commandStruct, False)
-
-#   Set the triangular wave amplitude to 50mV: 100mV positive to negative delta voltage.
-	commandStruct.value = 50.0
-	edl.setCommand(epc.EdlPyCommandVamp, commandStruct, False)
-
-#   Set the triangular period to 100ms.
-	commandStruct.value = 100.0
-	edl.setCommand(epc.EdlPyCommandTPeriod, commandStruct, False)
-
-#   Apply the protocol.
-	edl.setCommand(epc.EdlPyCommandApplyProtocol, commandStruct, True)
+# # Set the parameters and start a triangular protocol.
+# def setTriangularProtocol(edl):
+# #   Declare an #EdlCommandStruct_t to be used as configuration for the commands.
+# 	commandStruct = edl_py.EdlCommandStruct_t()
+#
+# #   Select the triangular protocol: protocol 1.
+# 	commandStruct.value = 1.0
+# 	edl.setCommand(epc.EdlPyCommandMainTrial, commandStruct, False)
+#
+# #   Set the vHold to 0mV.
+# 	commandStruct.value = 0.0
+# 	edl.setCommand(epc.EdlPyCommandVhold, commandStruct, False)
+#
+# #   Set the triangular wave amplitude to 50mV: 100mV positive to negative delta voltage.
+# 	commandStruct.value = 50.0
+# 	edl.setCommand(epc.EdlPyCommandVamp, commandStruct, False)
+#
+# #   Set the triangular period to 100ms.
+# 	commandStruct.value = 100.0
+# 	edl.setCommand(epc.EdlPyCommandTPeriod, commandStruct, False)
+#
+# #   Apply the protocol.
+# 	edl.setCommand(epc.EdlPyCommandApplyProtocol, commandStruct, True)
 
 # Reads data from the EDL device and writes them on an open file.
 def readAndSaveSomeData(edl):

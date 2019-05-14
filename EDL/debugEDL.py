@@ -1,1 +1,10 @@
-import edl_py
+# ...for class debugging
+
+from EDL import *
+import sys
+
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    window = EDL()
+    window.show()
+    sys.exit(app.exec_())
