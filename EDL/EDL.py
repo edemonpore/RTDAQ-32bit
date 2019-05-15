@@ -1,4 +1,4 @@
-""" EDL.p2
+""" EDL.py
 Class for Elements 4-Channel PCA
 Acquires PCA data:  Current
 Sets:    stuff...
@@ -7,6 +7,7 @@ May 2019
 """
 
 import edl_py
+import edl_py_constants as epc
 import numpy as np
 import pyqtgraph
 from PyQt5 import QtWidgets, uic
@@ -23,12 +24,14 @@ class EDL(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.bAcquiring = False
 
-        # if :
-        #     bReply = QtWidgets.QMessageBox.information(self,
-        #                                             'Elements ERROR',
-        #                                             "e4 PCA Disconnected.")
-        # else:
-        #     self.bAcquiring = True
+        # Initialize EDL class object
+        self.edl = edl_py.EDL_PY()
+
+        # String list to collect detected devices
+        self.devices = [""] * 0
+
+        # Detect devices and set acquisition flag accordingly
+        self.DetectandConnectDevices()
 
         #Signals to slots
         self.ui.showCh1.stateChanged.connect(self.ToggleChannelView)
@@ -91,6 +94,29 @@ class EDL(QtWidgets.QMainWindow):
         self.bShow = True
         self.bCanClose = False
         self.MoveToStart()
+
+    def DetectandConnectDevices(self):
+        res = self.edl.detectDevices(self.devices)
+
+        if res != epc.EdlPySuccess:
+            QtWidgets.QMessageBox.information(self,
+                                              'Elements Error',
+                                              "No Elements e4 PCA device found.")
+            self.bAcquiring = False
+        else:
+            QtWidgets.QMessageBox.information(self,
+                                              'Elements Success',
+                                              "Device found:" + self.devices[0])
+            self.bAcquiring = True
+
+            # Connect Devices
+            for device in self.devices:
+                if edl.connectDevice(device) != epc.EdlPySuccess:
+                    QtWidgets.QMessageBox.information(self,
+                                                      'Elements Connection Error',
+                                                      "Error connecting to:" + device)
+                break
+        return res
 
     def MoveToStart(self):
         ag = QtWidgets.QDesktopWidget().availableGeometry()

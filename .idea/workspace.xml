@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2ea85eab-25af-4f66-80d0-1d8220b89f7d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RTDAQ-32bitui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/RTDAQ-32bitui.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACCES/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ACCES/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EDL/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/EDL/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EDL/EDL.py" beforeDir="false" afterPath="$PROJECT_DIR$/EDL/EDL.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,7 +18,7 @@
         <entry file="file://$PROJECT_DIR$/RTDAQ-32bit.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="230">
-              <caret line="46" column="65" lean-forward="true" selection-start-line="46" selection-start-column="65" selection-end-line="46" selection-end-column="65" />
+              <caret line="46" column="65" selection-start-line="46" selection-start-column="65" selection-end-line="46" selection-end-column="65" />
               <folding>
                 <element signature="e#296#312#0" expanded="true" />
               </folding>
@@ -59,7 +60,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="1210" />
-    <option name="width" value="2498" />
+    <option name="width" value="2500" />
     <option name="height" value="2060" />
   </component>
   <component name="ProjectView">
@@ -67,7 +68,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -94,10 +94,11 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/ACCES/debugACCES.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -176,9 +177,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="605" y="0" width="1249" height="1030" extended-state="0" />
+    <frame x="484" y="0" width="1000" height="824" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1797197" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17927462" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -231,7 +233,7 @@
     <entry file="file://$PROJECT_DIR$/RTDAQ-32bit.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="230">
-          <caret line="46" column="65" lean-forward="true" selection-start-line="46" selection-start-column="65" selection-end-line="46" selection-end-column="65" />
+          <caret line="46" column="65" selection-start-line="46" selection-start-column="65" selection-end-line="46" selection-end-column="65" />
           <folding>
             <element signature="e#296#312#0" expanded="true" />
           </folding>
