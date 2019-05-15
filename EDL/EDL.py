@@ -26,6 +26,7 @@ class EDL(QtWidgets.QMainWindow):
 
         # Initialize EDL class object
         self.edl = edl_py.EDL_PY()
+        self.bVoltagePositive = True
 
         # String list to collect detected devices
         self.devices = [""] * 0
@@ -38,6 +39,8 @@ class EDL(QtWidgets.QMainWindow):
         self.ui.showCh2.stateChanged.connect(self.ToggleChannelView)
         self.ui.showCh3.stateChanged.connect(self.ToggleChannelView)
         self.ui.showCh4.stateChanged.connect(self.ToggleChannelView)
+        self.ui.pbPolarity.clicked.connect(self.ToggleVoltagePolarity)
+        self.ui.pbPolarity.setToolTip('Toggle Voltage Polarity')
 
         # Class attributes
         self.maxLen = 1000
@@ -94,6 +97,14 @@ class EDL(QtWidgets.QMainWindow):
         self.bShow = True
         self.bCanClose = False
         self.MoveToStart()
+
+    def ToggleVoltagePolarity(self):
+        if self.bVoltagePositive == True:
+            self.bVoltagePositive = False
+            self.ui.pbPolarity.setText("-")
+        else:
+            self.bVoltagePositive = True
+            self.ui.pbPolarity.setText("+")
 
     def DetectandConnectDevices(self):
         res = self.edl.detectDevices(self.devices)
