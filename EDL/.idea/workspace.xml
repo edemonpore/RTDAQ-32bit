@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fd56af32-e8a4-4f1c-af03-e50b153b80c8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EDL.py" beforeDir="false" afterPath="$PROJECT_DIR$/EDL.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,7 +15,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/debugEDL.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
+            <state relative-caret-position="34">
               <caret line="2" selection-start-line="2" selection-end-line="2" />
               <folding>
                 <element signature="e#26#43#0" expanded="true" />
@@ -29,8 +27,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/py_caller.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1067">
-              <caret line="156" column="14" selection-start-line="156" selection-start-column="14" selection-end-line="156" selection-end-column="14" />
+            <state relative-caret-position="2113">
+              <caret line="148" column="92" selection-start-line="148" selection-start-column="74" selection-end-line="148" selection-end-column="92" />
               <folding>
                 <element signature="e#29#42#0" expanded="true" />
               </folding>
@@ -41,20 +39,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/EDL.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="272" column="57" selection-start-line="272" selection-start-column="57" selection-end-line="272" selection-end-column="80" />
+            <state relative-caret-position="498">
+              <caret line="277" column="29" selection-start-line="277" selection-start-column="29" selection-end-line="277" selection-end-column="29" />
               <folding>
                 <element signature="e#113#126#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/edl_py_constants.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="422">
-              <caret line="48" column="56" lean-forward="true" selection-start-line="48" selection-start-column="56" selection-end-line="48" selection-end-column="56" />
             </state>
           </provider>
         </entry>
@@ -104,10 +93,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="35" />
-    <option name="y" value="27" />
-    <option name="width" value="1122" />
-    <option name="height" value="773" />
+    <option name="x" value="-12" />
+    <option name="width" value="2118" />
+    <option name="height" value="2112" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -120,7 +108,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/EDL/edl_devicespecs.h" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/EDL.py" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -199,9 +187,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="35" y="27" width="1122" height="773" extended-state="0" />
+    <frame x="-6" y="0" width="1059" height="1056" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16924477" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.086021505" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -220,13 +209,13 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15357459" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.086021505" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32949308" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3986175" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32779622" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.18578352" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -255,12 +244,34 @@
         <state relative-caret-position="-357" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/EDL/edl_devicespecs.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1293" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/debugEDL.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
+        <state relative-caret-position="34">
           <caret line="2" selection-start-line="2" selection-end-line="2" />
           <folding>
             <element signature="e#26#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/edl_py_constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="422">
+          <caret line="48" column="56" selection-start-line="48" selection-start-column="56" selection-end-line="48" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/py_caller.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2113">
+          <caret line="148" column="92" selection-start-line="148" selection-start-column="74" selection-end-line="148" selection-end-column="92" />
+          <folding>
+            <element signature="e#29#42#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -272,32 +283,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EDL/edl_devicespecs.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1293" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/edl_py_constants.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="422">
-          <caret line="48" column="56" lean-forward="true" selection-start-line="48" selection-start-column="56" selection-end-line="48" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/py_caller.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1067">
-          <caret line="156" column="14" selection-start-line="156" selection-start-column="14" selection-end-line="156" selection-end-column="14" />
-          <folding>
-            <element signature="e#29#42#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/EDL.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="272" column="57" selection-start-line="272" selection-start-column="57" selection-end-line="272" selection-end-column="80" />
+        <state relative-caret-position="498">
+          <caret line="277" column="29" selection-start-line="277" selection-start-column="29" selection-end-line="277" selection-end-column="29" />
           <folding>
             <element signature="e#113#126#0" expanded="true" />
           </folding>

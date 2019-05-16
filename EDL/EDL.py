@@ -270,12 +270,12 @@ class EDL(QtWidgets.QMainWindow):
             if status.availableDataPackets >= 10:
                 data = [0.0] * 0
                 res = edl.readData(status.availableDataPackets, readPacketsNum, data)
-                self.ch1data.append(data[currentIdx + 1::epc.EDL_PY_CHANNEL_NUM])
-                self.ch2data.append(data[currentIdx + 1::epc.EDL_PY_CHANNEL_NUM])
-                self.ch3data.append(data[currentIdx + 1::epc.EDL_PY_CHANNEL_NUM])
-                self.ch4data.append(data[currentIdx + 1::epc.EDL_PY_CHANNEL_NUM])
+                self.ch1data.append(data[1::4])
+                self.ch2data.append(data[2::4])
+                self.ch3data.append(data[3::4])
+                self.ch4data.append(data[4::4])
             else:
-                # If the read was not performed wait 1 ms before trying to read again.
+                # If the read not performed wait 1 ms before trying to read again.
                 time.sleep(0.001)
 
     def DataPlot(self):
