@@ -6,407 +6,376 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1096</width>
-    <height>909</height>
+    <width>1470</width>
+    <height>1301</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Elements e4</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTabWidget" name="tabGraphs">
-    <property name="geometry">
-     <rect>
-      <x>18</x>
-      <y>18</y>
-      <width>1275</width>
-      <height>882</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="currentIndex">
-     <number>1</number>
-    </property>
-    <widget class="QWidget" name="Graphs">
-     <attribute name="title">
-      <string>Graphs</string>
-     </attribute>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabGraphs">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="Graphs">
+       <attribute name="title">
+        <string>Graphs</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QCheckBox" name="showCh1">
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QPushButton" name="pbCompensateDigitalOffset">
+              <property name="minimumSize">
+               <size>
+                <width>250</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Compensate Digital Offset</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="showCh1">
+              <property name="text">
+               <string>Channel 1</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="showCh2">
+              <property name="text">
+               <string>Channel 2</string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="showCh3">
+              <property name="text">
+               <string>Channel 3</string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="showCh4">
+              <property name="text">
+               <string>Channel 4</string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="GraphicsLayoutWidget" name="Ch1Data"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="lCh1">
             <property name="text">
              <string>Channel 1</string>
             </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="showCh2">
+           <widget class="GraphicsLayoutWidget" name="Ch2Data"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="lCh2">
             <property name="text">
              <string>Channel 2</string>
             </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="showCh3">
+           <widget class="GraphicsLayoutWidget" name="Ch3Data"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="lCh3">
             <property name="text">
              <string>Channel 3</string>
             </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="showCh4">
+           <widget class="GraphicsLayoutWidget" name="Ch4Data"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="lCh4">
             <property name="text">
              <string>Channel 4</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
             </property>
            </widget>
           </item>
          </layout>
         </item>
-        <item>
-         <widget class="GraphicsLayoutWidget" name="Ch1Data"/>
-        </item>
-        <item alignment="Qt::AlignHCenter">
-         <widget class="QLabel" name="lCh1">
-          <property name="text">
-           <string>Channel 1</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="GraphicsLayoutWidget" name="Ch2Data"/>
-        </item>
-        <item alignment="Qt::AlignHCenter">
-         <widget class="QLabel" name="lCh2">
-          <property name="text">
-           <string>Channel 2</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="GraphicsLayoutWidget" name="Ch3Data"/>
-        </item>
-        <item alignment="Qt::AlignHCenter">
-         <widget class="QLabel" name="lCh3">
-          <property name="text">
-           <string>Channel 3</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="GraphicsLayoutWidget" name="Ch4Data"/>
-        </item>
-        <item alignment="Qt::AlignHCenter">
-         <widget class="QLabel" name="lCh4">
-          <property name="text">
-           <string>Channel 4</string>
-          </property>
-         </widget>
-        </item>
        </layout>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QWidget" name="Settings">
-     <attribute name="title">
-      <string>Tab 2</string>
-     </attribute>
-     <widget class="QGroupBox" name="gbRange_2">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>50</y>
-        <width>111</width>
-        <height>119</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Range</string>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <widget class="QRadioButton" name="rb200pA_2">
-         <property name="text">
-          <string>200 pA</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QRadioButton" name="rb2nA_2">
-         <property name="text">
-          <string>2 nA</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QRadioButton" name="rb20nA_2">
-         <property name="text">
-          <string>20 nA</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QRadioButton" name="rb200nA_2">
-         <property name="text">
-          <string>200 nA</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QGroupBox" name="gbSampleRate_2">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>170</y>
-        <width>111</width>
-        <height>188</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Sampling Rate (SR)</string>
-      </property>
-      <widget class="QRadioButton" name="rb1_25KHz_3">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>23</y>
-         <width>66</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>1.25 KHz</string>
-       </property>
       </widget>
-      <widget class="QRadioButton" name="rb5KHz_3">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>46</y>
-         <width>50</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>5 KHz</string>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="rb10KHz_3">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>69</y>
-         <width>56</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>10 KHz</string>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="rb20KHz_3">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>92</y>
-         <width>56</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>20 KHz</string>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="rb50KHz_3">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>115</y>
-         <width>56</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>50 KHz</string>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="rb100KHz_3">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>138</y>
-         <width>62</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>100 KHz</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="rb200KHz_3">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>161</y>
-         <width>62</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>200 KHz</string>
-       </property>
+      <widget class="QWidget" name="Settings">
+       <attribute name="title">
+        <string>Tab 2</string>
+       </attribute>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>19</x>
+          <y>19</y>
+          <width>272</width>
+          <height>48</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="lVhold">
+           <property name="minimumSize">
+            <size>
+             <width>47</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Vhold</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pbPolarity">
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>+/-</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="sbVhold">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>45</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lmV">
+           <property name="text">
+            <string>mV</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>19</x>
+          <y>106</y>
+          <width>222</width>
+          <height>794</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
+          <widget class="QGroupBox" name="gbRange">
+           <property name="title">
+            <string>Range</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QRadioButton" name="rb200pA">
+              <property name="text">
+               <string>200 pA</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rb2nA">
+              <property name="text">
+               <string>2 nA</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rb20nA">
+              <property name="text">
+               <string>20 nA</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rb200nA">
+              <property name="text">
+               <string>200 nA</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="gbSampleRate">
+           <property name="title">
+            <string>Sampling Rate (SR)</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="QRadioButton" name="rb1_25KHz">
+              <property name="text">
+               <string>1.25 KHz</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rb5KHz">
+              <property name="text">
+               <string>5 KHz</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rb10KHz">
+              <property name="text">
+               <string>10 KHz</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rb20KHz">
+              <property name="text">
+               <string>20 KHz</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rb50KHz">
+              <property name="text">
+               <string>50 KHz</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rb100KHz">
+              <property name="text">
+               <string>100 KHz</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rb200KHz">
+              <property name="text">
+               <string>200 KHz</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="gbFinalBandwidth">
+           <property name="title">
+            <string>Final Bandwidth</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <widget class="QRadioButton" name="rbSRby2">
+              <property name="text">
+               <string>SR/2 (no filter)</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rbSRby8">
+              <property name="text">
+               <string>SR/8</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rbSRby10">
+              <property name="text">
+               <string>SR/10</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rbSRby20">
+              <property name="text">
+               <string>SR/20</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </widget>
-     <widget class="QGroupBox" name="gbFinalBandwidth_2">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>360</y>
-        <width>111</width>
-        <height>119</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Final Bandwidth</string>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <item>
-        <widget class="QRadioButton" name="rbSRby2_2">
-         <property name="text">
-          <string>SR/2 (no filter)</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QRadioButton" name="rbSRby8_2">
-         <property name="text">
-          <string>SR/8</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QRadioButton" name="rbSRby10_2">
-         <property name="text">
-          <string>SR/10</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QRadioButton" name="rbSRby20_2">
-         <property name="text">
-          <string>SR/20</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QPushButton" name="pbPolarity">
-      <property name="geometry">
-       <rect>
-        <x>75</x>
-        <y>22</y>
-        <width>31</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>+/-</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="lVhold">
-      <property name="geometry">
-       <rect>
-        <x>22</x>
-        <y>22</y>
-        <width>47</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>47</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Vhold</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-     <widget class="QSpinBox" name="sbVhold">
-      <property name="geometry">
-       <rect>
-        <x>112</x>
-        <y>23</y>
-        <width>81</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-     </widget>
-     <widget class="QLabel" name="lmV">
-      <property name="geometry">
-       <rect>
-        <x>199</x>
-        <y>22</y>
-        <width>16</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>mV</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </widget>
-   </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1096</width>
-     <height>21</height>
+     <width>1470</width>
+     <height>38</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
