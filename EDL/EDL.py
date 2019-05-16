@@ -126,7 +126,11 @@ class EDL(QtWidgets.QMainWindow):
 
     def SetPotential(self):
         commandStruct = edl_py.EdlCommandStruct_t()
-        commandStruct.value = self.ui.sbVhold.Value()
+        Vhold = self.ui.sbVhold.Value()
+        if bVoltagePositive:
+            commandStruct.value = Vhold
+        else:
+            commandStruct.value = -Vhold
         self.edl.setCommand(epc.EdlPyCommandVhold, commandStruct, True)
 
     def UpdateSettings(self):
@@ -180,6 +184,7 @@ class EDL(QtWidgets.QMainWindow):
         else:
             self.bVoltagePositive = True
             self.ui.pbPolarity.setText("+")
+        self.SetPotential()
 
     def DetectandConnectDevices(self):
         res = self.edl.detectDevices(self.devices)
@@ -249,27 +254,29 @@ class EDL(QtWidgets.QMainWindow):
             return res
         self.t0 = time.time()
         while (self.bAcquiring):
-        # Get umber of available data packets EdlDeviceStatus_t::availableDataPackets.
-        res = edl.getDeviceStatus(status)
-        # If EDL::getDeviceStatus returns error code output code and return.
-        if res != epc.EdlPySuccess:
-            QtWidgets.QMessageBox.information(self,
-                                              'Elements Connection Error',
-                                              "Error getting device status")
-            return res;
-        if status.bufferOverflowFlag or status.lostDataFlag:
-            QtWidgets.QMessageBox.information(self,
-                                              'Elements Connection Error',
-                                              "Buffer overflow, data loss.")
-        if status.availableDataPackets >= MINIMUM_DATA_PACKETS_TO_READ:
-            data = [0.0] * 0
-            res = edl.readData(status.availableDataPackets, readPacketsNum, data)
-            voltageData.extend(data[0::epc.EDL_PY_CHANNEL_NUM])
-            for currentIdx in range(epc.EDL_PY_CHANNEL_NUM - 1):
-                currentData[currentIdx].extend(data[currentIdx + 1::epc.EDL_PY_CHANNEL_NUM])
-        else:
-            # If the read was not performed wait 1 ms before trying to read again.
-            time.sleep(0.001)
+            self.t.append(time.time() - self.t0)
+            # Get umber of available data packets EdlDeviceStatus_t::availableDataPackets.
+            res = self.edl.getDeviceStatus(status)
+            # If EDL::getDeviceStatus returns error code output code and return.
+            if res != epc.EdlPySuccess:
+                QtWidgets.QMessageBox.information(self,
+                                                  'Elements Connection Error',
+                                                  "Error getting device status")
+                return res;
+            if status.bufferOverflowFlag or status.lostDataFlag:
+                QtWidgets.QMessageBox.information(self,
+                                                  'Elements Connection Error',
+                                                  "Buffer overflow, data loss.")
+            if status.availableDataPackets >= 10:
+                data = [0.0] * 0
+                res = edl.readData(status.availableDataPackets, readPacketsNum, data)
+                self.ch1data.append(data[currentIdx + 1::epc.EDL_PY_CHANNEL_NUM])
+                self.ch2data.append(data[currentIdx + 1::epc.EDL_PY_CHANNEL_NUM])
+                self.ch3data.append(data[currentIdx + 1::epc.EDL_PY_CHANNEL_NUM])
+                self.ch4data.append(data[currentIdx + 1::epc.EDL_PY_CHANNEL_NUM])
+            else:
+                # If the read was not performed wait 1 ms before trying to read again.
+                time.sleep(0.001)
 
     def DataPlot(self):
         self.ch1plot.setData(self.t, self.ch1data)
