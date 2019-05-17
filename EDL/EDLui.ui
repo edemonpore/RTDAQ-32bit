@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1470</width>
-    <height>1301</height>
+    <width>1023</width>
+    <height>902</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,7 +30,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="Graphs">
        <attribute name="title">
@@ -38,7 +38,7 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
-         <layout class="QVBoxLayout" name="verticalLayout">
+         <layout class="QVBoxLayout" name="verticalLayout_10">
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
@@ -51,6 +51,16 @@
               </property>
               <property name="text">
                <string>Compensate Digital Offset</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="showVhold">
+              <property name="text">
+               <string>V-Hold          </string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -97,44 +107,89 @@
            </layout>
           </item>
           <item>
-           <widget class="GraphicsLayoutWidget" name="Ch1Data"/>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+             <widget class="GraphicsLayoutWidget" name="VhData"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="lVhold_2">
+              <property name="text">
+               <string>V-Hold</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignHCenter|Qt::AlignTop</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
-           <widget class="QLabel" name="lCh1">
-            <property name="text">
-             <string>Channel 1</string>
-            </property>
-           </widget>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <item>
+             <widget class="GraphicsLayoutWidget" name="Ch1Data"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="lCh1">
+              <property name="text">
+               <string>Channel 1</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignHCenter|Qt::AlignTop</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
-           <widget class="GraphicsLayoutWidget" name="Ch2Data"/>
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <item>
+             <widget class="GraphicsLayoutWidget" name="Ch2Data"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="lCh2">
+              <property name="text">
+               <string>Channel 2</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignHCenter|Qt::AlignTop</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
-           <widget class="QLabel" name="lCh2">
-            <property name="text">
-             <string>Channel 2</string>
-            </property>
-           </widget>
+           <layout class="QVBoxLayout" name="verticalLayout_8">
+            <item>
+             <widget class="GraphicsLayoutWidget" name="Ch3Data"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="lCh3">
+              <property name="text">
+               <string>Channel 3</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignHCenter|Qt::AlignTop</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
-           <widget class="GraphicsLayoutWidget" name="Ch3Data"/>
-          </item>
-          <item>
-           <widget class="QLabel" name="lCh3">
-            <property name="text">
-             <string>Channel 3</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="GraphicsLayoutWidget" name="Ch4Data"/>
-          </item>
-          <item>
-           <widget class="QLabel" name="lCh4">
-            <property name="text">
-             <string>Channel 4</string>
-            </property>
-           </widget>
+           <layout class="QVBoxLayout" name="verticalLayout_9">
+            <item>
+             <widget class="GraphicsLayoutWidget" name="Ch4Data"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="lCh4">
+              <property name="text">
+               <string>Channel 4</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignHCenter|Qt::AlignTop</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
@@ -142,7 +197,7 @@
       </widget>
       <widget class="QWidget" name="Settings">
        <attribute name="title">
-        <string>Tab 2</string>
+        <string>Settings</string>
        </attribute>
        <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
@@ -162,6 +217,11 @@
              <height>0</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Vhold</string>
            </property>
@@ -172,11 +232,25 @@
          </item>
          <item>
           <widget class="QPushButton" name="pbPolarity">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>35</height>
+            </size>
+           </property>
            <property name="maximumSize">
             <size>
              <width>50</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Flips voltage polarity&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>+/-</string>
@@ -193,14 +267,30 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>100</width>
-             <height>45</height>
+             <width>70</width>
+             <height>33</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="minimum">
+            <number>-500</number>
+           </property>
+           <property name="maximum">
+            <number>500</number>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="lmV">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>mV</string>
            </property>
@@ -214,17 +304,17 @@
        <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
-          <x>19</x>
-          <y>106</y>
-          <width>222</width>
-          <height>794</height>
+          <x>20</x>
+          <y>71</y>
+          <width>139</width>
+          <height>520</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_5">
          <item>
           <widget class="QGroupBox" name="gbRange">
            <property name="title">
-            <string>Range</string>
+            <string>Current Range</string>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
@@ -374,8 +464,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1470</width>
-     <height>38</height>
+     <width>1023</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

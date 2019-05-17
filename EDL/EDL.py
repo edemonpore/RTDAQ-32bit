@@ -45,6 +45,7 @@ class EDL(QtWidgets.QMainWindow):
 
         #Signals to slots (Tab 1)
         self.ui.pbCompensateDigitalOffset.clicked.connect(self.CompensateDigitalOffset)
+        self.ui.showVhold.stateChanged.connect(self.ToggleChannelView)
         self.ui.showCh1.stateChanged.connect(self.ToggleChannelView)
         self.ui.showCh2.stateChanged.connect(self.ToggleChannelView)
         self.ui.showCh3.stateChanged.connect(self.ToggleChannelView)
@@ -71,11 +72,20 @@ class EDL(QtWidgets.QMainWindow):
 
         # Class attributes
         self.maxLen = 1000
+        self.vHolddata = collections.deque([0], self.maxLen)
         self.ch1data = collections.deque([0], self.maxLen)
         self.ch2data = collections.deque([0], self.maxLen)
         self.ch3data = collections.deque([0], self.maxLen)
         self.ch4data = collections.deque([0], self.maxLen)
         self.t = collections.deque([0], self.maxLen)
+
+        self.VhLimit = 500
+        self.p0 = self.ui.VhData.addPlot()
+        self.p0.setRange(yRange=[-self.VhLimit, self.VhLimit])
+        self.p0.showGrid(x=True, y=True, alpha=.8)
+        self.p0.setLabel('left', 'Volts', 'mV')
+        self.p0.setLabel('bottom', 'Time (s)')
+        self.p0.addLegend()
 
         self.yLimit = 200
         self.p1 = self.ui.Ch1Data.addPlot()
@@ -106,15 +116,22 @@ class EDL(QtWidgets.QMainWindow):
         self.p4.setLabel('bottom', 'Time (s)')
         self.p4.addLegend()
 
+        self.Vhplot = self.p0.plot([], pen=(127, 127, 127), linewidth=.5, name='VHold')
         self.ch1plot = self.p1.plot([], pen=(0, 0, 255), linewidth=.5, name='Ch1')
         self.ch2plot = self.p2.plot([], pen=(0, 255, 0), linewidth=.5, name='Ch2')
         self.ch3plot = self.p3.plot([], pen=(255, 0, 0), linewidth=.5, name='Ch3')
         self.ch4plot = self.p4.plot([], pen=(255, 0, 255), linewidth=.5, name='Ch4')
 
-        self.DAQThread = threading.Thread(target=self.DataAcquisitionThread)
-        self.DAQThread.start()
+        if self.bAcquiring:
+            self.DAQThread = threading.Thread(target=self.DataAcquisitionThread)
+            self.DAQThread.start()
+        else:
+            QtWidgets.QMessageBox.information(self,
+                                              'Data Acquisition Notice',
+                                              "e4 acquisition thread not initiated. Must restart to capture data.")
 
-        self.ui.Ch1Data.show()
+        self.ui.VhData.hide()
+        self.ui.lVhold.hide()
         self.ui.Ch2Data.hide()
         self.ui.lCh2.hide()
         self.ui.Ch3Data.hide()
@@ -123,6 +140,29 @@ class EDL(QtWidgets.QMainWindow):
         self.ui.lCh4.hide()
         self.bShow = True
         self.MoveToStart()
+
+    def DetectandConnectDevices(self):
+        res = self.edl.detectDevices(self.devices)
+
+        if res != epc.EdlPySuccess or self.devices[0] is '':
+            QtWidgets.QMessageBox.information(self,
+                                              'Elements Error',
+                                              "No Elements e4 PCA device found.")
+            self.bAcquiring = False
+        else:
+            QtWidgets.QMessageBox.information(self,
+                                              'Elements Success',
+                                              "Device found: " + self.devices[0])
+            self.bAcquiring = True
+
+            # Connect Device
+            while not self.edl.disconnectDevice():
+                time.sleep(1)
+            if self.edl.connectDevice(self.devices[0]) != epc.EdlPySuccess:
+                QtWidgets.QMessageBox.information(self,
+                                                  'Elements Connection Error',
+                                                  "Error connecting to: " + self.devices[0])
+        return res
 
     def SetPotential(self):
         commandStruct = edl_py.EdlCommandStruct_t()
@@ -186,38 +226,13 @@ class EDL(QtWidgets.QMainWindow):
             self.ui.pbPolarity.setText("+")
         self.SetPotential()
 
-    def DetectandConnectDevices(self):
-        res = self.edl.detectDevices(self.devices)
-
-        if res != epc.EdlPySuccess or self.devices[0] is '':
-            QtWidgets.QMessageBox.information(self,
-                                              'Elements Error',
-                                              "No Elements e4 PCA device found.")
-            self.bAcquiring = False
-        else:
-            QtWidgets.QMessageBox.information(self,
-                                              'Elements Success',
-                                              "Device found: " + self.devices[0])
-            self.bAcquiring = True
-
-            # Connect Device
-            while not self.edl.disconnectDevice():
-                time.sleep(1)
-            if self.edl.connectDevice(self.devices[0]) != epc.EdlPySuccess:
-                QtWidgets.QMessageBox.information(self,
-                                                  'Elements Connection Error',
-                                                  "Error connecting to: " + self.devices[0])
-        return res
-
-    def MoveToStart(self):
-        ag = QtWidgets.QDesktopWidget().availableGeometry()
-        sg = QtWidgets.QDesktopWidget().screenGeometry()
-        wingeo = self.geometry()
-        x = 100  # ag.width() - wingeo.width()
-        y = 100  # 2 * ag.height() - sg.height() - wingeo.height()
-        self.move(x, y)
-
     def ToggleChannelView(self):
+        if self.ui.showVhold.isChecked() == True:
+            self.ui.VhData.show()
+            self.ui.lVhold.show()
+        else:
+            self.ui.VhData.hide()
+            self.ui.lVhold.hide()
         if self.ui.showCh1.isChecked() == True:
             self.ui.Ch1Data.show()
             self.ui.lCh1.show()
@@ -269,6 +284,7 @@ class EDL(QtWidgets.QMainWindow):
             if status.availableDataPackets >= 10:
                 data = [0.0] * 0
                 res = self.edl.readData(status.availableDataPackets, readPacketsNum, data)
+                self.Vholddata.append(data[0::5])
                 self.ch1data.append(data[1::5])
                 self.ch2data.append(data[2::5])
                 self.ch3data.append(data[3::5])
@@ -280,18 +296,23 @@ class EDL(QtWidgets.QMainWindow):
                 time.sleep(0.001)
 
     def DataPlot(self):
+        self.Vhplot.setData(self.t, self.vHolddata)
         self.ch1plot.setData(self.t, self.ch1data)
         self.ch2plot.setData(self.t, self.ch2data)
         self.ch3plot.setData(self.t, self.ch3data)
         self.ch4plot.setData(self.t, self.ch4data)
         gc.collect()
 
+    def MoveToStart(self):
+        ag = QtWidgets.QDesktopWidget().availableGeometry()
+        sg = QtWidgets.QDesktopWidget().screenGeometry()
+        wingeo = self.geometry()
+        x = 100  # ag.width() - wingeo.width()
+        y = 100  # 2 * ag.height() - sg.height() - wingeo.height()
+        self.move(x, y)
+
     def closeEvent(self, event):
         self.bAcquiring = False
         if self.DAQThread != None:
             self.DAQThread.join()
-            event.accept()
-        else:
-            self.bShow = False
-            self.hide()
-            event.ignore()
+        event.accept()
