@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fd56af32-e8a4-4f1c-af03-e50b153b80c8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/EDL.py" beforeDir="false" afterPath="$PROJECT_DIR$/EDL.py" afterDir="false" />
-    </list>
+    <list default="true" id="fd56af32-e8a4-4f1c-af03-e50b153b80c8" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,8 +37,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/EDL.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="828">
-              <caret line="286" column="23" selection-start-line="286" selection-start-column="23" selection-end-line="286" selection-end-column="23" />
+            <state relative-caret-position="1063">
+              <caret line="298" column="50" selection-start-line="298" selection-start-column="41" selection-end-line="298" selection-end-column="50" />
               <folding>
                 <element signature="e#113#126#0" expanded="true" />
               </folding>
@@ -73,6 +71,7 @@
       <find>data</find>
       <find>currentI</find>
       <find>vHolddata</find>
+      <find>Vholddata</find>
     </findStrings>
     <replaceStrings>
       <replace>Ui_EDL</replace>
@@ -95,7 +94,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-13" />
-    <option name="width" value="2119" />
+    <option name="width" value="1263" />
     <option name="height" value="2113" />
   </component>
   <component name="ProjectView">
@@ -188,7 +187,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-10" y="0" width="1695" height="1690" extended-state="0" />
+    <frame x="-10" y="0" width="1010" height="1690" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.086021505" />
@@ -286,8 +285,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/EDL.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="828">
-          <caret line="286" column="23" selection-start-line="286" selection-start-column="23" selection-end-line="286" selection-end-column="23" />
+        <state relative-caret-position="1063">
+          <caret line="298" column="50" selection-start-line="298" selection-start-column="41" selection-end-line="298" selection-end-column="50" />
           <folding>
             <element signature="e#113#126#0" expanded="true" />
           </folding>
