@@ -284,7 +284,7 @@ class EDL(QtWidgets.QMainWindow):
             if status.availableDataPackets >= 10:
                 data = [0.0] * 0
                 res = self.edl.readData(status.availableDataPackets, readPacketsNum, data)
-                self.Vholddata.append(data[0::5])
+                self.vHolddata.append(data[0::5])
                 self.ch1data.append(data[1::5])
                 self.ch2data.append(data[2::5])
                 self.ch3data.append(data[3::5])
