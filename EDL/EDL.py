@@ -24,6 +24,15 @@ class EDL(QtWidgets.QMainWindow):
         self.bAcquiring = False
         self.DAQThread = None
 
+        # Class attributes
+        self.maxLen = 1000
+        self.vHolddata = collections.deque([0], self.maxLen)
+        self.ch1data = collections.deque([0], self.maxLen)
+        self.ch2data = collections.deque([0], self.maxLen)
+        self.ch3data = collections.deque([0], self.maxLen)
+        self.ch4data = collections.deque([0], self.maxLen)
+        self.t = collections.deque([0], self.maxLen)
+
         # Initialize EDL class object
         self.edl = edl_py.EDL_PY()
 
@@ -70,15 +79,7 @@ class EDL(QtWidgets.QMainWindow):
         self.ui.rbSRby10.toggled.connect(self.UpdateSettings)
         self.ui.rbSRby20.toggled.connect(self.UpdateSettings)
 
-        # Class attributes
-        self.maxLen = 1000
-        self.vHolddata = collections.deque([0], self.maxLen)
-        self.ch1data = collections.deque([0], self.maxLen)
-        self.ch2data = collections.deque([0], self.maxLen)
-        self.ch3data = collections.deque([0], self.maxLen)
-        self.ch4data = collections.deque([0], self.maxLen)
-        self.t = collections.deque([0], self.maxLen)
-
+        # Plot setups
         self.VhLimit = 500
         self.p0 = self.ui.VhData.addPlot()
         self.p0.setRange(yRange=[-self.VhLimit, self.VhLimit])
@@ -130,6 +131,7 @@ class EDL(QtWidgets.QMainWindow):
                                               'Data Acquisition Notice',
                                               "e4 acquisition thread not initiated. Must restart to capture data.")
 
+        # InitiaL graph tab should only have Ch1 data graph showing.
         self.ui.VhData.hide()
         self.ui.lVhold.hide()
         self.ui.Ch2Data.hide()
@@ -163,6 +165,15 @@ class EDL(QtWidgets.QMainWindow):
                                                   'Elements Connection Error',
                                                   "Error connecting to: " + self.devices[0])
         return res
+
+    def ToggleVoltagePolarity(self):
+        if self.bVoltagePositive == True:
+            self.bVoltagePositive = False
+            self.ui.pbPolarity.setText("-")
+        else:
+            self.bVoltagePositive = True
+            self.ui.pbPolarity.setText("+")
+        self.SetPotential()
 
     def SetPotential(self):
         commandStruct = edl_py.EdlCommandStruct_t()
@@ -217,15 +228,6 @@ class EDL(QtWidgets.QMainWindow):
         commandStruct.checkboxChecked = epc.EDL_PY_CHECKBOX_UNCHECKED
         self.edl.setCommand(epc.EdlPyCommandCompensateAllChannels, commandStruct, True)
 
-    def ToggleVoltagePolarity(self):
-        if self.bVoltagePositive == True:
-            self.bVoltagePositive = False
-            self.ui.pbPolarity.setText("-")
-        else:
-            self.bVoltagePositive = True
-            self.ui.pbPolarity.setText("+")
-        self.SetPotential()
-
     def ToggleChannelView(self):
         if self.ui.showVhold.isChecked() == True:
             self.ui.VhData.show()
@@ -269,7 +271,7 @@ class EDL(QtWidgets.QMainWindow):
                                               "Old Data purge error")
             return res
         self.t0 = time.time()
-        while (self.bAcquiring):
+        while self.bAcquiring:
             # Get number of available data packets EdlDeviceStatus_t::availableDataPackets.
             res = self.edl.getDeviceStatus(status)
             if res != epc.EdlPySuccess:
@@ -284,6 +286,8 @@ class EDL(QtWidgets.QMainWindow):
             if status.availableDataPackets >= 10:
                 data = [0.0] * 0
                 res = self.edl.readData(status.availableDataPackets, readPacketsNum, data)
+                print("Available packets =", status.availableDataPackets)
+                print("Packets read = ", readPacketsNum)
                 self.vHolddata.append(data[0::5])
                 self.ch1data.append(data[1::5])
                 self.ch2data.append(data[2::5])

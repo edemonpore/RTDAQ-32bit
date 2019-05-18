@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fd56af32-e8a4-4f1c-af03-e50b153b80c8" name="Default Changelist" comment="" />
+    <list default="true" id="fd56af32-e8a4-4f1c-af03-e50b153b80c8" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/EDL.py" beforeDir="false" afterPath="$PROJECT_DIR$/EDL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EDLui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/EDLui.ui" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,8 +40,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/EDL.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1063">
-              <caret line="298" column="50" selection-start-line="298" selection-start-column="41" selection-end-line="298" selection-end-column="50" />
+            <state relative-caret-position="352">
+              <caret line="289" column="55" selection-start-line="289" selection-start-column="55" selection-end-line="289" selection-end-column="55" />
               <folding>
                 <element signature="e#113#126#0" expanded="true" />
               </folding>
@@ -49,8 +52,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../ACCES/ACCES.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2176">
-              <caret line="135" column="12" selection-start-line="135" selection-start-column="12" selection-end-line="135" selection-end-column="46" />
+            <state relative-caret-position="384">
+              <caret line="44" column="57" selection-start-line="44" selection-start-column="57" selection-end-line="44" selection-end-column="57" />
             </state>
           </provider>
         </entry>
@@ -72,6 +75,7 @@
       <find>currentI</find>
       <find>vHolddata</find>
       <find>Vholddata</find>
+      <find>readPacketsNum</find>
     </findStrings>
     <replaceStrings>
       <replace>Ui_EDL</replace>
@@ -93,9 +97,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-13" />
-    <option name="width" value="1263" />
-    <option name="height" value="2113" />
+    <option name="x" value="-14" />
+    <option name="width" value="1264" />
+    <option name="height" value="2114" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -108,7 +112,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/EDL.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ACCES/ACCES.py" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -187,7 +191,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-10" y="0" width="1010" height="1690" extended-state="0" />
+    <frame x="-11" y="0" width="1011" height="1691" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.086021505" />
@@ -195,8 +199,8 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32779622" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.18578352" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3272609" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.18542616" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -266,13 +270,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ACCES/ACCES.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2176">
-          <caret line="135" column="12" selection-start-line="135" selection-start-column="12" selection-end-line="135" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/debugEDL.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -283,10 +280,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../ACCES/ACCES.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="44" column="57" selection-start-line="44" selection-start-column="57" selection-end-line="44" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/EDL.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1063">
-          <caret line="298" column="50" selection-start-line="298" selection-start-column="41" selection-end-line="298" selection-end-column="50" />
+        <state relative-caret-position="352">
+          <caret line="289" column="55" selection-start-line="289" selection-start-column="55" selection-end-line="289" selection-end-column="55" />
           <folding>
             <element signature="e#113#126#0" expanded="true" />
           </folding>

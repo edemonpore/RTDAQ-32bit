@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1023</width>
-    <height>902</height>
+    <width>797</width>
+    <height>746</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,7 +30,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="Graphs">
        <attribute name="title">
@@ -112,7 +112,7 @@
              <widget class="GraphicsLayoutWidget" name="VhData"/>
             </item>
             <item>
-             <widget class="QLabel" name="lVhold_2">
+             <widget class="QLabel" name="lVhold">
               <property name="text">
                <string>V-Hold</string>
               </property>
@@ -202,119 +202,117 @@
        <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
-          <x>19</x>
-          <y>19</y>
-          <width>272</width>
-          <height>48</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QLabel" name="lVhold">
-           <property name="minimumSize">
-            <size>
-             <width>47</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>Vhold</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pbPolarity">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>35</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>50</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Flips voltage polarity&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="text">
-            <string>+/-</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="sbVhold">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>70</width>
-             <height>33</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-           <property name="minimum">
-            <number>-500</number>
-           </property>
-           <property name="maximum">
-            <number>500</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="lmV">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>mV</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
           <x>20</x>
-          <y>71</y>
-          <width>139</width>
-          <height>520</height>
+          <y>20</y>
+          <width>191</width>
+          <height>601</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_5">
          <item>
+          <widget class="QGroupBox" name="gbVHold">
+           <property name="title">
+            <string>VHold</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <widget class="QLabel" name="lmV">
+            <property name="geometry">
+             <rect>
+              <x>150</x>
+              <y>30</y>
+              <width>29</width>
+              <height>24</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>mV</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="pbPolarity">
+            <property name="geometry">
+             <rect>
+              <x>20</x>
+              <y>25</y>
+              <width>50</width>
+              <height>35</height>
+             </rect>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>35</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="text">
+             <string>+/-</string>
+            </property>
+           </widget>
+           <widget class="QSpinBox" name="sbVhold">
+            <property name="geometry">
+             <rect>
+              <x>77</x>
+              <y>26</y>
+              <width>70</width>
+              <height>33</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>70</width>
+              <height>33</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="minimum">
+             <number>-500</number>
+            </property>
+            <property name="maximum">
+             <number>500</number>
+            </property>
+           </widget>
+          </widget>
+         </item>
+         <item>
           <widget class="QGroupBox" name="gbRange">
            <property name="title">
             <string>Current Range</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
@@ -355,6 +353,9 @@
           <widget class="QGroupBox" name="gbSampleRate">
            <property name="title">
             <string>Sampling Rate (SR)</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
@@ -417,6 +418,12 @@
            <property name="title">
             <string>Final Bandwidth</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="flat">
+            <bool>false</bool>
+           </property>
            <layout class="QVBoxLayout" name="verticalLayout_4">
             <item>
              <widget class="QRadioButton" name="rbSRby2">
@@ -464,7 +471,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1023</width>
+     <width>797</width>
      <height>26</height>
     </rect>
    </property>
