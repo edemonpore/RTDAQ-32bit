@@ -48,6 +48,7 @@ class EDL(QtWidgets.QMainWindow):
         self.ui.sbVhold.setValue(0)
         self.Range = epc.EDL_PY_RADIO_RANGE_200_NA
         self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_100_KHZ
+        self.t_step = 1 / 100
         self.BandwidthDivisor = epc.EDL_PY_RADIO_FINAL_BANDWIDTH_SR_2
         self.UpdateSettings()
         self.SetPotential()
@@ -63,21 +64,21 @@ class EDL(QtWidgets.QMainWindow):
         self.ui.sbVhold.valueChanged.connect(self.SetPotential)
         self.ui.pbPolarity.clicked.connect(self.ToggleVoltagePolarity)
         self.ui.pbPolarity.setToolTip('Toggle Voltage Polarity')
-        self.ui.rb200pA.toggled.connect(self.UpdateSettings)
-        self.ui.rb2nA.toggled.connect(self.UpdateSettings)
-        self.ui.rb20nA.toggled.connect(self.UpdateSettings)
-        self.ui.rb200nA.toggled.connect(self.UpdateSettings)
-        self.ui.rb1_25KHz.toggled.connect(self.UpdateSettings)
-        self.ui.rb5KHz.toggled.connect(self.UpdateSettings)
-        self.ui.rb10KHz.toggled.connect(self.UpdateSettings)
-        self.ui.rb20KHz.toggled.connect(self.UpdateSettings)
-        self.ui.rb50KHz.toggled.connect(self.UpdateSettings)
-        self.ui.rb100KHz.toggled.connect(self.UpdateSettings)
-        self.ui.rb200KHz.toggled.connect(self.UpdateSettings)
-        self.ui.rbSRby2.toggled.connect(self.UpdateSettings)
-        self.ui.rbSRby8.toggled.connect(self.UpdateSettings)
-        self.ui.rbSRby10.toggled.connect(self.UpdateSettings)
-        self.ui.rbSRby20.toggled.connect(self.UpdateSettings)
+        self.ui.rb200pA.clicked.connect(self.UpdateSettings)
+        self.ui.rb2nA.clicked.connect(self.UpdateSettings)
+        self.ui.rb20nA.clicked.connect(self.UpdateSettings)
+        self.ui.rb200nA.clicked.connect(self.UpdateSettings)
+        self.ui.rb1_25KHz.clicked.connect(self.UpdateSettings)
+        self.ui.rb5KHz.clicked.connect(self.UpdateSettings)
+        self.ui.rb10KHz.clicked.connect(self.UpdateSettings)
+        self.ui.rb20KHz.clicked.connect(self.UpdateSettings)
+        self.ui.rb50KHz.clicked.connect(self.UpdateSettings)
+        self.ui.rb100KHz.clicked.connect(self.UpdateSettings)
+        self.ui.rb200KHz.clicked.connect(self.UpdateSettings)
+        self.ui.rbSRby2.clicked.connect(self.UpdateSettings)
+        self.ui.rbSRby8.clicked.connect(self.UpdateSettings)
+        self.ui.rbSRby10.clicked.connect(self.UpdateSettings)
+        self.ui.rbSRby20.clicked.connect(self.UpdateSettings)
 
         # Plot setups
         self.VhLimit = 500
@@ -144,7 +145,14 @@ class EDL(QtWidgets.QMainWindow):
         self.MoveToStart()
 
     def DetectandConnectDevices(self):
-        res = self.edl.detectDevices(self.devices)
+        res = 1
+        count = 0
+        while res != epc.EdlPySuccess:
+            count = count + 1
+            if count > 50:
+                break
+            res = self.edl.detectDevices(self.devices)
+            time.sleep(.1)
 
         if res != epc.EdlPySuccess or self.devices[0] is '':
             QtWidgets.QMessageBox.information(self,
@@ -157,9 +165,13 @@ class EDL(QtWidgets.QMainWindow):
                                               "Device found: " + self.devices[0])
             self.bAcquiring = True
 
-            # Connect Device
-            while not self.edl.disconnectDevice():
+            # Disconnect hanging device connections
+            while True:
+                if self.edl.disconnectDevice() == epc.EdlPySuccess:
+                    break
                 time.sleep(1)
+
+            # Connect Device
             if self.edl.connectDevice(self.devices[0]) != epc.EdlPySuccess:
                 QtWidgets.QMessageBox.information(self,
                                                   'Elements Connection Error',
@@ -194,22 +206,22 @@ class EDL(QtWidgets.QMainWindow):
             self.t_step = 1024/1250000    #1.25MHz sampling rate downsampled
         if self.ui.rb5KHz.isChecked == True:
             self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_5_KHZ
-            self.t_step = 256/1250000
+            self.t_step = 256/1250
         if self.ui.rb10KHz.isChecked == True:
             self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_10_KHZ
-            self.t_step = 128/1250000
+            self.t_step = 128/1250
         if self.ui.rb20KHz.isChecked == True:
             self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_20_KHZ
-            self.t_step = 64/1250000
+            self.t_step = 64/1250
         if self.ui.rb50KHz.isChecked == True:
             self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_50_KHZ
-            self.t_step = 1/50000
+            self.t_step = 1/50
         if self.ui.rb100KHz.isChecked == True:
             self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_100_KHZ
-            self.t_step = 1/100000
+            self.t_step = 1/100
         if self.ui.rb200KHz.isChecked == True:
             self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_200_KHZ
-            self.t_step = 1/200000
+            self.t_step = 1/200
         if self.ui.rbSRby2.isChecked == True: self.BandwidthDivisor = epc.EDL_PY_RADIO_FINAL_BANDWIDTH_SR_2
         if self.ui.rbSRby8.isChecked == True: self.BandwidthDivisor = epc.EDL_PY_RADIO_FINAL_BANDWIDTH_SR_8
         if self.ui.rbSRby10.isChecked == True: self.BandwidthDivisor = epc.EDL_PY_RADIO_FINAL_BANDWIDTH_SR_10
@@ -303,14 +315,21 @@ class EDL(QtWidgets.QMainWindow):
                 res = self.edl.readData(status.availableDataPackets, readPacketsNum, data)
                 print("Available packets =", status.availableDataPackets)
                 print("Packets read = ", readPacketsNum)
+                print(len(data))
                 self.vHolddata.append(data[0::5])
                 self.ch1data.append(data[1::5])
                 self.ch2data.append(data[2::5])
                 self.ch3data.append(data[3::5])
                 self.ch4data.append(data[4::5])
+                print(self.vHolddata)
+                print(self.ch1data)
+                print(self.ch2data)
+                print(self.ch3data)
+                print(self.ch4data)
+                break
                 t = self.t[-1]
-                for i in range(readPacketsNum):
-                    self.t.append(t+i)
+                for i in range(int(len(data)/5)):
+                    self.t.append(t+(i*self.t_step))
                 self.DataPlot()
             else:
                 # If the read not performed wait 1 ms before trying to read again.
