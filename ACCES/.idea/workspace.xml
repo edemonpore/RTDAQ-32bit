@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fd8e7897-ed85-4f61-957f-c4d4908d5a72" name="Default Changelist" comment="" />
+    <list default="true" id="fd8e7897-ed85-4f61-957f-c4d4908d5a72" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../EDL/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../EDL/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -10,7 +12,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/debugACCES.py">
           <provider selected="true" editor-type-id="text-editor">
             <state>
@@ -21,7 +23,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ACCES.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="748">
@@ -52,9 +54,9 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="385" />
-    <option name="y" value="2" />
-    <option name="width" value="2280" />
-    <option name="height" value="2113" />
+    <option name="y" value="1" />
+    <option name="width" value="1345" />
+    <option name="height" value="2114" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -62,6 +64,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -73,10 +76,10 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -155,10 +158,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="154" y="1" width="912" height="845" extended-state="0" />
+    <frame x="308" y="1" width="1076" height="1691" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.05587229" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.095192306" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />

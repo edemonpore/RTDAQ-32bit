@@ -189,13 +189,27 @@ class EDL(QtWidgets.QMainWindow):
         if self.ui.rb2nA.isChecked == True: self.Range = epc.EDL_PY_RADIO_RANGE_2_NA
         if self.ui.rb20nA.isChecked == True: self.Range = epc.EDL_PY_RADIO_RANGE_20_NA
         if self.ui.rb200nA.isChecked == True: self.Range = epc.EDL_PY_RADIO_RANGE_200_NA
-        if self.ui.rb1_25KHz.isChecked == True: self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_1_25_KHZ
-        if self.ui.rb5KHz.isChecked == True: self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_5_KHZ
-        if self.ui.rb10KHz.isChecked == True: self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_10_KHZ
-        if self.ui.rb20KHz.isChecked == True: self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_20_KHZ
-        if self.ui.rb50KHz.isChecked == True: self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_50_KHZ
-        if self.ui.rb100KHz.isChecked == True: self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_100_KHZ
-        if self.ui.rb200KHz.isChecked == True: self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_200_KHZ
+        if self.ui.rb1_25KHz.isChecked == True:
+            self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_1_25_KHZ
+            self.t_step = 1024/1250000    #1.25MHz sampling rate downsampled
+        if self.ui.rb5KHz.isChecked == True:
+            self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_5_KHZ
+            self.t_step = 256/1250000
+        if self.ui.rb10KHz.isChecked == True:
+            self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_10_KHZ
+            self.t_step = 128/1250000
+        if self.ui.rb20KHz.isChecked == True:
+            self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_20_KHZ
+            self.t_step = 64/1250000
+        if self.ui.rb50KHz.isChecked == True:
+            self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_50_KHZ
+            self.t_step = 1/50000
+        if self.ui.rb100KHz.isChecked == True:
+            self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_100_KHZ
+            self.t_step = 1/100000
+        if self.ui.rb200KHz.isChecked == True:
+            self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_200_KHZ
+            self.t_step = 1/200000
         if self.ui.rbSRby2.isChecked == True: self.BandwidthDivisor = epc.EDL_PY_RADIO_FINAL_BANDWIDTH_SR_2
         if self.ui.rbSRby8.isChecked == True: self.BandwidthDivisor = epc.EDL_PY_RADIO_FINAL_BANDWIDTH_SR_8
         if self.ui.rbSRby10.isChecked == True: self.BandwidthDivisor = epc.EDL_PY_RADIO_FINAL_BANDWIDTH_SR_10
@@ -260,6 +274,7 @@ class EDL(QtWidgets.QMainWindow):
             self.ui.Ch4Data.hide()
             self.ui.lCh4.hide()
 
+
     def DataAcquisitionThread(self):
         status = edl_py.EdlDeviceStatus_t()
         readPacketsNum = [0]
@@ -293,7 +308,9 @@ class EDL(QtWidgets.QMainWindow):
                 self.ch2data.append(data[2::5])
                 self.ch3data.append(data[3::5])
                 self.ch4data.append(data[4::5])
-                self.t.append(time.time() - self.t0)
+                t = self.t[-1]
+                for i in range(readPacketsNum):
+                    self.t.append(t+i)
                 self.DataPlot()
             else:
                 # If the read not performed wait 1 ms before trying to read again.
