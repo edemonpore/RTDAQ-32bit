@@ -1,4 +1,4 @@
-# ...for class debugging
+# ...for ACCES class debugging
 
 from ACCES import *
 import sys

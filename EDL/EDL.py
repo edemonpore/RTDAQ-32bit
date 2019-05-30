@@ -9,6 +9,7 @@ May 2019
 import edl_py
 import edl_py_constants as epc
 import pyqtgraph
+import numpy as np
 from PyQt5 import QtWidgets, uic
 import collections, struct
 import threading, time
@@ -26,12 +27,18 @@ class EDL(QtWidgets.QMainWindow):
 
         # Class attributes
         self.maxLen = 1000
-        self.vHolddata = collections.deque([0], self.maxLen)
-        self.ch1data = collections.deque([0], self.maxLen)
-        self.ch2data = collections.deque([0], self.maxLen)
-        self.ch3data = collections.deque([0], self.maxLen)
-        self.ch4data = collections.deque([0], self.maxLen)
-        self.t = collections.deque([0], self.maxLen)
+        # self.vHolddata = collections.deque([0], self.maxLen)
+        # self.ch1data = collections.deque([0], self.maxLen)
+        # self.ch2data = collections.deque([0], self.maxLen)
+        # self.ch3data = collections.deque([0], self.maxLen)
+        # self.ch4data = collections.deque([0], self.maxLen)
+        # self.t = collections.deque([0], self.maxLen)
+        self.vHolddata = np.zeros(1, dtype=float)
+        self.ch1data = np.zeros(1, dtype=float)
+        self.ch2data = np.zeros(1, dtype=float)
+        self.ch3data = np.zeros(1, dtype=float)
+        self.ch4data = np.zeros(1, dtype=float)
+        self.t = np.zeros(1, dtype=float)
 
         # Initialize EDL class object
         self.edl = edl_py.EDL_PY()
@@ -316,32 +323,35 @@ class EDL(QtWidgets.QMainWindow):
                 print("Available packets =", status.availableDataPackets)
                 print("Packets read = ", readPacketsNum)
                 print(len(data))
-                self.vHolddata.append(data[0::5])
-                self.ch1data.append(data[1::5])
-                self.ch2data.append(data[2::5])
-                self.ch3data.append(data[3::5])
-                self.ch4data.append(data[4::5])
+                self.vHolddata = np.append(self.vHolddata, data[0::5])
+                self.ch1data = np.append(self.ch1data, data[1::5])
+                self.ch2data = np.append(self.ch2data, data[2::5])
+                self.ch3data = np.append(self.ch3data, data[3::5])
+                self.ch4data = np.append(self.ch4data, data[4::5])
                 print(self.vHolddata)
                 print(self.ch1data)
                 print(self.ch2data)
                 print(self.ch3data)
                 print(self.ch4data)
-                break
-                t = self.t[-1]
-                for i in range(int(len(data)/5)):
-                    self.t.append(t+(i*self.t_step))
+
+                self.t = np.append(self.t,
+                                   np.arange(self.t[-1]+self.t_step,
+                                             self.t[-1]+((readPacketsNum+1)*self.t_step),
+                                             self.t_step))
+
                 self.DataPlot()
             else:
                 # If the read not performed wait 1 ms before trying to read again.
                 time.sleep(0.001)
 
     def DataPlot(self):
-        self.Vhplot.setData(self.t, self.vHolddata)
-        self.ch1plot.setData(self.t, self.ch1data)
-        self.ch2plot.setData(self.t, self.ch2data)
-        self.ch3plot.setData(self.t, self.ch3data)
-        self.ch4plot.setData(self.t, self.ch4data)
-        gc.collect()
+        if len(self.Vhplot) > self.maxLen:
+            self.Vhplot.setData(self.t[-self.maxLen:], self.vHolddata[-self.maxLen:])
+            self.ch1plot.setData(self.t[-self.maxLen:], self.ch1data[-self.maxLen:])
+            self.ch2plot.setData(self.t[-self.maxLen:], self.ch2data[-self.maxLen:])
+            self.ch3plot.setData(self.t[-self.maxLen:], self.ch3data[-self.maxLen:])
+            self.ch4plot.setData(self.t[-self.maxLen:], self.ch4data[-self.maxLen:])
+            gc.collect()
 
     def MoveToStart(self):
         ag = QtWidgets.QDesktopWidget().availableGeometry()

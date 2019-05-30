@@ -1,3 +1,4 @@
+
 """ ACCES.py
 Class for USB-AO16-16A
 Acquires USB data:  x-y analog position feedback
@@ -14,6 +15,8 @@ from PyQt5 import QtWidgets, uic
 import collections, struct
 import threading, time
 import gc
+
+import cProfile, pstats
 
 class ACCES(QtWidgets.QMainWindow):
     def __init__(self):
@@ -96,7 +99,6 @@ class ACCES(QtWidgets.QMainWindow):
         self.DAQThread.start()
 
         self.bShow = True
-        self.bCanClose = False
         self.MoveToStart()
 
     def MoveToStart(self):
@@ -126,6 +128,7 @@ class ACCES(QtWidgets.QMainWindow):
         result = self.AIOUSB.DACDirect(-3, 1, DAQin)
         DAQin.value = self.zset
         result = self.AIOUSB.DACDirect(-3, 2, DAQin)
+
 
     def DataAcquisitionThread(self):
         data_in = ctypes.c_longdouble() # double-precision IEEE floating point data from ADC
@@ -210,12 +213,7 @@ class ACCES(QtWidgets.QMainWindow):
             self.setPI()
 
     def closeEvent(self, event):
-        if self.bCanClose:
-            self.bAcquiring = False
-            if self.DAQThread != None:
-                self.DAQThread.join()
-            event.accept()
-        else:
-            self.bShow = False
-            self.hide()
-            event.ignore()
+        self.bAcquiring = False
+        if self.DAQThread != None:
+            self.DAQThread.join()
+        event.accept()
