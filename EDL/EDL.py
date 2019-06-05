@@ -1,16 +1,17 @@
 """ EDL.py
 Class for Elements 4-Channel PCA
 Acquires PCA data:  Current
-Sets:    stuff...
+Sets: Current sensing range, potential, polarity, sampling rate, sample filter,
 E.Yafuso
-May 2019
+June 2019
 """
 
 import edl_py
 import edl_py_constants as epc
+from localtools import ElementsData
 import pyqtgraph
 import numpy as np
-from PyQt5 import QtWidgets, uic
+from PyQt5 import QtWidgets, QtWidgets, uic
 import collections, struct
 import threading, time
 import gc
@@ -27,18 +28,9 @@ class EDL(QtWidgets.QMainWindow):
 
         # Class attributes
         self.maxLen = 1000
-        # self.vHolddata = collections.deque([0], self.maxLen)
-        # self.ch1data = collections.deque([0], self.maxLen)
-        # self.ch2data = collections.deque([0], self.maxLen)
-        # self.ch3data = collections.deque([0], self.maxLen)
-        # self.ch4data = collections.deque([0], self.maxLen)
-        # self.t = collections.deque([0], self.maxLen)
-        self.vHolddata = np.zeros(1, dtype=float)
-        self.ch1data = np.zeros(1, dtype=float)
-        self.ch2data = np.zeros(1, dtype=float)
-        self.ch3data = np.zeros(1, dtype=float)
-        self.ch4data = np.zeros(1, dtype=float)
-        self.t = np.zeros(1, dtype=float)
+        self.InitDataArrays()
+
+        self.bRecord = False
 
         # Initialize EDL class object
         self.edl = edl_py.EDL_PY()
@@ -61,6 +53,8 @@ class EDL(QtWidgets.QMainWindow):
         self.SetPotential()
 
         #Signals to slots (Tab 1)
+        self.ui.pbREC.setStyleSheet("background-color:rgb(255,0,0)")
+        self.ui.pbREC.clicked.connect(self.ToggleRecording)
         self.ui.pbCompensateDigitalOffset.clicked.connect(self.CompensateDigitalOffset)
         self.ui.showVhold.stateChanged.connect(self.ToggleChannelView)
         self.ui.showCh1.stateChanged.connect(self.ToggleChannelView)
@@ -86,6 +80,8 @@ class EDL(QtWidgets.QMainWindow):
         self.ui.rbSRby8.clicked.connect(self.UpdateSettings)
         self.ui.rbSRby10.clicked.connect(self.UpdateSettings)
         self.ui.rbSRby20.clicked.connect(self.UpdateSettings)
+        #Signals to slots (Tab 3)
+        self.ui.actionOpen_Data_File_to_View.triggered.connect(self.FileDialog)
 
         # Plot setups
         self.VhLimit = 500
@@ -99,6 +95,7 @@ class EDL(QtWidgets.QMainWindow):
         self.yLimit = 200
         self.p1 = self.ui.Ch1Data.addPlot()
         self.p1.setRange(yRange=[-self.yLimit, self.yLimit])
+
         self.p1.showGrid(x=True, y=True, alpha=.8)
         self.p1.setLabel('left', 'Current', 'nA')
         self.p1.setLabel('bottom', 'Time (s)')
@@ -293,6 +290,43 @@ class EDL(QtWidgets.QMainWindow):
             self.ui.Ch4Data.hide()
             self.ui.lCh4.hide()
 
+    def ToggleRecording(self):
+        if self.bRecord == False:
+            self.bRecord = True
+            self.ui.pbREC.setStyleSheet("background-color:rgb(0,255,0)")
+            self.ui.pbREC.setText("||")
+        else:
+            self.bRecord = False
+            self.ui.pbREC.setStyleSheet("background-color:rgb(255,0,0)")
+            self.ui.pbREC.setText("REC")
+            if QtWidgets.QMessageBox.question(self, 'Save data run?', "Save last run to file?",
+                                                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                                QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
+                savefilename = QtWidgets.QFileDialog.getSaveFileName(self,
+                                                                      'Save data to file',
+                                                                      'C:\\',
+                                                                      "Elements Header Files (*.edh)")[0]
+                self.SaveData(savefilename)
+            else: self.InitDataArrays()
+
+    def InitDataArrays(self):
+        self.vHolddata = np.zeros(1, dtype=float)
+        self.ch1data = np.zeros(1, dtype=float)
+        self.ch2data = np.zeros(1, dtype=float)
+        self.ch3data = np.zeros(1, dtype=float)
+        self.ch4data = np.zeros(1, dtype=float)
+        self.t = np.zeros(1, dtype=float)
+
+    def SaveData(self, savefilename):
+        savefilename = 1
+
+    #Open File Dialog
+    def FileDialog(self):
+        self.filename = QtWidgets.QFileDialog.getOpenFileName(self,
+                                               'Open file',
+                                               'C:\\',
+                                               "Elements Header Files (*.edh)")[0]
+        self.ED = ElementsData(self.filename)
 
     def DataAcquisitionThread(self):
         status = edl_py.EdlDeviceStatus_t()
