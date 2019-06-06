@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>797</width>
-    <height>746</height>
+    <width>820</width>
+    <height>708</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,166 +30,194 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
-      <widget class="QWidget" name="Graphs">
+      <widget class="QWidget" name="LiveData">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <attribute name="title">
-        <string>Graphs</string>
+        <string>LiveData</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
-         <layout class="QVBoxLayout" name="verticalLayout_10">
+         <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <widget class="QPushButton" name="pbCompensateDigitalOffset">
-              <property name="minimumSize">
-               <size>
-                <width>250</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Compensate Digital Offset</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="showVhold">
-              <property name="text">
-               <string>V-Hold          </string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="showCh1">
-              <property name="text">
-               <string>Channel 1</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="showCh2">
-              <property name="text">
-               <string>Channel 2</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="showCh3">
-              <property name="text">
-               <string>Channel 3</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="showCh4">
-              <property name="text">
-               <string>Channel 4</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QPushButton" name="pbREC">
+            <property name="baseSize">
+             <size>
+              <width>1</width>
+              <height>1</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>REC</string>
+            </property>
+           </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout">
-            <item>
-             <widget class="GraphicsLayoutWidget" name="VhData"/>
-            </item>
-            <item>
-             <widget class="QLabel" name="lVhold">
-              <property name="text">
-               <string>V-Hold</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignHCenter|Qt::AlignTop</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>10</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_6">
-            <item>
-             <widget class="GraphicsLayoutWidget" name="Ch1Data"/>
-            </item>
-            <item>
-             <widget class="QLabel" name="lCh1">
-              <property name="text">
-               <string>Channel 1</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignHCenter|Qt::AlignTop</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QPushButton" name="pbCompensateDigitalOffset">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Compensate Digital Offset</string>
+            </property>
+           </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_7">
-            <item>
-             <widget class="GraphicsLayoutWidget" name="Ch2Data"/>
-            </item>
-            <item>
-             <widget class="QLabel" name="lCh2">
-              <property name="text">
-               <string>Channel 2</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignHCenter|Qt::AlignTop</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QCheckBox" name="showVhold">
+            <property name="text">
+             <string>V-Hold          </string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_8">
-            <item>
-             <widget class="GraphicsLayoutWidget" name="Ch3Data"/>
-            </item>
-            <item>
-             <widget class="QLabel" name="lCh3">
-              <property name="text">
-               <string>Channel 3</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignHCenter|Qt::AlignTop</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QCheckBox" name="showCh1">
+            <property name="text">
+             <string>Channel 1</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_9">
-            <item>
-             <widget class="GraphicsLayoutWidget" name="Ch4Data"/>
-            </item>
-            <item>
-             <widget class="QLabel" name="lCh4">
-              <property name="text">
-               <string>Channel 4</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignHCenter|Qt::AlignTop</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QCheckBox" name="showCh2">
+            <property name="text">
+             <string>Channel 2</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="showCh3">
+            <property name="text">
+             <string>Channel 3</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="showCh4">
+            <property name="text">
+             <string>Channel 4</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="GraphicsLayoutWidget" name="VhData"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="lVhold">
+            <property name="text">
+             <string>V-Hold</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter|Qt::AlignTop</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="2" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <widget class="GraphicsLayoutWidget" name="Ch1Data"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="lCh1">
+            <property name="text">
+             <string>Channel 1</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter|Qt::AlignTop</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="3" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+          <item>
+           <widget class="GraphicsLayoutWidget" name="Ch2Data"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="lCh2">
+            <property name="text">
+             <string>Channel 2</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter|Qt::AlignTop</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="4" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout_8">
+          <item>
+           <widget class="GraphicsLayoutWidget" name="Ch3Data"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="lCh3">
+            <property name="text">
+             <string>Channel 3</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter|Qt::AlignTop</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="5" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout_9">
+          <item>
+           <widget class="GraphicsLayoutWidget" name="Ch4Data"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="lCh4">
+            <property name="text">
+             <string>Channel 4</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter|Qt::AlignTop</set>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -462,10 +490,42 @@
         </layout>
        </widget>
       </widget>
-      <widget class="QWidget" name="DataView">
+      <widget class="QWidget" name="ViewData">
        <attribute name="title">
-        <string>Page</string>
+        <string>ReviewData</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout_11">
+          <item>
+           <widget class="GraphicsLayoutWidget" name="SavedVhData"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="lSavedVhold">
+            <property name="text">
+             <string>V-Hold</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter|Qt::AlignTop</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="GraphicsLayoutWidget" name="SavedData"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="lSavedData">
+            <property name="text">
+             <string>Channel 1</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter|Qt::AlignTop</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -476,7 +536,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>797</width>
+     <width>820</width>
      <height>26</height>
     </rect>
    </property>
@@ -484,18 +544,19 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionOpen_Data_File_to_View"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen">
    <property name="text">
-    <string>Run Script File</string>
+    <string>Open</string>
    </property>
   </action>
-  <action name="actionExit">
+  <action name="actionOpen_Data_File_to_View">
    <property name="text">
-    <string>Exit</string>
+    <string>Open Data File to View</string>
    </property>
   </action>
  </widget>

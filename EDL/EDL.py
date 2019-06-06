@@ -1,3 +1,4 @@
+
 """ EDL.py
 Class for Elements 4-Channel PCA
 Acquires PCA data:  Current
@@ -128,11 +129,10 @@ class EDL(QtWidgets.QMainWindow):
         # Detect devices and set acquisition flag accordingly
         self.DetectandConnectDevices()
 
-
-        if self.bAcquiring:
-            self.DAQThread = threading.Thread(target=self.DataAcquisitionThread)
-            self.DAQThread.start()
-        else:
+        #Start acquisition loop thread (using data generator if debugging and no e4 connected)
+        self.DAQThread = threading.Thread(target=self.DataAcquisitionThread)
+        self.DAQThread.start()
+        if self.bAcquiring == False:
             QtWidgets.QMessageBox.information(self,
                                               'Data Acquisition Notice',
                                               "e4 acquisition thread not initiated. Must restart to capture data.")
@@ -365,6 +365,26 @@ class EDL(QtWidgets.QMainWindow):
             else:
                 # If the read not performed wait 1 ms before trying to read again.
                 time.sleep(0.001)
+
+        # Debug: Data generator which assumes no e4 thus self.bAcquiring == False
+        if __debug__:
+            while True:
+                data = [0.0] * 0
+                readPacketsNum = 10
+                data = np.
+
+                self.vHolddata = np.append(self.vHolddata, data[0::5])
+                self.ch1data = np.append(self.ch1data, data[1::5])
+                self.ch2data = np.append(self.ch2data, data[2::5])
+                self.ch3data = np.append(self.ch3data, data[3::5])
+                self.ch4data = np.append(self.ch4data, data[4::5])
+
+                start = self.t[-1] + self.t_step
+                span = (readPacketsNum + 1) * self.t_step
+                stop = self.t[-1] + span
+                step = self.t_step
+                self.t = np.append(self.t,
+                                   np.arange(start, stop, step))
 
     def DataPlot(self):
         if len(self.Vhplot) > self.maxLen:
