@@ -38,9 +38,6 @@ class EDL(QtWidgets.QMainWindow):
         # String list to collect detected devices
         self.devices = [""] * 0
 
-        # Detect devices and set acquisition flag accordingly
-        self.DetectandConnectDevices()
-
         # User settings, initialized to defaults from CC (May 2019)
         self.bVoltagePositive = True
         self.ui.sbVhold.setRange(-500, 500)
@@ -128,6 +125,10 @@ class EDL(QtWidgets.QMainWindow):
         self.ch3plot = self.p3.plot([], pen=(255, 0, 0), linewidth=.5, name='Ch3')
         self.ch4plot = self.p4.plot([], pen=(255, 0, 255), linewidth=.5, name='Ch4')
 
+        # Detect devices and set acquisition flag accordingly
+        self.DetectandConnectDevices()
+
+
         if self.bAcquiring:
             self.DAQThread = threading.Thread(target=self.DataAcquisitionThread)
             self.DAQThread.start()
@@ -168,12 +169,6 @@ class EDL(QtWidgets.QMainWindow):
                                               'Elements Success',
                                               "Device found: " + self.devices[0])
             self.bAcquiring = True
-
-            # Disconnect hanging device connections
-            while True:
-                if self.edl.disconnectDevice() == epc.EdlPySuccess:
-                    break
-                time.sleep(1)
 
             # Connect Device
             if self.edl.connectDevice(self.devices[0]) != epc.EdlPySuccess:
@@ -354,25 +349,18 @@ class EDL(QtWidgets.QMainWindow):
             if status.availableDataPackets >= 10:
                 data = [0.0] * 0
                 res = self.edl.readData(status.availableDataPackets, readPacketsNum, data)
-                print("Available packets =", status.availableDataPackets)
-                print("Packets read = ", readPacketsNum)
-                print(len(data))
+
                 self.vHolddata = np.append(self.vHolddata, data[0::5])
                 self.ch1data = np.append(self.ch1data, data[1::5])
                 self.ch2data = np.append(self.ch2data, data[2::5])
                 self.ch3data = np.append(self.ch3data, data[3::5])
                 self.ch4data = np.append(self.ch4data, data[4::5])
-                print(self.vHolddata)
-                print(self.ch1data)
-                print(self.ch2data)
-                print(self.ch3data)
-                print(self.ch4data)
 
+                start = self.t[-1]+self.t_step
+                stop = self.t[-1]+((readPacketsNum+1)*self.t_step)
+                step = self.t_step
                 self.t = np.append(self.t,
-                                   np.arange(self.t[-1]+self.t_step,
-                                             self.t[-1]+((readPacketsNum+1)*self.t_step),
-                                             self.t_step))
-
+                                   np.arange(start, stop, step))
                 self.DataPlot()
             else:
                 # If the read not performed wait 1 ms before trying to read again.
