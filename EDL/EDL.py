@@ -1,10 +1,9 @@
-
 """ EDL.py
 Class for Elements 4-Channel PCA
 Acquires PCA data:  Current
 Sets: Current sensing range, potential, polarity, sampling rate, sample filter,
 E.Yafuso
-June 2019
+Latest revision, June 2019
 """
 
 import edl_py
@@ -12,8 +11,7 @@ import edl_py_constants as epc
 from localtools import ElementsData
 import pyqtgraph
 import numpy as np
-from PyQt5 import QtWidgets, QtWidgets, uic
-import collections, struct
+from PyQt5 import QtWidgets, uic
 import threading, time
 import gc
 
@@ -24,14 +22,16 @@ class EDL(QtWidgets.QMainWindow):
         pyqtgraph.setConfigOption('background', 'k')
         self.ui = Ui_EDL()
         self.ui.setupUi(self)
+        self.bRun = True
         self.bAcquiring = False
         self.DAQThread = None
 
         # Class attributes
         self.maxLen = 1000
         self.InitDataArrays()
-
         self.bRecord = False
+        self.DetectionThreshold = 0
+        self.LatestPackets = 0
 
         # Initialize EDL class object
         self.edl = edl_py.EDL_PY()
@@ -228,6 +228,7 @@ class EDL(QtWidgets.QMainWindow):
         self.ConfigureEDL()
 
     def ConfigureEDL(self):
+        self.bAcquiring = False
         commandStruct = edl_py.EdlCommandStruct_t()
         commandStruct.radioId = self.SR
         self.edl.setCommand(epc.EdlPyCommandSamplingRate, commandStruct, False)
@@ -235,6 +236,7 @@ class EDL(QtWidgets.QMainWindow):
         self.edl.setCommand(epc.EdlPyCommandRange, commandStruct, False)
         commandStruct.radioId = self.BandwidthDivisor
         self.edl.setCommand(epc.EdlPyCommandFinalBandwidth, commandStruct, True)
+        self.bAcquiring = True
 
     def CompensateDigitalOffset(self):
         commandStruct = edl_py.EdlCommandStruct_t()
@@ -334,38 +336,40 @@ class EDL(QtWidgets.QMainWindow):
                                               "Old Data purge error")
             return res
         self.t0 = time.time()
-        while self.bAcquiring:
-            # Get number of available data packets EdlDeviceStatus_t::availableDataPackets.
-            res = self.edl.getDeviceStatus(status)
-            if res != epc.EdlPySuccess:
-                QtWidgets.QMessageBox.information(self,
-                                                  'Elements Connection Error',
-                                                  "Error getting device status")
-                return res
-            if status.bufferOverflowFlag or status.lostDataFlag:
-                QtWidgets.QMessageBox.information(self,
-                                                  'Elements Connection Error',
-                                                  "Buffer overflow, data loss.")
-            if status.availableDataPackets >= 10:
-                data = [0.0] * 0
-                res = self.edl.readData(status.availableDataPackets, readPacketsNum, data)
+        while self.bRun:
+            while self.bAcquiring:
+                # Get number of available data packets EdlDeviceStatus_t::availableDataPackets.
+                res = self.edl.getDeviceStatus(status)
+                if res != epc.EdlPySuccess:
+                    QtWidgets.QMessageBox.information(self,
+                                                      'Elements Connection Error',
+                                                      "Error getting device status")
+                    return res
+                if status.bufferOverflowFlag or status.lostDataFlag:
+                    QtWidgets.QMessageBox.information(self,
+                                                      'Elements Connection Error',
+                                                      "Buffer overflow, data loss.")
+                if status.availableDataPackets >= 10:
+                    data = [0.0] * 0
+                    res = self.edl.readData(status.availableDataPackets, readPacketsNum, data)
+                    self.LatestPackets = readPacketsNum[0]
 
-                self.vHolddata = np.append(self.vHolddata, data[0::5])
-                self.ch1data = np.append(self.ch1data, data[1::5])
-                self.ch2data = np.append(self.ch2data, data[2::5])
-                self.ch3data = np.append(self.ch3data, data[3::5])
-                self.ch4data = np.append(self.ch4data, data[4::5])
+                    self.vHolddata = np.append(self.vHolddata, data[0::5])
+                    self.ch1data = np.append(self.ch1data, data[1::5])
+                    self.ch2data = np.append(self.ch2data, data[2::5])
+                    self.ch3data = np.append(self.ch3data, data[3::5])
+                    self.ch4data = np.append(self.ch4data, data[4::5])
 
-                start = self.t[-1]+self.t_step
-                span = (readPacketsNum[0]+1)*self.t_step
-                stop = self.t[-1]+span
-                step = self.t_step
-                self.t = np.append(self.t,
-                                   np.arange(start, stop, step))
-                self.DataPlot()
-            else:
-                # If the read not performed wait 1 ms before trying to read again.
-                time.sleep(0.001)
+                    start = self.t[-1]+self.t_step
+                    span = (readPacketsNum[0]+1)*self.t_step
+                    stop = self.t[-1]+span
+                    step = self.t_step
+                    self.t = np.append(self.t,
+                                       np.arange(start, stop, step))
+                    self.DataPlot()
+                else:
+                    # If the read not performed wait 1 ms before trying to read again.
+                    time.sleep(0.001)
 
         # # Debug: Data generator which assumes no e4 thus self.bAcquiring == False
         # if __debug__ and not self.bAcquiring:
@@ -396,6 +400,17 @@ class EDL(QtWidgets.QMainWindow):
             self.ch4plot.setData(self.t[-self.maxLen:], self.ch4data[-self.maxLen:])
             gc.collect()
 
+    def DetectSignal(self, channel = self.ch1data, high = True):
+        if high:
+            threshold = channel.mean() + self.DetectionThreshold
+            if channel > threshold:
+                return True
+        else:
+            threshold = channel.mean() - self.DetectionThreshold
+            if channel < threshold:
+                return True
+        return False
+
     def MoveToStart(self):
         ag = QtWidgets.QDesktopWidget().availableGeometry()
         sg = QtWidgets.QDesktopWidget().screenGeometry()
@@ -406,6 +421,7 @@ class EDL(QtWidgets.QMainWindow):
 
     def closeEvent(self, event):
         self.bAcquiring = False
+        self.bRun = False
         if self.DAQThread != None:
             self.DAQThread.join()
         event.accept()
