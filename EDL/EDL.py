@@ -388,7 +388,7 @@ class EDL(QtWidgets.QMainWindow):
         #                            np.arange(start, stop, step))
 
     def DataPlot(self):
-        if len(self.Vhplot) > self.maxLen:
+        if len(self.t) > self.maxLen:
             self.Vhplot.setData(self.t[-self.maxLen:], self.vHolddata[-self.maxLen:])
             self.ch1plot.setData(self.t[-self.maxLen:], self.ch1data[-self.maxLen:])
             self.ch2plot.setData(self.t[-self.maxLen:], self.ch2data[-self.maxLen:])
