@@ -357,7 +357,8 @@ class EDL(QtWidgets.QMainWindow):
                 self.ch4data = np.append(self.ch4data, data[4::5])
 
                 start = self.t[-1]+self.t_step
-                stop = self.t[-1]+((readPacketsNum+1)*self.t_step)
+                span = (readPacketsNum+1)*self.t_step
+                stop = self.t[-1]+span
                 step = self.t_step
                 self.t = np.append(self.t,
                                    np.arange(start, stop, step))
