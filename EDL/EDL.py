@@ -84,7 +84,7 @@ class EDL(QtWidgets.QMainWindow):
         # Plot setups
         self.VhLimit = 500
         self.p0 = self.ui.VhData.addPlot()
-        self.p0.setRange(yRange=[-self.VhLimit, self.VhLimit])
+        self.p0.setRange(yRange=[-self.VhLimit, self.VhLimit], padding=0)
         self.p0.showGrid(x=True, y=True, alpha=.8)
         self.p0.setLabel('left', 'Volts', 'mV')
         self.p0.setLabel('bottom', 'Time (s)')
@@ -92,29 +92,28 @@ class EDL(QtWidgets.QMainWindow):
 
         self.yLimit = 200
         self.p1 = self.ui.Ch1Data.addPlot()
-        self.p1.setRange(yRange=[-self.yLimit, self.yLimit])
-
+        self.p1.setRange(yRange=[-self.yLimit, self.yLimit], padding=0)
         self.p1.showGrid(x=True, y=True, alpha=.8)
         self.p1.setLabel('left', 'Current', 'nA')
         self.p1.setLabel('bottom', 'Time (s)')
         self.p1.addLegend()
 
         self.p2 = self.ui.Ch2Data.addPlot()
-        self.p2.setRange(yRange=[-self.yLimit, self.yLimit])
+        self.p2.setRange(yRange=[-self.yLimit, self.yLimit], padding=0)
         self.p2.showGrid(x=True, y=True, alpha=.8)
         self.p2.setLabel('left', 'Current', 'nA')
         self.p2.setLabel('bottom', 'Time (s)')
         self.p2.addLegend()
 
         self.p3 = self.ui.Ch3Data.addPlot()
-        self.p3.setRange(yRange=[-self.yLimit, self.yLimit])
+        self.p3.setRange(yRange=[-self.yLimit, self.yLimit], padding=0)
         self.p3.showGrid(x=True, y=True, alpha=.8)
         self.p3.setLabel('left', 'Current', 'nA')
         self.p3.setLabel('bottom', 'Time (s)')
         self.p3.addLegend()
         
         self.p4 = self.ui.Ch4Data.addPlot()
-        self.p4.setRange(yRange=[0, self.yLimit])
+        self.p4.setRange(yRange=[-self.yLimit, self.yLimit], padding=0)
         self.p4.showGrid(x=True, y=True, alpha=.8)
         self.p4.setLabel('left', 'Current', 'nA')
         self.p4.setLabel('bottom', 'Time (s)')
@@ -330,7 +329,7 @@ class EDL(QtWidgets.QMainWindow):
         readPacketsNum = [0]
         time.sleep(0.5)
         res = self.edl.purgeData()
-        if self.edl.purgeData() != epc.EdlPySuccess:
+        if self.edl.purgeData() != epc.EdlPySuccess and not self.bAcquiring and not __debug__:
             QtWidgets.QMessageBox.information(self,
                                               'Elements Connection Error',
                                               "Old Data purge error")
@@ -368,28 +367,29 @@ class EDL(QtWidgets.QMainWindow):
                                        np.arange(start, stop, step))
                     self.DataPlot()
                 else:
+
                     # If the read not performed wait 1 ms before trying to read again.
                     time.sleep(0.001)
 
-        # # Debug: Data generator which assumes no e4 thus self.bAcquiring == False
-        # if __debug__ and not self.bAcquiring:
-        #     while True:
-        #         data = [0.0] * 0
-        #         readPacketsNum = 10
-        #         data = np.
-        #
-        #         self.vHolddata = np.append(self.vHolddata, data[0::5])
-        #         self.ch1data = np.append(self.ch1data, data[1::5])
-        #         self.ch2data = np.append(self.ch2data, data[2::5])
-        #         self.ch3data = np.append(self.ch3data, data[3::5])
-        #         self.ch4data = np.append(self.ch4data, data[4::5])
-        #
-        #         start = self.t[-1] + self.t_step
-        #         span = (readPacketsNum + 1) * self.t_step
-        #         stop = self.t[-1] + span
-        #         step = self.t_step
-        #         self.t = np.append(self.t,
-        #                            np.arange(start, stop, step))
+            # # Debug: Data generator which assumes no e4 thus self.bAcquiring == False
+            if __debug__ and not self.bAcquiring:
+                while True:
+                    time.sleep(.01)
+                    readPacketsNum = 10
+
+                    start = self.t[-1] + self.t_step
+                    span = (readPacketsNum+1) * self.t_step
+                    stop = self.t[-1]+span
+                    step = self.t_step
+                    self.t = np.append(self.t,
+                                       np.arange(start, stop, step))
+                    self.vHolddata = np.sin(self.t) *100
+                    self.ch1data = np.sin(self.t+1)*100
+                    self.ch2data = np.sin(self.t+2)*100
+                    self.ch3data = np.sin(self.t+3)*100
+                    self.ch4data = np.sin(self.t+4)*100
+
+                    self.DataPlot()
 
     def DataPlot(self):
         if len(self.t) > self.maxLen:
@@ -400,15 +400,15 @@ class EDL(QtWidgets.QMainWindow):
             self.ch4plot.setData(self.t[-self.maxLen:], self.ch4data[-self.maxLen:])
             gc.collect()
 
-    def DetectSignal(self, channel = self.ch1data, high = True):
-        if high:
-            threshold = channel.mean() + self.DetectionThreshold
-            if channel > threshold:
-                return True
-        else:
-            threshold = channel.mean() - self.DetectionThreshold
-            if channel < threshold:
-                return True
+    def DetectSignal(self, channel, high = True):
+        # if high:
+        #     threshold = channel.mean() + self.DetectionThreshold
+        #     if channel > threshold:
+        #         return True
+        # else:
+        #     threshold = channel.mean() - self.DetectionThreshold
+        #     if channel < threshold:
+        #         return True
         return False
 
     def MoveToStart(self):

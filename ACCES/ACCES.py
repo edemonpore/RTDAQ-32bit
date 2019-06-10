@@ -109,7 +109,6 @@ class ACCES(QtWidgets.QMainWindow):
         y = 100  # 2 * ag.height() - sg.height() - wingeo.height()
         self.move(x, y)
 
-
     def setPI(self):
         temp = self.ui.vsX.value()
         self.xset = int(temp*65535/100)
@@ -150,6 +149,19 @@ class ACCES(QtWidgets.QMainWindow):
             if count > 3:
                 self.DataPlot()
                 count = 0
+        if __debug__ and not self.bAcquiring:
+            while True:
+                time.sleep(0.01)
+                self.t.append(time.time() - self.t0)
+                self.xdata.append(float(data_in.value) / 5 * 100)
+                if self.AIOUSB.ADC_GetChannelV(-3, 1, ctypes.byref(data_in)) is 0:
+                    self.ydata.append(float(data_in.value) / 5 * 100)
+                else:
+                    self.ydata.append(0)
+                self.xsetdata.append(self.xset * 100 / 65535)
+                self.ysetdata.append(self.yset * 100 / 65535)
+                self.zsetdata.append(self.zset * 100 / 65535)
+                self.DataPlot()
 
     def DataPlot(self):
         self.xplot.setData(self.t, self.xdata)
