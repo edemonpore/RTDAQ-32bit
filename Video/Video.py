@@ -7,13 +7,11 @@ Feb 2019
 import cv2
 from PyQt5 import QtGui, QtCore, QtWidgets, uic
 import threading, time
-import ctypes
 
 class VidWin(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
         Ui_VW = uic.loadUiType("VidWindow.ui")[0]
-        self.LumCam = ctypes.CDLL("lucamapi")
 
         self.fps = 30   #sample frames at 33 millisecond intervals
         self.ui = Ui_VW()
@@ -52,18 +50,20 @@ class VidWin(QtWidgets.QMainWindow):
         width = self.cam.get(cv2.CAP_PROP_FRAME_WIDTH)
         height = self.cam.get(cv2.CAP_PROP_FRAME_HEIGHT)
         self.fps = self.cam.get(cv2.CAP_PROP_FPS)
+        if self.fps == 0: self.fps = 33
         self.ui.lVideo.setMinimumSize(1, 1)
         self.ui.lVideo.installEventFilter(self)
 
         while self.bAcquiring is True:
             ret, frame = self.cam.read()
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            image = QtGui.QImage(frame,
-                                 width,
-                                 height,
-                                 QtGui.QImage.Format_RGB888)
-            self.PixMap = QtGui.QPixmap.fromImage(image)
-            self.ui.lVideo.setPixmap(self.PixMap)
+            if ret == True and frame is not None:
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                image = QtGui.QImage(frame,
+                                     width,
+                                     height,
+                                     QtGui.QImage.Format_RGB888)
+                self.PixMap = QtGui.QPixmap.fromImage(image)
+                self.ui.lVideo.setPixmap(self.PixMap)
             time.sleep(1/self.fps)
         self.cam.release()
         cv2.destroyAllWindows()

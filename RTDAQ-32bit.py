@@ -16,6 +16,7 @@ from PyQt5 import QtGui, QtWidgets, uic
 
 import Video
 import ACCES
+import EDL
 
 WINDOWS = False
 if sys.platform.startswith('win'):
@@ -33,6 +34,7 @@ else:
 ##########################################################
 ################# Main Dialog Window #####################
 ##########################################################
+
 
 class RTDAQApp(QtWidgets.QDialog):
     def __init__(self):
@@ -52,6 +54,8 @@ class RTDAQApp(QtWidgets.QDialog):
         self.VidWin.show()
         self.NanoControl = ACCES.ACCES()
         self.NanoControl.show()
+        self.Elements = EDL.EDL()
+        self.Elements.show()
 
         self.show()
 
@@ -95,10 +99,11 @@ class RTDAQApp(QtWidgets.QDialog):
         self.VidWin.bCanClose = self.NanoControl.bCanClose = True
         self.VidWin.close()
         self.NanoControl.close()
+        self.EDL.close()
 
     def closeEvent(self, event):
         reply = QtGui.QMessageBox.question(self,
-                                           'RTDAQ Quit Received',
+                                           'RTDAQ Quit all',
                                            "Quit?",
                                            QtGui.QMessageBox.Yes,
                                            QtGui.QMessageBox.No)

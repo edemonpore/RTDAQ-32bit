@@ -13,7 +13,7 @@ import pyqtgraph
 import numpy as np
 from PyQt5 import QtWidgets, uic
 import threading, time
-import gc
+
 
 class EDL(QtWidgets.QMainWindow):
     def __init__(self):
@@ -84,6 +84,7 @@ class EDL(QtWidgets.QMainWindow):
         # Plot setups
         self.VhLimit = 500
         self.p0 = self.ui.VhData.addPlot()
+
         self.p0.setRange(yRange=[-self.VhLimit, self.VhLimit], padding=0)
         self.p0.showGrid(x=True, y=True, alpha=.8)
         self.p0.setLabel('left', 'Volts', 'mV')
@@ -113,6 +114,7 @@ class EDL(QtWidgets.QMainWindow):
         self.p3.addLegend()
         
         self.p4 = self.ui.Ch4Data.addPlot()
+
         self.p4.setRange(yRange=[-self.yLimit, self.yLimit], padding=0)
         self.p4.showGrid(x=True, y=True, alpha=.8)
         self.p4.setLabel('left', 'Current', 'nA')
@@ -367,8 +369,7 @@ class EDL(QtWidgets.QMainWindow):
                                        np.arange(start, stop, step))
                     self.DataPlot()
                 else:
-
-                    # If the read not performed wait 1 ms before trying to read again.
+                    # If no read, wait 1 ms and retry.
                     time.sleep(0.001)
 
             # # Debug: Data generator which assumes no e4 thus self.bAcquiring == False
@@ -398,7 +399,6 @@ class EDL(QtWidgets.QMainWindow):
             self.ch2plot.setData(self.t[-self.maxLen:], self.ch2data[-self.maxLen:])
             self.ch3plot.setData(self.t[-self.maxLen:], self.ch3data[-self.maxLen:])
             self.ch4plot.setData(self.t[-self.maxLen:], self.ch4data[-self.maxLen:])
-            gc.collect()
 
     def DetectSignal(self, channel, high = True):
         # if high:

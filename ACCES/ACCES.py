@@ -40,12 +40,12 @@ class ACCES(QtWidgets.QMainWindow):
 
         # Class attributes
         self.maxLen = 1000
-        self.xsetdata = collections.deque([0], self.maxLen)
-        self.ysetdata = collections.deque([0], self.maxLen)
-        self.zsetdata = collections.deque([0], self.maxLen)
-        self.xdata  = collections.deque([0], self.maxLen)
-        self.ydata  = collections.deque([0], self.maxLen)
-        self.t      = collections.deque([0], self.maxLen)
+        self.xsetdata = np.zeros(1, dtype=float)
+        self.ysetdata = np.zeros(1, dtype=float)
+        self.zsetdata = np.zeros(1, dtype=float)
+        self.xdata = np.zeros(1, dtype=float)
+        self.ydata = np.zeros(1, dtype=float)
+        self.t = np.zeros(1, dtype=float)
 
         self.xset = 0
         self.yset = 0
@@ -128,48 +128,44 @@ class ACCES(QtWidgets.QMainWindow):
         DAQin.value = self.zset
         result = self.AIOUSB.DACDirect(-3, 2, DAQin)
 
-
     def DataAcquisitionThread(self):
         data_in = ctypes.c_longdouble() # double-precision IEEE floating point data from ADC
         self.t0 = time.time()
         count = 0
         while (self.bAcquiring):
             time.sleep(0.01)
-            self.t.append(time.time()-self.t0)
+            self.t = np.append(self.t, time.time()-self.t0)
             if self.AIOUSB.ADC_GetChannelV(-3, 0, ctypes.byref(data_in)) is 0:
-                self.xdata.append(float(data_in.value)/5*100)
-            else: self.xdata.append(0)
+                self.xdata = np.append(self.xdata, float(data_in.value)/5*100)
+            else: self.xdata = np.append(self.xdata, 0)
             if self.AIOUSB.ADC_GetChannelV(-3, 1, ctypes.byref(data_in)) is 0:
-                self.ydata.append(float(data_in.value)/5*100)
-            else: self.ydata.append(0)
-            self.xsetdata.append(self.xset*100/65535)
-            self.ysetdata.append(self.yset*100/65535)
-            self.zsetdata.append(self.zset*100/65535)
+                self.ydata = np.append(self.ydata, float(data_in.value)/5*100)
+            else: self.ydata = np.append(self.ydata, 0)
+            self.xsetdata = np.append(self.xsetdata, self.xset*100/65535)
+            self.ysetdata = np.append(self.ysetdata, self.yset*100/65535)
+            self.zsetdata = np.append(self.zsetdata, self.zset*100/65535)
             count += 1
             if count > 3:
                 self.DataPlot()
                 count = 0
         if __debug__ and not self.bAcquiring:
             while True:
-                time.sleep(0.01)
-                self.t.append(time.time() - self.t0)
-                self.xdata.append(float(data_in.value) / 5 * 100)
-                if self.AIOUSB.ADC_GetChannelV(-3, 1, ctypes.byref(data_in)) is 0:
-                    self.ydata.append(float(data_in.value) / 5 * 100)
-                else:
-                    self.ydata.append(0)
-                self.xsetdata.append(self.xset * 100 / 65535)
-                self.ysetdata.append(self.yset * 100 / 65535)
-                self.zsetdata.append(self.zset * 100 / 65535)
+                time.sleep(.01)
+                self.t = np.append(self.t, time.time() - self.t0)
+                self.xdata = (np.sin(self.t)+1)*50
+                self.ydata = (np.sin(self.t + 1)+1)*50
+                self.xsetdata = np.append(self.xsetdata, self.xset * 100 / 65535)
+                self.ysetdata = np.append(self.ysetdata, self.yset * 100 / 65535)
+                self.zsetdata = np.append(self.zsetdata, self.zset * 100 / 65535)
                 self.DataPlot()
 
     def DataPlot(self):
-        self.xplot.setData(self.t, self.xdata)
-        self.xsetplot.setData(self.t, self.xsetdata)
-        self.yplot.setData(self.t, self.ydata)
-        self.ysetplot.setData(self.t, self.ysetdata)
-        self.zsetplot.setData(self.t, self.zsetdata)
-        gc.collect()
+        if len(self.t) > self.maxLen:
+            self.xplot.setData(self.t[-self.maxLen:], self.xdata[-self.maxLen:])
+            self.xsetplot.setData(self.t[-self.maxLen:], self.xsetdata[-self.maxLen:])
+            self.yplot.setData(self.t[-self.maxLen:], self.ydata[-self.maxLen:])
+            self.ysetplot.setData(self.t[-self.maxLen:], self.ysetdata[-self.maxLen:])
+            self.zsetplot.setData(self.t[-self.maxLen:], self.zsetdata[-self.maxLen:])
 
     def OpenScriptDialog(self):
         self.filename = QtWidgets.QFileDialog.getOpenFileName(self,
