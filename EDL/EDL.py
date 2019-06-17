@@ -50,6 +50,12 @@ class EDL(QtWidgets.QMainWindow):
         self.UpdateSettings()
         self.SetPotential()
 
+        # User settings, threshold for event detection
+        self.DetectionThreshold
+        self.bThresholdPositive = True
+        self.ui.sbThreshold.setRange(-500, 500)
+        self.ui.sbThreshold.setValue(0)
+
         #Signals to slots (Tab 1)
         self.ui.pbREC.setStyleSheet("background-color:rgb(255,0,0)")
         self.ui.pbREC.clicked.connect(self.ToggleRecording)
@@ -78,6 +84,8 @@ class EDL(QtWidgets.QMainWindow):
         self.ui.rbSRby8.clicked.connect(self.UpdateSettings)
         self.ui.rbSRby10.clicked.connect(self.UpdateSettings)
         self.ui.rbSRby20.clicked.connect(self.UpdateSettings)
+        self.ui.sbThreshold.valueChanged.connect(self.SetThreshold)
+        self.ui.pbThresholdPolarity.clicked.connect(self.ToggleThresholdPolarity)
         #Signals to slots (Tab 3)
         self.ui.actionOpen_Data_File_to_View.triggered.connect(self.FileDialog)
 
@@ -195,6 +203,22 @@ class EDL(QtWidgets.QMainWindow):
         else:
             commandStruct.value = -Vhold
         self.edl.setCommand(epc.EdlPyCommandVhold, commandStruct, True)
+
+    def ToggleThresholdPolarity(self):
+        if self.bThresholdPositive == True:
+            self.bThresholdPositive = False
+            self.ui.pbThresholdPolarity.setText("-")
+        else:
+
+            self.bThresholdPositive = True
+            self.ui.pbThresholdPolarity.setText("+")
+        self.SetThreshold()
+
+    def SetThreshold(self):
+        if self.bThresholdPositive:
+            self.DetectionThreshold = self.ui.sbThreshold.value()
+        else:
+            self.DetectionThreshold = -self.ui.sbThreshold.value()
 
     def UpdateSettings(self):
         if self.ui.rb200pA.isChecked == True: self.Range = epc.EDL_PY_RADIO_RANGE_200_PA
@@ -384,7 +408,7 @@ class EDL(QtWidgets.QMainWindow):
                     step = self.t_step
                     self.t = np.append(self.t,
                                        np.arange(start, stop, step))
-                    self.vHolddata = np.sin(self.t) *100
+                    self.vHolddata = np.sin(self.t)*100
                     self.ch1data = np.sin(self.t+1)*100
                     self.ch2data = np.sin(self.t+2)*100
                     self.ch3data = np.sin(self.t+3)*100
