@@ -56,6 +56,17 @@ class EDL(QtWidgets.QMainWindow):
         self.ui.sbThreshold.setRange(-500, 500)
         self.ui.sbThreshold.setValue(0)
 
+        # User settings, preset nanoposition response to event detection
+        self.XMove = 0
+        self.YMove = 0
+        self.ZMove = 0
+        self.ui.sbMoveX.setRange(0, 100)
+        self.ui.sbMoveX.setValue(0)
+        self.ui.sbMoveY.setRange(0, 100)
+        self.ui.sbMoveY.setValue(0)
+        self.ui.sbMoveZ.setRange(0, 100)
+        self.ui.sbMoveZ.setValue(0)
+
         #Signals to slots (Tab 1)
         self.ui.pbREC.setStyleSheet("background-color:rgb(255,0,0)")
         self.ui.pbREC.clicked.connect(self.ToggleRecording)
@@ -86,6 +97,12 @@ class EDL(QtWidgets.QMainWindow):
         self.ui.rbSRby20.clicked.connect(self.UpdateSettings)
         self.ui.sbThreshold.valueChanged.connect(self.SetThreshold)
         self.ui.pbThresholdPolarity.clicked.connect(self.ToggleThresholdPolarity)
+        self.ui.sbMoveX.valueChanged.connect(self.SetNano)
+        self.ui.pbMoveX.clicked.connect(self.SetNano)
+        self.ui.sbMoveY.valueChanged.connect(self.SetNano)
+        self.ui.pbMoveY.clicked.connect(self.SetNano)
+        self.ui.sbMoveZ.valueChanged.connect(self.SetNano)
+        self.ui.pbMoveZ.clicked.connect(self.SetNano)
         #Signals to slots (Tab 3)
         self.ui.actionOpen_Data_File_to_View.triggered.connect(self.FileDialog)
 
@@ -216,6 +233,15 @@ class EDL(QtWidgets.QMainWindow):
 
     def SetThreshold(self):
         if self.bThresholdPositive:
+            self.DetectionThreshold = self.ui.sbThreshold.value()
+        else:
+            self.DetectionThreshold = -self.ui.sbThreshold.value()
+
+    def SetNano(self):
+        self.XMove = self.ui.sbMoveX.value()
+        self.YMove = self.ui.sbMoveY.value()
+        self.ZMove = self.ui.sbMoveZ.value()
+        if self.pbPlusMinusZ.getText():
             self.DetectionThreshold = self.ui.sbThreshold.value()
         else:
             self.DetectionThreshold = -self.ui.sbThreshold.value()

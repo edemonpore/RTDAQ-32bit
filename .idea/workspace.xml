@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="130a2fc3-7724-4cee-9acc-f95653ea6a93" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/ACCES/ACCESui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/ACCES/ACCESui.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACCESui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/ACCESui.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EDL/EDL.py" beforeDir="false" afterPath="$PROJECT_DIR$/EDL/EDL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EDL/EDLui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/EDL/EDLui.ui" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,7 +30,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ACCES/ACCES.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="659">
+            <state relative-caret-position="2329">
               <caret line="137" column="78" selection-start-line="137" selection-start-column="78" selection-end-line="137" selection-end-column="78" />
               <folding>
                 <element signature="e#181#194#0" expanded="true" />
@@ -39,8 +42,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/EDL/EDL.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="954">
-              <caret line="211" selection-start-line="211" selection-end-line="211" />
+            <state relative-caret-position="580">
+              <caret line="243" column="38" selection-start-line="243" selection-start-column="38" selection-end-line="243" selection-end-column="38" />
               <folding>
                 <element signature="e#193#206#0" expanded="true" />
               </folding>
@@ -81,7 +84,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -113,11 +115,13 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/EDL/EDL.py" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -174,7 +178,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="820" y="0" width="1284" height="1700" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24919872" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -182,7 +185,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.13518758" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.190815" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.190815" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -228,7 +231,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ACCES/ACCES.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="659">
+        <state relative-caret-position="2329">
           <caret line="137" column="78" selection-start-line="137" selection-start-column="78" selection-end-line="137" selection-end-column="78" />
           <folding>
             <element signature="e#181#194#0" expanded="true" />
@@ -238,8 +241,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/EDL/EDL.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="954">
-          <caret line="211" selection-start-line="211" selection-end-line="211" />
+        <state relative-caret-position="580">
+          <caret line="243" column="38" selection-start-line="243" selection-start-column="38" selection-end-line="243" selection-end-column="38" />
           <folding>
             <element signature="e#193#206#0" expanded="true" />
           </folding>

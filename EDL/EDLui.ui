@@ -30,7 +30,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="LiveData">
        <property name="sizePolicy">
@@ -227,371 +227,606 @@
        <attribute name="title">
         <string>Settings</string>
        </attribute>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>20</y>
-          <width>191</width>
-          <height>601</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <item>
-          <widget class="QGroupBox" name="gbVHold">
-           <property name="title">
-            <string>VHold</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <widget class="QLabel" name="lmV">
-            <property name="geometry">
-             <rect>
-              <x>150</x>
-              <y>30</y>
-              <width>29</width>
-              <height>24</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>12</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>mV</string>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0" rowspan="2">
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QGroupBox" name="gbVHold">
+            <property name="title">
+             <string>VHold</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
             </property>
+            <widget class="QLabel" name="lmV">
+             <property name="geometry">
+              <rect>
+               <x>150</x>
+               <y>30</y>
+               <width>29</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>mV</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="pbPolarity">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>25</y>
+               <width>50</width>
+               <height>35</height>
+              </rect>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>35</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>50</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="text">
+              <string>+/-</string>
+             </property>
+            </widget>
+            <widget class="QSpinBox" name="sbVhold">
+             <property name="geometry">
+              <rect>
+               <x>77</x>
+               <y>26</y>
+               <width>70</width>
+               <height>33</height>
+              </rect>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>70</width>
+               <height>33</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="minimum">
+              <number>-500</number>
+             </property>
+             <property name="maximum">
+              <number>500</number>
+             </property>
+            </widget>
            </widget>
-           <widget class="QPushButton" name="pbPolarity">
-            <property name="geometry">
-             <rect>
-              <x>20</x>
-              <y>25</y>
-              <width>50</width>
-              <height>35</height>
-             </rect>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="gbRange">
+            <property name="title">
+             <string>Current Range</string>
             </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>35</height>
-             </size>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
-            <property name="maximumSize">
-             <size>
-              <width>50</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>12</pointsize>
-             </font>
-            </property>
-            <property name="toolTip">
-             <string/>
-            </property>
-            <property name="text">
-             <string>+/-</string>
-            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_2">
+             <item>
+              <widget class="QRadioButton" name="rb200pA">
+               <property name="text">
+                <string>200 pA</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="rb2nA">
+               <property name="text">
+                <string>2 nA</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="rb20nA">
+               <property name="text">
+                <string>20 nA</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="rb200nA">
+               <property name="text">
+                <string>200 nA</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
-           <widget class="QSpinBox" name="sbVhold">
-            <property name="geometry">
-             <rect>
-              <x>77</x>
-              <y>26</y>
-              <width>70</width>
-              <height>33</height>
-             </rect>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="gbSampleRate">
+            <property name="title">
+             <string>Sampling Rate (SR)</string>
             </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
-            <property name="minimumSize">
-             <size>
-              <width>70</width>
-              <height>33</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>12</pointsize>
-             </font>
-            </property>
-            <property name="minimum">
-             <number>-500</number>
-            </property>
-            <property name="maximum">
-             <number>500</number>
-            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <widget class="QRadioButton" name="rb1_25KHz">
+               <property name="text">
+                <string>1.25 KHz</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="rb5KHz">
+               <property name="text">
+                <string>5 KHz</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="rb10KHz">
+               <property name="text">
+                <string>10 KHz</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="rb20KHz">
+               <property name="text">
+                <string>20 KHz</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="rb50KHz">
+               <property name="text">
+                <string>50 KHz</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="rb100KHz">
+               <property name="text">
+                <string>100 KHz</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="rb200KHz">
+               <property name="text">
+                <string>200 KHz</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="gbRange">
-           <property name="title">
-            <string>Current Range</string>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="gbFinalBandwidth">
+            <property name="title">
+             <string>Final Bandwidth</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="flat">
+             <bool>false</bool>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <widget class="QRadioButton" name="rbSRby2">
+               <property name="text">
+                <string>SR/2 (no filter)</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="rbSRby8">
+               <property name="text">
+                <string>SR/8</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="rbSRby10">
+               <property name="text">
+                <string>SR/10</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="rbSRby20">
+               <property name="text">
+                <string>SR/20</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="1">
+         <widget class="QGroupBox" name="gbThreshold">
+          <property name="title">
+           <string>Detection Threshold</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <widget class="QWidget" name="">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>25</y>
+             <width>165</width>
+             <height>37</height>
+            </rect>
            </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
             <item>
-             <widget class="QRadioButton" name="rb200pA">
+             <widget class="QPushButton" name="pbThresholdPolarity">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>35</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>50</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
               <property name="text">
-               <string>200 pA</string>
+               <string>+/-</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QRadioButton" name="rb2nA">
-              <property name="text">
-               <string>2 nA</string>
+             <widget class="QSpinBox" name="sbThreshold">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="minimum">
+               <number>-500</number>
+              </property>
+              <property name="maximum">
+               <number>500</number>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QRadioButton" name="rb20nA">
-              <property name="text">
-               <string>20 nA</string>
+             <widget class="QLabel" name="lmV_2">
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
               </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="rb200nA">
               <property name="text">
-               <string>200 nA</string>
+               <string>mV</string>
               </property>
-              <property name="checked">
-               <bool>true</bool>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
               </property>
              </widget>
             </item>
            </layout>
           </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="gbSampleRate">
-           <property name="title">
-            <string>Sampling Rate (SR)</string>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QGroupBox" name="gbNanoMove">
+          <property name="title">
+           <string>NanoPosition Detection Response</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <widget class="QWidget" name="">
+           <property name="geometry">
+            <rect>
+             <x>23</x>
+             <y>29</y>
+             <width>238</width>
+             <height>37</height>
+            </rect>
            </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_3">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
-             <widget class="QRadioButton" name="rb1_25KHz">
+             <widget class="QPushButton" name="pbPlusMinusX">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>35</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>50</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
               <property name="text">
-               <string>1.25 KHz</string>
+               <string>+/-</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QRadioButton" name="rb5KHz">
-              <property name="text">
-               <string>5 KHz</string>
+             <widget class="QSpinBox" name="sbMoveX">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="minimum">
+               <number>-500</number>
+              </property>
+              <property name="maximum">
+               <number>500</number>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QRadioButton" name="rb10KHz">
-              <property name="text">
-               <string>10 KHz</string>
+             <widget class="QLabel" name="lmX">
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
               </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="rb20KHz">
               <property name="text">
-               <string>20 KHz</string>
+               <string>x-axis (nm)</string>
               </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="rb50KHz">
-              <property name="text">
-               <string>50 KHz</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="rb100KHz">
-              <property name="text">
-               <string>100 KHz</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="rb200KHz">
-              <property name="text">
-               <string>200 KHz</string>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
               </property>
              </widget>
             </item>
            </layout>
           </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="gbFinalBandwidth">
-           <property name="title">
-            <string>Final Bandwidth</string>
+          <widget class="QWidget" name="">
+           <property name="geometry">
+            <rect>
+             <x>23</x>
+             <y>89</y>
+             <width>238</width>
+             <height>37</height>
+            </rect>
            </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="flat">
-            <bool>false</bool>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_4">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
-             <widget class="QRadioButton" name="rbSRby2">
-              <property name="text">
-               <string>SR/2 (no filter)</string>
+             <widget class="QPushButton" name="pbPlusMinusY">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>35</height>
+               </size>
               </property>
-              <property name="checked">
-               <bool>true</bool>
+              <property name="maximumSize">
+               <size>
+                <width>50</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="text">
+               <string>+</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QRadioButton" name="rbSRby8">
-              <property name="text">
-               <string>SR/8</string>
+             <widget class="QSpinBox" name="sbMoveY">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="minimum">
+               <number>-500</number>
+              </property>
+              <property name="maximum">
+               <number>500</number>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QRadioButton" name="rbSRby10">
-              <property name="text">
-               <string>SR/10</string>
+             <widget class="QLabel" name="lmY">
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
               </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="rbSRby20">
               <property name="text">
-               <string>SR/20</string>
+               <string>y-axis (nm)</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
               </property>
              </widget>
             </item>
            </layout>
           </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QGroupBox" name="gbThreshold">
-        <property name="geometry">
-         <rect>
-          <x>270</x>
-          <y>20</y>
-          <width>189</width>
-          <height>74</height>
-         </rect>
-        </property>
-        <property name="title">
-         <string>Detection Threshold</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <widget class="QLabel" name="lmV_2">
-         <property name="geometry">
-          <rect>
-           <x>150</x>
-           <y>30</y>
-           <width>29</width>
-           <height>24</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>12</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>mV</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="pbThresholdPolarity">
-         <property name="geometry">
-          <rect>
-           <x>20</x>
-           <y>25</y>
-           <width>50</width>
-           <height>35</height>
-          </rect>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>35</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>50</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>12</pointsize>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string/>
-         </property>
-         <property name="text">
-          <string>+/-</string>
-         </property>
-        </widget>
-        <widget class="QSpinBox" name="sbThreshold">
-         <property name="geometry">
-          <rect>
-           <x>77</x>
-           <y>26</y>
-           <width>70</width>
-           <height>33</height>
-          </rect>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>70</width>
-           <height>33</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>12</pointsize>
-          </font>
-         </property>
-         <property name="minimum">
-          <number>-500</number>
-         </property>
-         <property name="maximum">
-          <number>500</number>
-         </property>
-        </widget>
-       </widget>
+          <widget class="QWidget" name="">
+           <property name="geometry">
+            <rect>
+             <x>23</x>
+             <y>144</y>
+             <width>237</width>
+             <height>37</height>
+            </rect>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QPushButton" name="pbPlusMinusZ">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>35</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>50</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="text">
+               <string>+</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="sbMoveZ">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="minimum">
+               <number>-500</number>
+              </property>
+              <property name="maximum">
+               <number>500</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="lmZ">
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>z-axis (nm)</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="ViewData">
        <attribute name="title">
