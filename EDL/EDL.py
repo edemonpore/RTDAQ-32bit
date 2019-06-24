@@ -137,7 +137,7 @@ class EDL(QtWidgets.QMainWindow):
         self.p3.setLabel('left', 'Current', 'nA')
         self.p3.setLabel('bottom', 'Time (s)')
         self.p3.addLegend()
-        
+
         self.p4 = self.ui.Ch4Data.addPlot()
 
         self.p4.setRange(yRange=[-self.yLimit, self.yLimit], padding=0)
