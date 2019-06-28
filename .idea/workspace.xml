@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="130a2fc3-7724-4cee-9acc-f95653ea6a93" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/uF/Python_32/Elveflow32.py" beforeDir="false" afterPath="$PROJECT_DIR$/uF/Python_32/Elveflow32.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uF/uF.py" beforeDir="false" afterPath="$PROJECT_DIR$/uF/uF.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/RTDAQ-32bit.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/RTDAQ-32bit.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,19 +14,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/uF/uF.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-30">
-              <caret line="10" selection-start-line="10" selection-end-line="10" />
-              <folding>
-                <element signature="e#131#144#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="187">
+              <caret line="11" selection-start-line="11" selection-end-line="11" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/uF/Python_32/Example/_OB1_EX_.py">
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
@@ -61,16 +59,16 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1025" />
-    <option name="width" value="1605" />
-    <option name="height" value="2125" />
+    <option name="x" value="8" />
+    <option name="y" value="2" />
+    <option name="width" value="2186" />
+    <option name="height" value="2126" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -97,6 +95,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -158,10 +157,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="35" y="25" width="972" height="775" extended-state="4" />
+    <frame x="4" y="1" width="1093" height="1063" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23919916" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17313151" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -235,18 +234,15 @@
     <entry file="file://$PROJECT_DIR$/uF/Elveflow32.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/uF/uF.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-30">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-          <folding>
-            <element signature="e#131#144#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/uF/Python_32/Example/_OB1_EX_.py">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uF/uF.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>
