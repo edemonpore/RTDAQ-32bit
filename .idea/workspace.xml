@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="130a2fc3-7724-4cee-9acc-f95653ea6a93" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/EDL/EDL.py" beforeDir="false" afterPath="$PROJECT_DIR$/EDL/EDL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uF/Python_32/Elveflow32.py" beforeDir="false" afterPath="$PROJECT_DIR$/uF/Python_32/Elveflow32.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uF/uF.py" beforeDir="false" afterPath="$PROJECT_DIR$/uF/uF.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,39 +14,25 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/RTDAQ-32bit.py">
+        <entry file="file://$PROJECT_DIR$/uF/uF.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="918">
-              <caret line="61" column="23" selection-start-line="61" selection-start-column="23" selection-end-line="61" selection-end-column="23" />
+            <state relative-caret-position="-30">
+              <caret line="10" selection-start-line="10" selection-end-line="10" />
               <folding>
-                <element signature="e#296#312#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ACCES/ACCES.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2329">
-              <caret line="137" column="78" selection-start-line="137" selection-start-column="78" selection-end-line="137" selection-end-column="78" />
-              <folding>
-                <element signature="e#181#194#0" expanded="true" />
+                <element signature="e#131#144#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/EDL/EDL.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="141" selection-start-line="141" selection-end-line="141" />
-              <folding>
-                <element signature="e#193#206#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
+        <entry file="file://$PROJECT_DIR$/uF/Python_32/Example/_OB1_EX_.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uF/Elveflow32.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -68,6 +55,8 @@
         <option value="$PROJECT_DIR$/RTDAQ-32bit.py" />
         <option value="$PROJECT_DIR$/ACCES/ACCES.py" />
         <option value="$PROJECT_DIR$/EDL/EDL.py" />
+        <option value="$PROJECT_DIR$/uF/Python_32/Elveflow32.py" />
+        <option value="$PROJECT_DIR$/uF/uF.py" />
       </list>
     </option>
   </component>
@@ -81,6 +70,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -101,23 +91,17 @@
             <path>
               <item name="RTDAQ-32bit" type="b2602c69:ProjectViewProjectNode" />
               <item name="RTDAQ-32bit" type="462c0819:PsiDirectoryNode" />
-              <item name="LumeneraCam" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="RTDAQ-32bit" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RTDAQ-32bit" type="462c0819:PsiDirectoryNode" />
               <item name="Video" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/EDL/EDL.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/uF/Elveflow32.py" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -174,10 +158,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="820" y="0" width="1284" height="1700" extended-state="0" />
+    <frame x="35" y="25" width="972" height="775" extended-state="4" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24919872" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23919916" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -200,13 +184,7 @@
     <entry file="file://$PROJECT_DIR$/ACCES/debugACCES.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://C:/ProgramData/Anaconda3-32bit/Lib/xml/etree/ElementTree.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="586" selection-start-line="586" selection-end-line="586" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3-32bit/Lib/xml/etree/ElementTree.py" />
     <entry file="file://$PROJECT_DIR$/Video/Video.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="648">
@@ -219,7 +197,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/RTDAQ-32bit.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
+        <state relative-caret-position="564">
           <caret line="61" column="23" selection-start-line="61" selection-start-column="23" selection-end-line="61" selection-end-column="23" />
           <folding>
             <element signature="e#296#312#0" expanded="true" />
@@ -229,23 +207,46 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ACCES/ACCES.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2329">
-          <caret line="137" column="78" selection-start-line="137" selection-start-column="78" selection-end-line="137" selection-end-column="78" />
+        <state relative-caret-position="1935">
+          <caret line="138" column="61" selection-start-line="138" selection-start-column="61" selection-end-line="138" selection-end-column="61" />
           <folding>
             <element signature="e#181#194#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/uF/Python_32/Elveflow32.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="735">
+          <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/EDL/EDL.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="141" selection-start-line="141" selection-end-line="141" />
+        <state relative-caret-position="135">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
           <folding>
             <element signature="e#193#206#0" expanded="true" />
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uF/Elveflow32.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uF/uF.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-30">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="e#131#144#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uF/Python_32/Example/_OB1_EX_.py">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>

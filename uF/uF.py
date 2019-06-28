@@ -6,12 +6,12 @@ E.Yafuso
 June 2019
 """
 
-import ctypes
+#import ctypes
+inport Elveflow32
 import pandas
 import numpy as np
 import pyqtgraph
 from PyQt5 import QtWidgets, uic
-import collections, struct
 import threading, time
 import gc
 
@@ -22,9 +22,8 @@ class uF(QtWidgets.QMainWindow):
         pyqtgraph.setConfigOption('background', 'k')
         self.ui = Ui_uF()
         self.ui.setupUi(self)
-        self.Elve = ctypes.CDLL("AIOUSB")
-        self.AIOUSB.ADC_GetChannelV.argtypes = (ctypes.c_ulong, ctypes.c_ulong, ctypes.POINTER(ctypes.c_double))
-        self.AIOUSB.ADC_GetChannelV.restype = ctypes.c_ulong
+        #self.Elveflow = ctypes.CDLL('Elveflow32.dll')
+
 
         self.bAcquiring = False
 

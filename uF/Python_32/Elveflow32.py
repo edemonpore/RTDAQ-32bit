@@ -230,7 +230,8 @@ def AF1_Get_Press (AF1_ID_in, Integration_time, Calib_array_in, Pressure, len):
 	return X_AF1_Get_Press (AF1_ID_in, Integration_time, Calib_array_in, Pressure, len)
 
 
-
+        self.AIOUSB.ADC_GetChannelV.argtypes = (ctypes.c_ulong, ctypes.c_ulong, ctypes.POINTER(ctypes.c_double))
+        self.AIOUSB.ADC_GetChannelV.restype = ctypes.c_ulong
  # Elveflow Library
  # AF1 Device
  # 
@@ -263,7 +264,7 @@ def OB1_Destructor (OB1_ID):
  # 
  # Read the sensor of the requested channel. ! This Function only convert data 
  # that are acquired in OB1_Acquire_data
- # Units : Flow sensor µl/min
+ # Units : Flow sensor ï¿½l/min
  # Pressure : mbar
  # 
  # If Acquire_data is true, the OB1 acquires ALL regulator AND ALL analog 
@@ -318,7 +319,8 @@ def AF1_Destructor (AF1_ID_in):
 	X_AF1_Destructor.argtypes=[c_int32]
 	return X_AF1_Destructor (AF1_ID_in)
 
-
+        self.AIOUSB.ADC_GetChannelV.argtypes = (ctypes.c_ulong, ctypes.c_ulong, ctypes.POINTER(ctypes.c_double))
+        self.AIOUSB.ADC_GetChannelV.restype = ctypes.c_ulong
 
  # Elveflow Library
  # AF1 Device
@@ -470,7 +472,7 @@ def MUX_Dist_Set_Valve (MUX_Dist_ID_in, selected_Valve):
  # Elveflow Library
  # OB1 Device
  # 
- # Add sensor to OB1 device. Select the channel n° (1-4) the sensor type. 
+ # Add sensor to OB1 device. Select the channel nï¿½ (1-4) the sensor type. 
  # 
  # For Flow sensor, the type of communication (Analog/Digital), the 
  # Calibration for digital version (H20 or IPA) should be specify as well as 
@@ -551,7 +553,7 @@ def BFS_Get_Flow (BFS_ID_in, Flow):
  # Elveflow Library
  # BFS Device
  # 
- # Get the fluid temperature (in °C) of the BFS defined by the BFS_ID
+ # Get the fluid temperature (in ï¿½C) of the BFS defined by the BFS_ID
  #
 def BFS_Get_Temperature (BFS_ID_in, Temperature):
 	X_BFS_Get_Temperature=ElveflowDLL.BFS_Get_Temperature
