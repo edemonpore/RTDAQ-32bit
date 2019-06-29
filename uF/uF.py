@@ -28,7 +28,7 @@ class uF(QtWidgets.QMainWindow):
         pyqtgraph.setConfigOption('background', 'k')
         self.ui = Ui_uF()
         self.ui.setupUi(self)
-        self.Elveflow = ctypes.CDLL('Elveflow32.dll')
+        self.Elveflow = ctypes.CDLL("Elveflow32")
 
         self.bAcquiring = False
 
@@ -44,7 +44,7 @@ class uF(QtWidgets.QMainWindow):
             self.bAcquiring = True
 
         # Add digital flow sensor with water calibration
-        error = self.OB1_Add_Sens(self.Instr_ID, 1, 1, 1, 0, 7):
+        error = self.OB1_Add_Sens(self.Instr_ID, 1, 1, 1, 0, 7)
         if error:
             QtWidgets.QMessageBox.information(self, 'Elveflow ERROR', "Digital flow sensor failure.")
             self.bAcquiring = False
@@ -56,8 +56,7 @@ class uF(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.information(self, 'Elveflow ERROR', "Calibration failure.")
             self.bAcquiring = False
         else:
-            for i in range(0,1000):
-            print('[',i,']: ',self.Cal[i])
+            for i in range(0,1000): print('[',i,']: ',self.Cal[i])
 
         # Class attributes
         self.maxLen = 1000
@@ -276,10 +275,10 @@ class uF(QtWidgets.QMainWindow):
         while (self.bAcquiring):
             time.sleep(0.01)
             self.t.append(time.time()-self.t0)
-            if self.OB1_Get_Press(self.Instr_ID.value, c_int32(1), 1, self.Cal, ctypes.byref(data_in)), 1000):
+            if self.OB1_Get_Press(self.Instr_ID.value, c_int32(1), 1, self.Cal, ctypes.byref(data_in), 1000):
                 self.Pdata.append(0)
             else: self.Pdata.append(float(data_in.value))
-            if self.OB1_Get_Sens_Data(self.Instr_ID.value, c_int32(1), 1, ctypes.byref(data_in))):
+            if self.OB1_Get_Sens_Data(self.Instr_ID.value, c_int32(1), 1, ctypes.byref(data_in)):
                 self.Flowdata.append(0)
             else: self.Flowdata.append(float(data_in.value))
             self.Psetdata.append(self.pset)

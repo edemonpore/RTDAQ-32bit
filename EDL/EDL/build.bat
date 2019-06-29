@@ -1,0 +1,2 @@
+
+g++ -shared edl_pywrapper.cpp -I%PYTHON_ROOT%\include -I"%BOOST_ROOT%" -L"%BOOST_ROOT%\stage\lib" -lboost_python37-mgw81-mt-x32-1_70 -L"%PYTHON_ROOT%\libs" -lpython37 -L. -IEDL -LEDL -ledl -m32 -o edl_py.pyd

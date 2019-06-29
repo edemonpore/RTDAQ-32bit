@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="130a2fc3-7724-4cee-9acc-f95653ea6a93" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/RTDAQ-32bit.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/RTDAQ-32bit.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="130a2fc3-7724-4cee-9acc-f95653ea6a93" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,11 +21,6 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/uF/Python_32/Example/_OB1_EX_.py">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uF/Elveflow32.py">
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
@@ -59,16 +50,17 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="8" />
-    <option name="y" value="2" />
-    <option name="width" value="2186" />
-    <option name="height" value="2126" />
+    <option name="x" value="7" />
+    <option name="y" value="1" />
+    <option name="width" value="2187" />
+    <option name="height" value="2127" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -95,7 +87,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -157,10 +148,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="4" y="1" width="1093" height="1063" extended-state="0" />
+    <frame x="6" y="1" width="1749" height="1701" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17313151" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17279626" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -231,18 +222,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uF/Elveflow32.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uF/Python_32/Example/_OB1_EX_.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/uF/Elveflow32.py" />
     <entry file="file://$PROJECT_DIR$/uF/uF.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" selection-start-line="11" selection-end-line="11" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uF/Python_32/Example/_OB1_EX_.py">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>

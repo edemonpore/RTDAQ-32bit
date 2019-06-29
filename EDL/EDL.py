@@ -60,11 +60,11 @@ class EDL(QtWidgets.QMainWindow):
         self.XMove = 0
         self.YMove = 0
         self.ZMove = 0
-        self.ui.sbMoveX.setRange(0, 100)
+        self.ui.sbMoveX.setRange(-100, 100)
         self.ui.sbMoveX.setValue(0)
-        self.ui.sbMoveY.setRange(0, 100)
+        self.ui.sbMoveY.setRange(-100, 100)
         self.ui.sbMoveY.setValue(0)
-        self.ui.sbMoveZ.setRange(0, 100)
+        self.ui.sbMoveZ.setRange(-100, 100)
         self.ui.sbMoveZ.setValue(0)
 
         #Signals to slots (Tab 1)
@@ -98,11 +98,9 @@ class EDL(QtWidgets.QMainWindow):
         self.ui.sbThreshold.valueChanged.connect(self.SetThreshold)
         self.ui.pbThresholdPolarity.clicked.connect(self.ToggleThresholdPolarity)
         self.ui.sbMoveX.valueChanged.connect(self.SetNano)
-        self.ui.pbMoveX.clicked.connect(self.SetNano)
         self.ui.sbMoveY.valueChanged.connect(self.SetNano)
-        self.ui.pbMoveY.clicked.connect(self.SetNano)
         self.ui.sbMoveZ.valueChanged.connect(self.SetNano)
-        self.ui.pbMoveZ.clicked.connect(self.SetNano)
+
         #Signals to slots (Tab 3)
         self.ui.actionOpen_Data_File_to_View.triggered.connect(self.FileDialog)
 
@@ -241,10 +239,6 @@ class EDL(QtWidgets.QMainWindow):
         self.XMove = self.ui.sbMoveX.value()
         self.YMove = self.ui.sbMoveY.value()
         self.ZMove = self.ui.sbMoveZ.value()
-        if self.pbPlusMinusZ.getText():
-            self.DetectionThreshold = self.ui.sbThreshold.value()
-        else:
-            self.DetectionThreshold = -self.ui.sbThreshold.value()
 
     def UpdateSettings(self):
         if self.ui.rb200pA.isChecked == True: self.Range = epc.EDL_PY_RADIO_RANGE_200_PA
