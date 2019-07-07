@@ -13,11 +13,11 @@
   <property name="windowTitle">
    <string>RTDAQ</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
     <widget class="QListWidget" name="lPorts"/>
    </item>
-   <item>
+   <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QPushButton" name="bGetPorts">
@@ -40,9 +40,16 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="bElements">
+       <property name="text">
+        <string>PCA</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
-   <item>
+   <item row="2" column="0">
     <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

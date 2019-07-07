@@ -4,6 +4,7 @@ EYafuso
 Feb 2019
 """
 
+import os
 import cv2
 from PyQt5 import QtGui, QtCore, QtWidgets, uic
 import threading, time
@@ -11,7 +12,11 @@ import threading, time
 class VidWin(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
-        Ui_VW = uic.loadUiType("VidWindow.ui")[0]
+        path = os.path.abspath("") + '\\Video\\VidWindow.ui'
+        try:
+            Ui_VW = uic.loadUiType(path)[0]
+        except:
+            Ui_VW = uic.loadUiType('VidWindow.ui')[0]
 
         self.fps = 30   #sample frames at 33 millisecond intervals
         self.ui = Ui_VW()
@@ -45,6 +50,9 @@ class VidWin(QtWidgets.QMainWindow):
             self.bAcquiring = True
             self.CamThread.start()
 
+    def UpdateData(self):
+        pass
+
     def LiveVideoThread(self):
         self.cam = cv2.VideoCapture(self.CamNum)
         width = self.cam.get(cv2.CAP_PROP_FRAME_WIDTH)
@@ -54,7 +62,7 @@ class VidWin(QtWidgets.QMainWindow):
         self.ui.lVideo.setMinimumSize(1, 1)
         self.ui.lVideo.installEventFilter(self)
 
-        while self.bAcquiring is True:
+        while self.bAcquiring:
             ret, frame = self.cam.read()
             if ret == True and frame is not None:
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)

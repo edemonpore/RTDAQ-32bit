@@ -20,19 +20,23 @@ import numpy as np
 import pyqtgraph
 from PyQt5 import QtWidgets, uic
 import threading, time
-import gc
 
 
 class uF(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
-        Ui_uF = uic.loadUiType("uFui.ui")[0]
+        path = os.path.abspath("") + '\\uF\\uFui.ui'
+        try:
+            Ui_uF = uic.loadUiType(path)[0]
+        except:
+            Ui_uF = uic.loadUiType('uFui.ui')[0]
         pyqtgraph.setConfigOption('background', 'k')
         self.ui = Ui_uF()
         self.ui.setupUi(self)
-        self.Elveflow = CDLL(os.path.abspath('Elveflow32.dll'))
-
+        path = os.path.abspath("") + '\\uF\\Python_32\\DLL32\\Elveflow32.dll'
+        self.Elveflow = CDLL(path)
         self.bAcquiring = False
+        self.DAQThread = 0
 
         # Initialize OB1 (Kenobi)
         self.Instr_ID = c_int32()
@@ -57,8 +61,8 @@ class uF(QtWidgets.QMainWindow):
         if error:
             QtWidgets.QMessageBox.information(self, 'Elveflow ERROR', "Calibration failure.")
             self.bAcquiring = False
-        else:
-            for i in range(0,1000): print('[',i,']: ',self.Cal[i])
+        # else:
+        #     for i in range(0,1000): print('[',i,']: ',self.Cal[i])
 
         # Class attributes
         self.maxLen = 1000
@@ -70,7 +74,7 @@ class uF(QtWidgets.QMainWindow):
         self.p = self.ui.PData.addPlot()
         self.p.setRange(yRange=[-900, 6000])
         self.p.showGrid(x=True, y=True, alpha=.8)
-        self.p.setLabel('left', 'Pressure', 'mbar')
+        self.p.setLabel('left', 'Pressure (mbar)')
         self.p.setLabel('bottom', 'Time (s)')
         self.p.addLegend()
 
@@ -78,7 +82,7 @@ class uF(QtWidgets.QMainWindow):
         self.f.setRange(yRange=[0, 7])
         self.f.showGrid(x=True, y=True, alpha=.8)
         self.f.setLabel('left', 'Flow', 'uL')
-        self.f.setLabel('bottom', 'Time (m)')
+        self.f.setLabel('bottom', 'Time (s)')
         self.f.addLegend()
 
         self.pplot = self.p.plot([], pen=(0, 0, 255), linewidth=.5, name='P')
@@ -86,19 +90,16 @@ class uF(QtWidgets.QMainWindow):
         self.flowplot = self.f.plot([], pen=(0, 255, 0), linewidth=.5, name='Flow')
 
         self.pset = 0
-        self.ui.vsP.setMinimum(0)
-        self.ui.vsP.setMaximum(100)
+        self.ui.vsP.setMinimum(-900)
+        self.ui.vsP.setMaximum(6000)
         self.ui.vsP.setValue(self.pset)
 
         #Signals to slots
         self.ui.actionOpen.triggered.connect(self.OpenScriptDialog)
         self.ui.vsP.valueChanged.connect(self.setPressure)
 
-        self.DAQThread = threading.Thread(target=self.DataAcquisitionThread)
-        self.DAQThread.start()
-
         self.bShow = True
-        self.bCanClose = False
+        self.bCanClose = True
         self.MoveToStart()
 
     def MoveToStart(self):
@@ -109,12 +110,58 @@ class uF(QtWidgets.QMainWindow):
         y = 200  # 2 * ag.height() - sg.height() - wingeo.height()
         self.move(x, y)
 
+    def setPressure(self):
+        temp = self.ui.vsP.value()
+        self.pset = int(temp)
+        self.ui.lsetPressure.setText(str(temp))
+
+        # Set actual pressure on OB-1...
+        set_channel = 1 #assume using channel 1 for now
+        set_channel = c_int32(set_channel)  # convert to c_int32
+        set_pressure = float(temp)
+        set_pressure = c_double(set_pressure)  # convert to c_double
+        error = self.OB1_Set_Press(self.Instr_ID.value, set_channel, set_pressure, byref(self.Cal), 1000)
+
+    def UpdateData(self):
+        if self.OB1_Get_Press(self.Instr_ID.value, c_int32(1), 1, self.Cal, byref(data_in), 1000):
+            self.Pdata = np.append(self.Pdata, 0)
+        else:
+            self.Pdata = np.append(self.Pdata, float(data_in.value))
+        if self.OB1_Get_Sens_Data(self.Instr_ID.value, c_int32(1), 1, byref(data_in)):
+            self.Flowdata = np.append(self.Flowdata, 0)
+        else:
+            self.Flowdata = np.append(self.Flowdata, float(data_in.value))
+        self.Psetdata = np.append(Psetdata, self.pset)
+
+    def DataAcquisitionThread(self):
+        data_in = c_double()
+        self.t0 = time.time()
+        while (self.bAcquiring):
+            time.sleep(0.01)
+            self.t = np.append(self.t, time.time() - self.t0)
+            self.UpdateData()
+            self.DataPlot()
+
+        if __debug__ and not self.bAcquiring:
+            while True:
+                time.sleep(.01)
+                self.t = np.append(self.t, time.time() - self.t0)
+                self.Pdata = np.append(self.Pdata, (np.sin(self.t[-1])+1)*3000)
+                self.Flowdata = np.append(self.Flowdata, (np.sin(self.t[-1] + 1)+1))
+                self.Psetdata = np.append(self.Psetdata, self.pset)
+                self.DataPlot()
+
+    def DataPlot(self):
+        self.pplot.setData(self.t, self.Pdata)
+        self.psetplot.setData(self.t, self.Psetdata)
+        self.flowplot.setData(self.t, self.Flowdata)
+
     def OB1_Initialization(self, Device_Name, Reg_Ch_1, Reg_Ch_2, Reg_Ch_3, Reg_Ch_4, OB1_ID_out):
         X_OB1_Initialization = self.Elveflow.OB1_Initialization
         X_OB1_Initialization.argtypes = [c_char_p, c_uint16, c_uint16, c_uint16, c_uint16, POINTER(c_int32)]
         return X_OB1_Initialization(Device_Name, Reg_Ch_1, Reg_Ch_2, Reg_Ch_3, Reg_Ch_4, OB1_ID_out)
 
-    # Set default Calib in Calib cluster, len is the Calib_Array_out array length
+    # Set default Cal in Cal cluster, len is the Cal_Array_out array length
     # use ctypes c_double*1000 for calibration array
     def Elveflow_Calibration_Default(self, Calib_Array_out, len):
         X_Elveflow_Calibration_Default = self.Elveflow.Elveflow_Calibration_Default
@@ -197,39 +244,6 @@ class uF(QtWidgets.QMainWindow):
         X_OB1_Destructor.argtypes = [c_int32]
         return X_OB1_Destructor(OB1_ID)
 
-    def setPressure(self):
-        temp = self.ui.vsP.value()
-        self.pset = int(temp)
-        self.ui.lsetPressure.setText(str(temp))
-
-        # Set actual pressure on OB-1...
-        set_channel = 1 #assume using channel 1 for now
-        set_channel = c_int32(set_channel)  # convert to c_int32
-        set_pressure = float(temp)
-        set_pressure = c_double(set_pressure)  # convert to c_double
-        error = self.OB1_Set_Press(self.Instr_ID.value, set_channel, set_pressure, byref(self.Cal), 1000)
-
-    def DataAcquisitionThread(self):
-        data_in = c_double()
-        self.t0 = time.time()
-        while (self.bAcquiring):
-            time.sleep(0.01)
-            self.t.append(time.time()-self.t0)
-            if self.OB1_Get_Press(self.Instr_ID.value, c_int32(1), 1, self.Cal, byref(data_in), 1000):
-                self.Pdata.append(0)
-            else: self.Pdata.append(float(data_in.value))
-            if self.OB1_Get_Sens_Data(self.Instr_ID.value, c_int32(1), 1, byref(data_in)):
-                self.Flowdata.append(0)
-            else: self.Flowdata.append(float(data_in.value))
-            self.Psetdata.append(self.pset)
-            self.DataPlot()
-
-    def DataPlot(self):
-        self.pplot.setData(self.t, self.Pdata)
-        self.psetplot.setData(self.t, self.Psetdata)
-        self.flowplot.setData(self.t, self.Flowdata)
-        gc.collect()
-
     def OpenScriptDialog(self):
         self.filename = QtWidgets.QFileDialog.getOpenFileName(self,
                                                               'Open file',
@@ -286,7 +300,7 @@ class uF(QtWidgets.QMainWindow):
     def closeEvent(self, event):
         if self.bCanClose:
             self.bAcquiring = False
-            if self.DAQThread != None:
+            if self.DAQThread and self.DAQThread != None:
                 self.DAQThread.join()
             event.accept()
         else:

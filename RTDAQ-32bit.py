@@ -10,13 +10,16 @@ Feb 2019
 """
 
 import sys, glob
+import numpy as np
 import string
 import ctypes
-from PyQt5 import QtGui, QtWidgets, uic
+from PyQt5 import QtWidgets, uic
 
+import threading, time
 import Video
 import ACCES
 import EDL
+import uF
 
 WINDOWS = False
 if sys.platform.startswith('win'):
@@ -35,7 +38,6 @@ else:
 ################# Main Dialog Window #####################
 ##########################################################
 
-
 class RTDAQApp(QtWidgets.QDialog):
     def __init__(self):
         QtWidgets.QDialog.__init__(self)
@@ -46,8 +48,14 @@ class RTDAQApp(QtWidgets.QDialog):
 
         # Signals to slots
         self.ui.bGetPorts.clicked.connect(self.GetPorts)
-        self.ui.bNanoControl.clicked.connect(self.NanoWindowShow)
         self.ui.bVideo.clicked.connect(self.VideoShow)
+        self.ui.bNanoControl.clicked.connect(self.NanoWindowShow)
+        self.ui.bElements.clicked.connect(self.ElementsShow)
+
+        # Real-time data...
+        self.t = np.zeros(1, dtype=float)
+
+        self.show()
 
         # Externally developed classes
         self.VidWin = Video.VidWin()
@@ -56,11 +64,29 @@ class RTDAQApp(QtWidgets.QDialog):
         self.NanoControl.show()
         self.Elements = EDL.EDL()
         self.Elements.show()
+        self.uF = uF.uF()
+        self.uF.show()
 
-        self.show()
+        # Start real-time data acquisition thread
+        self.DAQThread = threading.Thread(target=self.DataAcquisitionThread, daemon=True)
+        self.DAQThread.start()
+
+    def DataAcquisitionThread(self):
+        self.t0 = time.time()
+
+        while True:
+            time.sleep(0.01)
+            self.t = np.append(self.t, time.time() - self.t0)
+            self.UpdateData()
+            self.DataPlot()
+
+    def UpdateData(self):
+        self.NanoControl.UpdateData()
+
+    def DataPlot(self):
+        pass
 
     def GetPorts(self):
-
         if WINDOWS:
             bitmask = ctypes.windll.kernel32.GetLogicalDrives()
 
@@ -79,14 +105,6 @@ class RTDAQApp(QtWidgets.QDialog):
                 self.NanoControl.AIOUSB.GetDeviceSerialNumber(-3, ctypes.byref(sn))
                 self.ui.lPorts.addItem("ACCES USB-AO16-16A  Serial: "+str(sn.value))
 
-    def NanoWindowShow(self):
-        if self.NanoControl.bShow:
-            self.NanoControl.hide()
-            self.NanoControl.bShow = False
-        else:
-            self.NanoControl.show()
-            self.NanoControl.bShow = True
-
     def VideoShow(self):
         if self.VidWin.bShow:
             self.VidWin.hide()
@@ -95,19 +113,35 @@ class RTDAQApp(QtWidgets.QDialog):
             self.VidWin.show()
             self.VidWin.bShow = True
 
+    def NanoWindowShow(self):
+        if self.NanoControl.bShow:
+            self.NanoControl.hide()
+            self.NanoControl.bShow = False
+        else:
+            self.NanoControl.show()
+            self.NanoControl.bShow = True
+
+    def ElementsShow(self):
+        if self.Elements.bShow:
+            self.Elements.hide()
+            self.Elements.bShow = False
+        else:
+            self.Elements.show()
+            self.Elements.bShow = True
+
     def Close(self):
         self.VidWin.bCanClose = self.NanoControl.bCanClose = True
         self.VidWin.close()
         self.NanoControl.close()
-        self.EDL.close()
+        self.Elements.close()
 
     def closeEvent(self, event):
-        reply = QtGui.QMessageBox.question(self,
+        reply = QtWidgets.QMessageBox.question(self,
                                            'RTDAQ Quit all',
                                            "Quit?",
-                                           QtGui.QMessageBox.Yes,
-                                           QtGui.QMessageBox.No)
-        if reply == QtGui.QMessageBox.Yes:
+                                           QtWidgets.QMessageBox.Yes,
+                                           QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes:
             self.Close()
             event.accept()
         else:

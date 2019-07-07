@@ -6,6 +6,7 @@ E.Yafuso
 Latest revision, June 2019
 """
 
+import os
 import edl_py
 import edl_py_constants as epc
 from localtools import ElementsData
@@ -18,7 +19,11 @@ import threading, time
 class EDL(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
-        Ui_EDL = uic.loadUiType("EDLui.ui")[0]
+        path = os.path.abspath("") + '\\EDL\\EDLui.ui'
+        try:
+            Ui_EDL = uic.loadUiType(path)[0]
+        except:
+            Ui_EDL = uic.loadUiType('EDLui.ui')[0]
         pyqtgraph.setConfigOption('background', 'k')
         self.ui = Ui_EDL()
         self.ui.setupUi(self)
@@ -51,7 +56,7 @@ class EDL(QtWidgets.QMainWindow):
         self.SetPotential()
 
         # User settings, threshold for event detection
-        self.DetectionThreshold
+        self.DetectionThreshold = 0
         self.bThresholdPositive = True
         self.ui.sbThreshold.setRange(-500, 500)
         self.ui.sbThreshold.setValue(0)
@@ -100,7 +105,6 @@ class EDL(QtWidgets.QMainWindow):
         self.ui.sbMoveX.valueChanged.connect(self.SetNano)
         self.ui.sbMoveY.valueChanged.connect(self.SetNano)
         self.ui.sbMoveZ.valueChanged.connect(self.SetNano)
-
         #Signals to slots (Tab 3)
         self.ui.actionOpen_Data_File_to_View.triggered.connect(self.FileDialog)
 
@@ -153,15 +157,12 @@ class EDL(QtWidgets.QMainWindow):
         # Detect devices and set acquisition flag accordingly
         self.DetectandConnectDevices()
 
-        #Start acquisition loop thread (using data generator if debugging and no e4 connected)
-        self.DAQThread = threading.Thread(target=self.DataAcquisitionThread)
-        self.DAQThread.start()
         if self.bAcquiring == False:
             QtWidgets.QMessageBox.information(self,
                                               'Data Acquisition Notice',
                                               "e4 acquisition thread not initiated. Must restart to capture data.")
 
-        # InitiaL graph tab should only have Ch1 data graph showing.
+        # Initial graph tab should only have Ch1 data graph showing.
         self.ui.VhData.hide()
         self.ui.lVhold.hide()
         self.ui.Ch2Data.hide()
@@ -370,71 +371,73 @@ class EDL(QtWidgets.QMainWindow):
                                                "Elements Header Files (*.edh)")[0]
         self.ED = ElementsData(self.filename)
 
-    def DataAcquisitionThread(self):
+    def InitializeThread(self):
         status = edl_py.EdlDeviceStatus_t()
         readPacketsNum = [0]
-        time.sleep(0.5)
         res = self.edl.purgeData()
         if self.edl.purgeData() != epc.EdlPySuccess and not self.bAcquiring and not __debug__:
             QtWidgets.QMessageBox.information(self,
                                               'Elements Connection Error',
                                               "Old Data purge error")
             return res
+
+    def UpdateData(self):
+        # Get number of available data packets EdlDeviceStatus_t::availableDataPackets.
+        res = self.edl.getDeviceStatus(status)
+        if res != epc.EdlPySuccess:
+            QtWidgets.QMessageBox.information(self,
+                                              'Elements Connection Error',
+                                              "Error getting device status")
+            return res
+        if status.bufferOverflowFlag or status.lostDataFlag:
+            QtWidgets.QMessageBox.information(self,
+                                              'Elements Connection Error',
+                                              "Buffer overflow, data loss.")
+        if status.availableDataPackets >= 10:
+            data = [0.0] * 0
+            res = self.edl.readData(status.availableDataPackets, readPacketsNum, data)
+            self.LatestPackets = readPacketsNum[0]
+
+            self.vHolddata = np.append(self.vHolddata, data[0::5])
+            self.ch1data = np.append(self.ch1data, data[1::5])
+            self.ch2data = np.append(self.ch2data, data[2::5])
+            self.ch3data = np.append(self.ch3data, data[3::5])
+            self.ch4data = np.append(self.ch4data, data[4::5])
+
+            start = self.t[-1] + self.t_step
+            span = (readPacketsNum[0] + 1) * self.t_step
+            stop = self.t[-1] + span
+            step = self.t_step
+            self.t = np.append(self.t, np.arange(start, stop, step))
+        else:
+            # If no read, wait 1 ms and retry.
+            time.sleep(0.001)
+
+    def DataAcquisitionThread(self):
+        self.InitializeThread()
         self.t0 = time.time()
         while self.bRun:
-            while self.bAcquiring:
-                # Get number of available data packets EdlDeviceStatus_t::availableDataPackets.
-                res = self.edl.getDeviceStatus(status)
-                if res != epc.EdlPySuccess:
-                    QtWidgets.QMessageBox.information(self,
-                                                      'Elements Connection Error',
-                                                      "Error getting device status")
-                    return res
-                if status.bufferOverflowFlag or status.lostDataFlag:
-                    QtWidgets.QMessageBox.information(self,
-                                                      'Elements Connection Error',
-                                                      "Buffer overflow, data loss.")
-                if status.availableDataPackets >= 10:
-                    data = [0.0] * 0
-                    res = self.edl.readData(status.availableDataPackets, readPacketsNum, data)
-                    self.LatestPackets = readPacketsNum[0]
-
-                    self.vHolddata = np.append(self.vHolddata, data[0::5])
-                    self.ch1data = np.append(self.ch1data, data[1::5])
-                    self.ch2data = np.append(self.ch2data, data[2::5])
-                    self.ch3data = np.append(self.ch3data, data[3::5])
-                    self.ch4data = np.append(self.ch4data, data[4::5])
-
-                    start = self.t[-1]+self.t_step
-                    span = (readPacketsNum[0]+1)*self.t_step
-                    stop = self.t[-1]+span
-                    step = self.t_step
-                    self.t = np.append(self.t,
-                                       np.arange(start, stop, step))
-                    self.DataPlot()
-                else:
-                    # If no read, wait 1 ms and retry.
-                    time.sleep(0.001)
+            if self.bAcquiring:
+                self.UpdateData()
 
             # # Debug: Data generator which assumes no e4 thus self.bAcquiring == False
-            if __debug__ and not self.bAcquiring:
-                while True:
-                    time.sleep(.01)
-                    readPacketsNum = 10
+            elif __debug__ and not self.bAcquiring:
+                time.sleep(.01)
+                readPacketsNum = 10
 
-                    start = self.t[-1] + self.t_step
-                    span = (readPacketsNum+1) * self.t_step
-                    stop = self.t[-1]+span
-                    step = self.t_step
-                    self.t = np.append(self.t,
-                                       np.arange(start, stop, step))
-                    self.vHolddata = np.sin(self.t)*100
-                    self.ch1data = np.sin(self.t+1)*100
-                    self.ch2data = np.sin(self.t+2)*100
-                    self.ch3data = np.sin(self.t+3)*100
-                    self.ch4data = np.sin(self.t+4)*100
+                start = self.t[-1] + self.t_step
+                span = (readPacketsNum+1) * self.t_step
+                stop = self.t[-1]+span
+                step = self.t_step
+                self.t = np.append(self.t,
+                                   np.arange(start, stop, step))
+                self.vHolddata = np.sin(self.t)*100
+                self.ch1data = np.sin(self.t+1)*100
+                self.ch2data = np.sin(self.t+2)*100
+                self.ch3data = np.sin(self.t+3)*100
+                self.ch4data = np.sin(self.t+4)*100
 
-                    self.DataPlot()
+            self.DataPlot()
 
     def DataPlot(self):
         if len(self.t) > self.maxLen:
@@ -459,8 +462,8 @@ class EDL(QtWidgets.QMainWindow):
         ag = QtWidgets.QDesktopWidget().availableGeometry()
         sg = QtWidgets.QDesktopWidget().screenGeometry()
         wingeo = self.geometry()
-        x = 100  # ag.width() - wingeo.width()
-        y = 100  # 2 * ag.height() - sg.height() - wingeo.height()
+        x = 200  # ag.width() - wingeo.width()
+        y = 200  # 2 * ag.height() - sg.height() - wingeo.height()
         self.move(x, y)
 
     def closeEvent(self, event):
