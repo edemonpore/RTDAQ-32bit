@@ -31,10 +31,10 @@ class EDL(QtWidgets.QMainWindow):
         self.bAcquiring = False
         self.DAQThread = None
 
+
         # Class attributes
         self.maxLen = 1000
         self.InitDataArrays()
-        self.bRecord = False
         self.DetectionThreshold = 0
         self.LatestPackets = 0
 
@@ -73,8 +73,6 @@ class EDL(QtWidgets.QMainWindow):
         self.ui.sbMoveZ.setValue(0)
 
         #Signals to slots (Tab 1)
-        self.ui.pbREC.setStyleSheet("background-color:rgb(255,0,0)")
-        self.ui.pbREC.clicked.connect(self.ToggleRecording)
         self.ui.pbCompensateDigitalOffset.clicked.connect(self.CompensateDigitalOffset)
         self.ui.showVhold.stateChanged.connect(self.ToggleChannelView)
         self.ui.showCh1.stateChanged.connect(self.ToggleChannelView)
@@ -174,6 +172,98 @@ class EDL(QtWidgets.QMainWindow):
         self.bShow = True
         self.MoveToStart()
 
+
+    def InitDataArrays(self):
+        self.vHolddata = np.zeros(1, dtype=float)
+        self.ch1data = np.zeros(1, dtype=float)
+        self.ch2data = np.zeros(1, dtype=float)
+        self.ch3data = np.zeros(1, dtype=float)
+        self.ch4data = np.zeros(1, dtype=float)
+        self.t = np.zeros(1, dtype=float)
+
+    def UpdateData(self):
+        status = edl_py.EdlDeviceStatus_t()
+        readPacketsNum = [0]
+        res = self.edl.purgeData()
+        if self.edl.purgeData() != epc.EdlPySuccess and not self.bAcquiring and not __debug__:
+            print('Elements Old Data purge error. Result = ', res)
+
+        # Get number of available data packets EdlDeviceStatus_t::availableDataPackets.
+        res = self.edl.getDeviceStatus(status)
+        if res != epc.EdlPySuccess:
+            QtWidgets.QMessageBox.information(self,
+                                              'Elements Connection Error',
+                                              "Error getting device status")
+            return res
+        if status.bufferOverflowFlag or status.lostDataFlag:
+            print('Elements Buffer overflow, data loss. Result = ', res)
+        if status.availableDataPackets >= 10:
+            data = [0.0] * 0
+            self.edl.readData(status.availableDataPackets, readPacketsNum, data)
+            self.LatestPackets = readPacketsNum[0]
+
+            self.vHolddata = np.append(self.vHolddata, data[0::5])
+            self.ch1data = np.append(self.ch1data, data[1::5])
+            self.ch2data = np.append(self.ch2data, data[2::5])
+            self.ch3data = np.append(self.ch3data, data[3::5])
+            self.ch4data = np.append(self.ch4data, data[4::5])
+
+            start = self.t[-1] + self.t_step
+            span = (readPacketsNum[0] + 1) * self.t_step
+            stop = self.t[-1] + span
+            step = self.t_step
+            self.t = np.append(self.t, np.arange(start, stop, step))
+        else:
+            # If no read, wait 1 ms and retry.
+            time.sleep(0.001)
+
+        if __debug__ and not self.bAcquiring:
+            readPacketsNum = 10
+
+            start = self.t[-1] + self.t_step
+            span = (readPacketsNum + 1) * self.t_step
+            stop = self.t[-1] + span
+            step = self.t_step
+            self.t = np.append(self.t,
+                               np.arange(start, stop, step))
+            self.vHolddata = np.sin(self.t) * 100
+            self.ch1data = np.sin(self.t + 1) * 100
+            self.ch2data = np.sin(self.t + 2) * 100
+            self.ch3data = np.sin(self.t + 3) * 100
+            self.ch4data = np.sin(self.t + 4) * 100
+
+    def DataAcquisitionThread(self):
+        self.t[0] = time.time()
+        while self.bRun:
+            if self.bAcquiring:
+                self.UpdateData()
+
+            # # Debug: Data generator which assumes no e4 thus self.bAcquiring == False
+            elif __debug__ and not self.bAcquiring:
+                time.sleep(.01)
+                readPacketsNum = 10
+
+                start = self.t[-1] + self.t_step
+                span = (readPacketsNum+1) * self.t_step
+                stop = self.t[-1]+span
+                step = self.t_step
+                self.t = np.append(self.t,
+                                   np.arange(start, stop, step))
+                self.vHolddata = np.sin(self.t)*100
+                self.ch1data = np.sin(self.t+1)*100
+                self.ch2data = np.sin(self.t+2)*100
+                self.ch3data = np.sin(self.t+3)*100
+                self.ch4data = np.sin(self.t+4)*100
+
+            self.DataPlot()
+
+    def DataPlot(self):
+        if len(self.t) > self.maxLen:
+            self.Vhplot.setData(self.t[-self.maxLen:], self.vHolddata[-self.maxLen:])
+            self.ch1plot.setData(self.t[-self.maxLen:], self.ch1data[-self.maxLen:])
+            self.ch2plot.setData(self.t[-self.maxLen:], self.ch2data[-self.maxLen:])
+            self.ch3plot.setData(self.t[-self.maxLen:], self.ch3data[-self.maxLen:])
+            self.ch4plot.setData(self.t[-self.maxLen:], self.ch4data[-self.maxLen:])
     def DetectandConnectDevices(self):
         res = 1
         count = 0
@@ -333,33 +423,6 @@ class EDL(QtWidgets.QMainWindow):
             self.ui.Ch4Data.hide()
             self.ui.lCh4.hide()
 
-    def ToggleRecording(self):
-        if self.bRecord == False:
-            self.bRecord = True
-            self.ui.pbREC.setStyleSheet("background-color:rgb(0,255,0)")
-            self.ui.pbREC.setText("||")
-        else:
-            self.bRecord = False
-            self.ui.pbREC.setStyleSheet("background-color:rgb(255,0,0)")
-            self.ui.pbREC.setText("REC")
-            if QtWidgets.QMessageBox.question(self, 'Save data run?', "Save last run to file?",
-                                                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-                                                QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
-                savefilename = QtWidgets.QFileDialog.getSaveFileName(self,
-                                                                      'Save data to file',
-                                                                      'C:\\',
-                                                                      "Elements Header Files (*.edh)")[0]
-                self.SaveData(savefilename)
-            else: self.InitDataArrays()
-
-    def InitDataArrays(self):
-        self.vHolddata = np.zeros(1, dtype=float)
-        self.ch1data = np.zeros(1, dtype=float)
-        self.ch2data = np.zeros(1, dtype=float)
-        self.ch3data = np.zeros(1, dtype=float)
-        self.ch4data = np.zeros(1, dtype=float)
-        self.t = np.zeros(1, dtype=float)
-
     def SaveData(self, savefilename):
         savefilename = 1
 
@@ -370,82 +433,6 @@ class EDL(QtWidgets.QMainWindow):
                                                'C:\\',
                                                "Elements Header Files (*.edh)")[0]
         self.ED = ElementsData(self.filename)
-
-    def InitializeThread(self):
-        status = edl_py.EdlDeviceStatus_t()
-        readPacketsNum = [0]
-        res = self.edl.purgeData()
-        if self.edl.purgeData() != epc.EdlPySuccess and not self.bAcquiring and not __debug__:
-            QtWidgets.QMessageBox.information(self,
-                                              'Elements Connection Error',
-                                              "Old Data purge error")
-            return res
-
-    def UpdateData(self):
-        # Get number of available data packets EdlDeviceStatus_t::availableDataPackets.
-        res = self.edl.getDeviceStatus(status)
-        if res != epc.EdlPySuccess:
-            QtWidgets.QMessageBox.information(self,
-                                              'Elements Connection Error',
-                                              "Error getting device status")
-            return res
-        if status.bufferOverflowFlag or status.lostDataFlag:
-            QtWidgets.QMessageBox.information(self,
-                                              'Elements Connection Error',
-                                              "Buffer overflow, data loss.")
-        if status.availableDataPackets >= 10:
-            data = [0.0] * 0
-            res = self.edl.readData(status.availableDataPackets, readPacketsNum, data)
-            self.LatestPackets = readPacketsNum[0]
-
-            self.vHolddata = np.append(self.vHolddata, data[0::5])
-            self.ch1data = np.append(self.ch1data, data[1::5])
-            self.ch2data = np.append(self.ch2data, data[2::5])
-            self.ch3data = np.append(self.ch3data, data[3::5])
-            self.ch4data = np.append(self.ch4data, data[4::5])
-
-            start = self.t[-1] + self.t_step
-            span = (readPacketsNum[0] + 1) * self.t_step
-            stop = self.t[-1] + span
-            step = self.t_step
-            self.t = np.append(self.t, np.arange(start, stop, step))
-        else:
-            # If no read, wait 1 ms and retry.
-            time.sleep(0.001)
-
-    def DataAcquisitionThread(self):
-        self.InitializeThread()
-        self.t0 = time.time()
-        while self.bRun:
-            if self.bAcquiring:
-                self.UpdateData()
-
-            # # Debug: Data generator which assumes no e4 thus self.bAcquiring == False
-            elif __debug__ and not self.bAcquiring:
-                time.sleep(.01)
-                readPacketsNum = 10
-
-                start = self.t[-1] + self.t_step
-                span = (readPacketsNum+1) * self.t_step
-                stop = self.t[-1]+span
-                step = self.t_step
-                self.t = np.append(self.t,
-                                   np.arange(start, stop, step))
-                self.vHolddata = np.sin(self.t)*100
-                self.ch1data = np.sin(self.t+1)*100
-                self.ch2data = np.sin(self.t+2)*100
-                self.ch3data = np.sin(self.t+3)*100
-                self.ch4data = np.sin(self.t+4)*100
-
-            self.DataPlot()
-
-    def DataPlot(self):
-        if len(self.t) > self.maxLen:
-            self.Vhplot.setData(self.t[-self.maxLen:], self.vHolddata[-self.maxLen:])
-            self.ch1plot.setData(self.t[-self.maxLen:], self.ch1data[-self.maxLen:])
-            self.ch2plot.setData(self.t[-self.maxLen:], self.ch2data[-self.maxLen:])
-            self.ch3plot.setData(self.t[-self.maxLen:], self.ch3data[-self.maxLen:])
-            self.ch4plot.setData(self.t[-self.maxLen:], self.ch4data[-self.maxLen:])
 
     def DetectSignal(self, channel, high = True):
         # if high:

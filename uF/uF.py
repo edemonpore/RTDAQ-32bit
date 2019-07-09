@@ -54,7 +54,7 @@ class uF(QtWidgets.QMainWindow):
         if error:
             QtWidgets.QMessageBox.information(self, 'Elveflow ERROR', "Digital flow sensor failure.")
             self.bAcquiring = False
-            print('error adding digit flow sensor:%d' % error)
+            print('Error adding digital flow sensor: %d' % error)
 
         self.Cal = (c_double * 1000)()  # calibration should have 1000 elements
         error = self.Elveflow_Calibration_Default(byref(self.Cal), 1000)
@@ -99,7 +99,6 @@ class uF(QtWidgets.QMainWindow):
         self.ui.vsP.valueChanged.connect(self.setPressure)
 
         self.bShow = True
-        self.bCanClose = True
         self.MoveToStart()
 
     def MoveToStart(self):
@@ -123,6 +122,7 @@ class uF(QtWidgets.QMainWindow):
         error = self.OB1_Set_Press(self.Instr_ID.value, set_channel, set_pressure, byref(self.Cal), 1000)
 
     def UpdateData(self):
+        data_in = c_double()
         if self.OB1_Get_Press(self.Instr_ID.value, c_int32(1), 1, self.Cal, byref(data_in), 1000):
             self.Pdata = np.append(self.Pdata, 0)
         else:
@@ -131,10 +131,16 @@ class uF(QtWidgets.QMainWindow):
             self.Flowdata = np.append(self.Flowdata, 0)
         else:
             self.Flowdata = np.append(self.Flowdata, float(data_in.value))
-        self.Psetdata = np.append(Psetdata, self.pset)
+        self.Psetdata = np.append(self.Psetdata, self.pset)
+
+        if __debug__ and not self.bAcquiring:
+            self.t = np.append(self.t, time.time())
+            self.Pdata = np.append(self.Pdata, (np.sin(self.t[-1])+1)*3000)
+            self.Flowdata = np.append(self.Flowdata, (np.sin(self.t[-1] + 1)+1))
+            self.Psetdata = np.append(self.Psetdata, self.pset)
+            self.DataPlot()
 
     def DataAcquisitionThread(self):
-        data_in = c_double()
         self.t0 = time.time()
         while (self.bAcquiring):
             time.sleep(0.01)
@@ -298,10 +304,10 @@ class uF(QtWidgets.QMainWindow):
             self.setPI()
 
     def closeEvent(self, event):
-        if self.bCanClose:
-            self.bAcquiring = False
-            if self.DAQThread and self.DAQThread != None:
-                self.DAQThread.join()
+        self.bAcquiring = False
+        if self.DAQThread and self.DAQThread != None:
+            self.DAQThread.join()
+
             event.accept()
         else:
             self.bShow = False

@@ -2,23 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="130a2fc3-7724-4cee-9acc-f95653ea6a93" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/RTDAQ-32bit.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/RTDAQ-32bit.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ACCES/ACCES.py" beforeDir="false" afterPath="$PROJECT_DIR$/ACCES/ACCES.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACCES/ACCESui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/ACCES/ACCESui.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACCES/debugACCES.py" beforeDir="false" afterPath="$PROJECT_DIR$/ACCES/debugACCES.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACCESui.ui" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/EDL/EDL.py" beforeDir="false" afterPath="$PROJECT_DIR$/EDL/EDL.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EDL/EDLui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/EDL/EDLui.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EDL/debugEDL.py" beforeDir="false" afterPath="$PROJECT_DIR$/EDL/debugEDL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EDLui.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LumeneraCam/Lucam.py" beforeDir="false" afterPath="$PROJECT_DIR$/LumeneraCam/Lucam.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RTDAQ-32bit.py" beforeDir="false" afterPath="$PROJECT_DIR$/RTDAQ-32bit.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RTDAQ-32bitui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/RTDAQ-32bitui.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VidWindow.ui" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Video/Video.py" beforeDir="false" afterPath="$PROJECT_DIR$/Video/Video.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uF/debuguF.py" beforeDir="false" afterPath="$PROJECT_DIR$/uF/debuguF.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/uF/uF.py" beforeDir="false" afterPath="$PROJECT_DIR$/uF/uF.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -32,8 +22,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RTDAQ-32bit.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="623">
-              <caret line="83" column="37" selection-start-line="83" selection-start-column="37" selection-end-line="83" selection-end-column="37" />
+            <state relative-caret-position="402">
+              <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
               <folding>
                 <element signature="e#296#312#0" expanded="true" />
               </folding>
@@ -44,8 +34,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Video/Video.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="867">
-              <caret line="54" selection-start-line="54" selection-end-line="54" />
+            <state relative-caret-position="68">
+              <caret line="4" column="3" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
               <folding>
                 <element signature="e#66#75#0" expanded="true" />
               </folding>
@@ -56,8 +46,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/uF/uF.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1142">
-              <caret line="101" column="29" selection-start-line="101" selection-start-column="29" selection-end-line="101" selection-end-column="29" />
+            <state relative-caret-position="1764">
+              <caret line="140" selection-start-line="140" selection-end-line="140" />
               <folding>
                 <element signature="e#293#302#0" expanded="true" />
               </folding>
@@ -66,24 +56,24 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/EDL/EDL.py">
+        <entry file="file://$PROJECT_DIR$/ACCES/ACCES.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+            <state relative-caret-position="578">
+              <caret line="40" selection-start-line="40" selection-end-line="44" selection-end-column="45" />
               <folding>
-                <element signature="e#193#202#0" expanded="true" />
+                <element signature="e#181#190#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/ACCES/ACCES.py">
+        <entry file="file://$PROJECT_DIR$/EDL/EDL.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2295">
-              <caret line="34" column="26" selection-start-line="34" selection-start-column="26" selection-end-line="34" selection-end-column="26" />
+            <state relative-caret-position="1700">
+              <caret line="166" column="27" lean-forward="true" selection-start-line="166" selection-start-column="27" selection-end-line="166" selection-end-column="27" />
               <folding>
-                <element signature="e#181#190#0" expanded="true" />
+                <element signature="e#193#202#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -101,6 +91,11 @@
       <find>maxLen</find>
       <find>print</find>
       <find>bCanClose</find>
+      <find>bCan</find>
+      <find>t0</find>
+      <find>pbr</find>
+      <find>error adding d</find>
+      <find>SaveData</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -110,11 +105,12 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/uF/Python_32/Elveflow32.py" />
-        <option value="$PROJECT_DIR$/RTDAQ-32bit.py" />
-        <option value="$PROJECT_DIR$/EDL/EDL.py" />
         <option value="$PROJECT_DIR$/Video/Video.py" />
+        <option value="$PROJECT_DIR$/EDL/EDL.py" />
         <option value="$PROJECT_DIR$/ACCES/ACCES.py" />
         <option value="$PROJECT_DIR$/uF/uF.py" />
+        <option value="$PROJECT_DIR$/localtools.py" />
+        <option value="$PROJECT_DIR$/RTDAQ-32bit.py" />
       </list>
     </option>
   </component>
@@ -128,17 +124,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="RTDAQ-32bit" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RTDAQ-32bit" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="Scope">
         <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
           <expand>
@@ -165,11 +150,22 @@
           <select />
         </subPane>
       </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="RTDAQ-32bit" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RTDAQ-32bit" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/ACCES/debugACCES.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../test/test.py" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -235,7 +231,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.13483872" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.19032258" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.19032258" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -313,36 +309,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Video/Video.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="867">
-          <caret line="54" selection-start-line="54" selection-end-line="54" />
-          <folding>
-            <element signature="e#66#75#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/EDL/EDL.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="e#193#202#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RTDAQ-32bit.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="623">
-          <caret line="83" column="37" selection-start-line="83" selection-start-column="37" selection-end-line="83" selection-end-column="37" />
-          <folding>
-            <element signature="e#296#312#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ACCES/debugACCES.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -353,22 +319,60 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uF/uF.py">
+    <entry file="file://$PROJECT_DIR$/localtools.py" />
+    <entry file="file://$PROJECT_DIR$/Video/Video.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1142">
-          <caret line="101" column="29" selection-start-line="101" selection-start-column="29" selection-end-line="101" selection-end-column="29" />
+        <state relative-caret-position="68">
+          <caret line="4" column="3" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
           <folding>
-            <element signature="e#293#302#0" expanded="true" />
+            <element signature="e#66#75#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ACCES/ACCES.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2295">
-          <caret line="34" column="26" selection-start-line="34" selection-start-column="26" selection-end-line="34" selection-end-column="26" />
+        <state relative-caret-position="578">
+          <caret line="40" selection-start-line="40" selection-end-line="44" selection-end-column="45" />
           <folding>
             <element signature="e#181#190#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../test/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="34" selection-start-line="21" selection-start-column="34" selection-end-line="21" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uF/uF.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1764">
+          <caret line="140" selection-start-line="140" selection-end-line="140" />
+          <folding>
+            <element signature="e#293#302#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RTDAQ-32bit.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
+          <folding>
+            <element signature="e#296#312#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/EDL/EDL.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1700">
+          <caret line="166" column="27" lean-forward="true" selection-start-line="166" selection-start-column="27" selection-end-line="166" selection-end-column="27" />
+          <folding>
+            <element signature="e#193#202#0" expanded="true" />
           </folding>
         </state>
       </provider>

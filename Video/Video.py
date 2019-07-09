@@ -36,7 +36,6 @@ class VidWin(QtWidgets.QMainWindow):
         self.doLiveVideo()
 
         self.bShow = True
-        self.bCanClose = False
 
         self.MoveToStart()
 
@@ -94,10 +93,9 @@ class VidWin(QtWidgets.QMainWindow):
         return super(VidWin, self).eventFilter(source, event)
 
     def closeEvent(self, event):
-        if self.bCanClose:
-            self.bAcquiring = False
-            if self.CamThread != None:
-                self.CamThread.join()
+        self.bAcquiring = False
+        if self.CamThread != None:
+            self.CamThread.join()
             event.accept()
         else:
             self.bShow = False

@@ -36,17 +36,19 @@ class ACCES(QtWidgets.QMainWindow):
 
         # Class attributes
         self.bAcquiring = False
+        self.bManual = True
         self.maxLen = 1000
-        self.xsetdata = np.zeros(1, dtype=int)
-        self.ysetdata = np.zeros(1, dtype=int)
-        self.zsetdata = np.zeros(1, dtype=int)
+        self.xsetdata = np.zeros(1, dtype=float)
+        self.ysetdata = np.zeros(1, dtype=float)
+        self.zsetdata = np.zeros(1, dtype=float)
         self.xdata = np.zeros(1, dtype=float)
         self.ydata = np.zeros(1, dtype=float)
         self.t = np.zeros(1, dtype=float)
 
-        self.xset = 50
-        self.yset = 50
-        self.zset = 50
+        # Set stage at zero position
+        self.xset = 0.0
+        self.yset = 0.0
+        self.zset = 0.0
         self.setPI()
 
         self.px = self.ui.XData.addPlot()
@@ -111,19 +113,22 @@ class ACCES(QtWidgets.QMainWindow):
         y = 100  # 2 * ag.height() - sg.height() - wingeo.height()
         self.move(x, y)
 
-    def moveAxes(self, dx, dy, dz):
-        self.ui.vsX.setValue(self.ui.vsX.value() + dx)
-        self.ui.vsY.setValue(self.ui.vsX.value() + dy)
-        self.ui.vsZ.setValue(self.ui.vsX.value() + dz)
-        self.setPI()
-
     def setPI(self):
-        self.xset = self.ui.vsX.value()
-        self.ui.lxset.setText(str(self.xset))
-        self.yset = self.ui.vsY.value()
-        self.ui.lyset.setText(str(self.yset))
-        self.zset = self.ui.vsZ.value()
-        self.ui.lzset.setText(str(self.zset))
+        if self.bManual:
+            self.xset = self.ui.vsX.value()
+            self.ui.lxset.setText(str(self.xset))
+            self.yset = self.ui.vsY.value()
+            self.ui.lyset.setText(str(self.yset))
+            self.zset = self.ui.vsZ.value()
+            self.ui.lzset.setText(str(self.zset))
+        else:
+            self.ui.vsX.setValue(self.xset)
+            self.ui.lxset.setText(str(self.xset))
+            self.ui.vsY.setValue(self.yset)
+            self.ui.lyset.setText(str(self.yset))
+            self.ui.vsZ.setValue(self.zset)
+            self.ui.lzset.setText(str(self.zset))
+            self.bManual = True
 
         if self.bAcquiring:
             DAQin = ctypes.c_int16()
@@ -133,6 +138,23 @@ class ACCES(QtWidgets.QMainWindow):
             result = self.AIOUSB.DACDirect(-3, 1, DAQin)
             DAQin.value = int(self.zset * 65535 / 100)
             result = self.AIOUSB.DACDirect(-3, 2, DAQin)
+
+    def moveAxes(self, dx, dy, dz):
+        self.bManual = False
+
+        self.xset = self.xset + dx
+        if self.xset > 100.0: self.xset = 100.0
+        if self.xset < 0.0: self.xset = 0.0
+
+        self.yset = self.yset + dy
+        if self.yset > 100.0: self.yset = 100.0
+        if self.yset < 0.0: self.yset = 0.0
+
+        self.zset = self.zset + dz
+        if self.zset > 100.0: self.zset = 100.0
+        if self.zset < 0.0: self.zset = 0.0
+
+        self.setPI()
 
     def UpdateData(self):
         data_in = ctypes.c_longdouble()  # double-precision IEEE floating point data from ADC
@@ -147,6 +169,14 @@ class ACCES(QtWidgets.QMainWindow):
         self.xsetdata = np.append(self.xsetdata, self.xset)
         self.ysetdata = np.append(self.ysetdata, self.yset)
         self.zsetdata = np.append(self.zsetdata, self.zset)
+
+        if __debug__ and not self.bAcquiring:
+            self.t = np.append(self.t, time.time())
+            self.xdata = np.append(self.xdata, (np.sin(self.t[-1])+1)*50)
+            self.ydata = np.append(self.ydata, (np.sin(self.t[-1] + 1)+1)*50)
+            self.xsetdata = np.append(self.xsetdata, self.xset)
+            self.ysetdata = np.append(self.ysetdata, self.yset)
+            self.zsetdata = np.append(self.zsetdata, self.zset)
 
     def DataAcquisitionThread(self):
         self.t0 = time.time()

@@ -47,10 +47,16 @@ class RTDAQApp(QtWidgets.QDialog):
         self.bAcquiring = False
 
         # Signals to slots
+        self.ui.pbREC.setStyleSheet("background-color:rgb(255,0,0)")
+        self.ui.pbREC.clicked.connect(self.ToggleRecording)
         self.ui.bGetPorts.clicked.connect(self.GetPorts)
         self.ui.bVideo.clicked.connect(self.VideoShow)
         self.ui.bNanoControl.clicked.connect(self.NanoWindowShow)
         self.ui.bElements.clicked.connect(self.ElementsShow)
+        self.ui.buF.clicked.connect(self.uFluidicsShow)
+
+        # Class attributes
+        self.bRecord = False
 
         # Real-time data...
         self.t = np.zeros(1, dtype=float)
@@ -72,19 +78,88 @@ class RTDAQApp(QtWidgets.QDialog):
         self.DAQThread.start()
 
     def DataAcquisitionThread(self):
-        self.t0 = time.time()
+        self.InitDataArrays()
 
         while True:
             time.sleep(0.01)
-            self.t = np.append(self.t, time.time() - self.t0)
+            self.t = np.append(self.t, time.time())
             self.UpdateData()
             self.DataPlot()
 
     def UpdateData(self):
         self.NanoControl.UpdateData()
+        self.Elements.UpdateData()
+        self.uF.UpdateData()
+        if self.bRecord:
+            self.ui.pbREC.setText("RECORDING: ", self.t[-1])
 
     def DataPlot(self):
-        pass
+        self.NanoControl.DataPlot()
+        self.Elements.DataPlot()
+        self.uF.DataPlot()
+
+    def ToggleRecording(self):
+        if self.bRecord == False:
+            self.bRecord = True
+            self.ui.pbREC.setStyleSheet("background-color:rgb(0,255,0)")
+            self.ui.pbREC.setText("RECORDING")
+            self.InitDataArrays()
+        else:
+            self.bRecord = False
+            self.ui.pbREC.setStyleSheet("background-color:rgb(255,0,0)")
+            self.ui.pbREC.setText("RECORDING STOPPED")
+            if QtWidgets.QMessageBox.question(self, 'Save data run?', "Save last run to file?",
+                                                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                                QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
+                savefilename = QtWidgets.QFileDialog.getSaveFileName(self,
+                                                                      'Save data to file',
+                                                                      'C:\\',
+                                                                      "Demonpore Data Files (*.csv)")[0]
+                self.SaveData(savefilename)
+
+    def InitDataArrays(self):
+        self.NanoControl.xsetdata = np.zeros(1, dtype=float)
+        self.NanoControl.ysetdata = np.zeros(1, dtype=float)
+        self.NanoControl.zsetdata = np.zeros(1, dtype=float)
+        self.NanoControl.xdata = np.zeros(1, dtype=float)
+        self.NanoControl.ydata = np.zeros(1, dtype=float)
+
+        self.Elements.vHolddata = np.zeros(1, dtype=float)
+        self.Elements.ch1data = np.zeros(1, dtype=float)
+        self.Elements.ch2data = np.zeros(1, dtype=float)
+        self.Elements.ch3data = np.zeros(1, dtype=float)
+        self.Elements.ch4data = np.zeros(1, dtype=float)
+        self.Elements.t = np.zeros(1, dtype=float)
+
+        self.uF.Psetdata = np.zeros(1, dtype=float)
+        self.uF.Pdata = np.zeros(1, dtype=float)
+        self.uF.Flowdata = np.zeros(1, dtype=float)
+
+        self.t[0] = self.Elements.t[0] = time.time()
+
+    def SaveData(self, savefilename):
+        DataToSave = np.column_stack((self.t,
+                                      self.Elements.t,
+                                      self.Elements.vHolddata,
+                                      self.Elements.ch1data,
+                                      self.Elements.ch2data,
+                                      self.Elements.ch3data,
+                                      self.Elements.ch4data,
+                                      self.NanoControl.xsetdata,
+                                      self.NanoControl.ysetdata,
+                                      self.NanoControl.zsetdata,
+                                      self.NanoControl.xdata,
+                                      self.NanoControl.ydata,
+                                      self.uF.Psetdata,
+                                      self.uF.Pdata,
+                                      self.uF.Flowdata))
+
+        np.savetxt(savefilename,
+                   DataToSave,
+                   delimiter=',',
+                   header='Time,PCATime,VHold,PCA1,PCA2,PCA3,PCA4,XSET,YSET,ZSET,XPOS,YPOS,PSET,PDAT,FLOW',
+                   comments='')
+
 
     def GetPorts(self):
         if WINDOWS:
@@ -129,11 +204,19 @@ class RTDAQApp(QtWidgets.QDialog):
             self.Elements.show()
             self.Elements.bShow = True
 
+    def uFluidicsShow(self):
+        if self.uF.bShow:
+            self.uF.hide()
+            self.uF.bShow = False
+        else:
+            self.uF.show()
+            self.uF.bShow = True
+
     def Close(self):
-        self.VidWin.bCanClose = self.NanoControl.bCanClose = True
         self.VidWin.close()
         self.NanoControl.close()
         self.Elements.close()
+        self.uF.close()
 
     def closeEvent(self, event):
         reply = QtWidgets.QMessageBox.question(self,
@@ -142,6 +225,8 @@ class RTDAQApp(QtWidgets.QDialog):
                                            QtWidgets.QMessageBox.Yes,
                                            QtWidgets.QMessageBox.No)
         if reply == QtWidgets.QMessageBox.Yes:
+            if self.DAQThread and self.DAQThread != None:
+                self.DAQThread.join()
             self.Close()
             event.accept()
         else:
