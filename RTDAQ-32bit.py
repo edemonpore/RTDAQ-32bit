@@ -68,35 +68,35 @@ class RTDAQApp(QtWidgets.QDialog):
         self.VidWin.show()
         self.NanoControl = ACCES.ACCES()
         self.NanoControl.show()
-        self.Elements = EDL.EDL()
-        self.Elements.show()
         self.uF = uF.uF()
         self.uF.show()
+        self.Elements = EDL.EDL()
+        self.Elements.show()
 
         # Start real-time data acquisition thread
-        self.DAQThread = threading.Thread(target=self.DataAcquisitionThread, daemon=True)
-        self.DAQThread.start()
+        self.DAQProcess = threading.Thread(target=self.DataAcquisitionProcess)
+        self.DAQProcess.start()
 
-    def DataAcquisitionThread(self):
+    def DataAcquisitionProcess(self):
         self.InitDataArrays()
-
+        self.t0 = time.time()
         while True:
             time.sleep(0.01)
-            self.t = np.append(self.t, time.time())
-            self.UpdateData()
+            self.UpdateData(self.t)
             self.DataPlot()
 
-    def UpdateData(self):
-        self.NanoControl.UpdateData()
+    def UpdateData(self, t):
+        self.t = np.append(self.t, time.time()-self.t0)
+        self.NanoControl.UpdateData(self.t)
         self.Elements.UpdateData()
-        self.uF.UpdateData()
+        self.uF.UpdateData(self.t)
         if self.bRecord:
             self.ui.pbREC.setText("RECORDING: ", self.t[-1])
 
     def DataPlot(self):
-        self.NanoControl.DataPlot()
+        self.NanoControl.DataPlot(self.t)
         self.Elements.DataPlot()
-        self.uF.DataPlot()
+        self.uF.DataPlot(self.t)
 
     def ToggleRecording(self):
         if self.bRecord == False:
@@ -124,12 +124,7 @@ class RTDAQApp(QtWidgets.QDialog):
         self.NanoControl.xdata = np.zeros(1, dtype=float)
         self.NanoControl.ydata = np.zeros(1, dtype=float)
 
-        self.Elements.vHolddata = np.zeros(1, dtype=float)
-        self.Elements.ch1data = np.zeros(1, dtype=float)
-        self.Elements.ch2data = np.zeros(1, dtype=float)
-        self.Elements.ch3data = np.zeros(1, dtype=float)
-        self.Elements.ch4data = np.zeros(1, dtype=float)
-        self.Elements.t = np.zeros(1, dtype=float)
+        self.Elements.InitDataArrays()
 
         self.uF.Psetdata = np.zeros(1, dtype=float)
         self.uF.Pdata = np.zeros(1, dtype=float)
@@ -225,8 +220,8 @@ class RTDAQApp(QtWidgets.QDialog):
                                            QtWidgets.QMessageBox.Yes,
                                            QtWidgets.QMessageBox.No)
         if reply == QtWidgets.QMessageBox.Yes:
-            if self.DAQThread and self.DAQThread != None:
-                self.DAQThread.join()
+            if self.DAQProcess and self.DAQThread != None:
+                self.DAQProcess.join()
             self.Close()
             event.accept()
         else:

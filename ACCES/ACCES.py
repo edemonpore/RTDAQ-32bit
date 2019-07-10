@@ -32,7 +32,7 @@ class ACCES(QtWidgets.QMainWindow):
         self.AIOUSB = ctypes.CDLL("AIOUSB")
         self.AIOUSB.ADC_GetChannelV.argtypes = (ctypes.c_ulong, ctypes.c_ulong, ctypes.POINTER(ctypes.c_double))
         self.AIOUSB.ADC_GetChannelV.restype = ctypes.c_ulong
-        self.DAQThread = 0
+        self.DAQProcess = 0
 
         # Class attributes
         self.bAcquiring = False
@@ -156,54 +156,65 @@ class ACCES(QtWidgets.QMainWindow):
 
         self.setPI()
 
-    def UpdateData(self):
-        data_in = ctypes.c_longdouble()  # double-precision IEEE floating point data from ADC
-        if self.AIOUSB.ADC_GetChannelV(-3, 0, ctypes.byref(data_in)) is 0:
-            self.xdata = np.append(self.xdata, float(data_in.value) * 20)  # Convert 0-5V to 0-100nm
-        else:
-            self.xdata = np.append(self.xdata, 0)
-        if self.AIOUSB.ADC_GetChannelV(-3, 1, ctypes.byref(data_in)) is 0:
-            self.ydata = np.append(self.ydata, float(data_in.value) * 20)
-        else:
-            self.ydata = np.append(self.ydata, 0)
-        self.xsetdata = np.append(self.xsetdata, self.xset)
-        self.ysetdata = np.append(self.ysetdata, self.yset)
-        self.zsetdata = np.append(self.zsetdata, self.zset)
-
-        if __debug__ and not self.bAcquiring:
-            self.t = np.append(self.t, time.time())
-            self.xdata = np.append(self.xdata, (np.sin(self.t[-1])+1)*50)
-            self.ydata = np.append(self.ydata, (np.sin(self.t[-1] + 1)+1)*50)
+    def UpdateData(self, t):
+        if self.bAcquiring:
+            data_in = ctypes.c_longdouble()  # double-precision IEEE floating point data from ADC
+            if self.AIOUSB.ADC_GetChannelV(-3, 0, ctypes.byref(data_in)) is 0:
+                self.xdata = np.append(self.xdata, float(data_in.value) * 20)  # Convert 0-5V to 0-100nm
+            else:
+                self.xdata = np.append(self.xdata, 0)
+            if self.AIOUSB.ADC_GetChannelV(-3, 1, ctypes.byref(data_in)) is 0:
+                self.ydata = np.append(self.ydata, float(data_in.value) * 20)
+            else:
+                self.ydata = np.append(self.ydata, 0)
             self.xsetdata = np.append(self.xsetdata, self.xset)
             self.ysetdata = np.append(self.ysetdata, self.yset)
             self.zsetdata = np.append(self.zsetdata, self.zset)
 
-    def DataAcquisitionThread(self):
+        if __debug__ and not self.bAcquiring:
+            self.xdata = np.append(self.xdata, (np.sin(t[-1]) + 1) * 50)
+            self.ydata = np.append(self.ydata, (np.sin(t[-1] + 1) + 1) * 50)
+            self.xsetdata = np.append(self.xsetdata, self.xset)
+            self.ysetdata = np.append(self.ysetdata, self.yset)
+            self.zsetdata = np.append(self.zsetdata, self.zset)
+
+    def DataAcquisitionProcess(self):
         self.t0 = time.time()
 
         while (self.bAcquiring):
             time.sleep(0.01)
-            self.t = np.append(self.t, time.time()-self.t0)
-            self.UpdateData()
-            self.DataPlot()
+            self.t = np.append(self.t, time.time() - self.t0)
+            data_in = ctypes.c_longdouble()  # double-precision IEEE floating point data from ADC
+            if self.AIOUSB.ADC_GetChannelV(-3, 0, ctypes.byref(data_in)) is 0:
+                self.xdata = np.append(self.xdata, float(data_in.value) * 20)  # Convert 0-5V to 0-100nm
+            else:
+                self.xdata = np.append(self.xdata, 0)
+            if self.AIOUSB.ADC_GetChannelV(-3, 1, ctypes.byref(data_in)) is 0:
+                self.ydata = np.append(self.ydata, float(data_in.value) * 20)
+            else:
+                self.ydata = np.append(self.ydata, 0)
+            self.xsetdata = np.append(self.xsetdata, self.xset)
+            self.ysetdata = np.append(self.ysetdata, self.yset)
+            self.zsetdata = np.append(self.zsetdata, self.zset)
+            self.DataPlot(self.t)
 
         if __debug__ and not self.bAcquiring:
             while True:
                 time.sleep(.01)
                 self.t = np.append(self.t, time.time() - self.t0)
-                self.xdata = np.append(self.xdata, (np.sin(self.t[-1])+1)*50)
-                self.ydata = np.append(self.ydata, (np.sin(self.t[-1] + 1)+1)*50)
+                self.xdata = np.append(self.xdata, (np.sin(self.t[-1]) + 1) * 50)
+                self.ydata = np.append(self.ydata, (np.sin(self.t[-1] + 1) + 1) * 50)
                 self.xsetdata = np.append(self.xsetdata, self.xset)
                 self.ysetdata = np.append(self.ysetdata, self.yset)
                 self.zsetdata = np.append(self.zsetdata, self.zset)
-                self.DataPlot()
+                self.DataPlot(self.t)
 
-    def DataPlot(self):
-        self.xplot.setData(self.t[-self.maxLen:], self.xdata[-self.maxLen:])
-        self.xsetplot.setData(self.t[-self.maxLen:], self.xsetdata[-self.maxLen:])
-        self.yplot.setData(self.t[-self.maxLen:], self.ydata[-self.maxLen:])
-        self.ysetplot.setData(self.t[-self.maxLen:], self.ysetdata[-self.maxLen:])
-        self.zsetplot.setData(self.t[-self.maxLen:], self.zsetdata[-self.maxLen:])
+    def DataPlot(self, t):
+        self.xplot.setData(t[-self.maxLen:], self.xdata[-self.maxLen:])
+        self.xsetplot.setData(t[-self.maxLen:], self.xsetdata[-self.maxLen:])
+        self.yplot.setData(t[-self.maxLen:], self.ydata[-self.maxLen:])
+        self.ysetplot.setData(t[-self.maxLen:], self.ysetdata[-self.maxLen:])
+        self.zsetplot.setData(t[-self.maxLen:], self.zsetdata[-self.maxLen:])
 
     def OpenScriptDialog(self):
         self.filename = QtWidgets.QFileDialog.getOpenFileName(self,
@@ -260,6 +271,7 @@ class ACCES(QtWidgets.QMainWindow):
 
     def closeEvent(self, event):
         self.bAcquiring = False
-        if self.DAQThread and self.DAQThread != None:
-            self.DAQThread.join()
+        if self.DAQProcess and self.DAQProcess != None:
+            self.DAQProcess.join()
         event.accept()
+

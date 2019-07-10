@@ -182,6 +182,22 @@ class EDL(QtWidgets.QMainWindow):
         self.t = np.zeros(1, dtype=float)
 
     def UpdateData(self):
+        if __debug__ and not self.bAcquiring:
+            readPacketsNum = 10
+
+            start = self.t[-1] + self.t_step
+            span = (readPacketsNum + 1) * self.t_step
+            stop = self.t[-1] + span
+            step = self.t_step
+            self.t = np.append(self.t,
+                               np.arange(start, stop, step))
+            self.vHolddata = np.sin(self.t) * 100
+            self.ch1data = np.sin(self.t + 1) * 100
+            self.ch2data = np.sin(self.t + 2) * 100
+            self.ch3data = np.sin(self.t + 3) * 100
+            self.ch4data = np.sin(self.t + 4) * 100
+            return
+
         status = edl_py.EdlDeviceStatus_t()
         readPacketsNum = [0]
         res = self.edl.purgeData()
@@ -217,23 +233,7 @@ class EDL(QtWidgets.QMainWindow):
             # If no read, wait 1 ms and retry.
             time.sleep(0.001)
 
-        if __debug__ and not self.bAcquiring:
-            readPacketsNum = 10
-
-            start = self.t[-1] + self.t_step
-            span = (readPacketsNum + 1) * self.t_step
-            stop = self.t[-1] + span
-            step = self.t_step
-            self.t = np.append(self.t,
-                               np.arange(start, stop, step))
-            self.vHolddata = np.sin(self.t) * 100
-            self.ch1data = np.sin(self.t + 1) * 100
-            self.ch2data = np.sin(self.t + 2) * 100
-            self.ch3data = np.sin(self.t + 3) * 100
-            self.ch4data = np.sin(self.t + 4) * 100
-
     def DataAcquisitionThread(self):
-        self.t[0] = time.time()
         while self.bRun:
             if self.bAcquiring:
                 self.UpdateData()
@@ -264,6 +264,7 @@ class EDL(QtWidgets.QMainWindow):
             self.ch2plot.setData(self.t[-self.maxLen:], self.ch2data[-self.maxLen:])
             self.ch3plot.setData(self.t[-self.maxLen:], self.ch3data[-self.maxLen:])
             self.ch4plot.setData(self.t[-self.maxLen:], self.ch4data[-self.maxLen:])
+
     def DetectandConnectDevices(self):
         res = 1
         count = 0

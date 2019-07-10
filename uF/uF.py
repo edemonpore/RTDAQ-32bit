@@ -34,7 +34,10 @@ class uF(QtWidgets.QMainWindow):
         self.ui = Ui_uF()
         self.ui.setupUi(self)
         path = os.path.abspath("") + '\\uF\\Python_32\\DLL32\\Elveflow32.dll'
-        self.Elveflow = CDLL(path)
+        try:
+            self.Elveflow = CDLL(path)
+        except:
+            self.Elveflow = CDLL(os.path.abspath("") + '\\Python_32\\DLL32\\Elveflow32.dll')
         self.bAcquiring = False
         self.DAQThread = 0
 
@@ -43,8 +46,7 @@ class uF(QtWidgets.QMainWindow):
         # Error code = 0 if initialization successful
         error = self.OB1_Initialization('01C9D9C3'.encode('ascii'), 1, 2, 4, 3, byref(self.Instr_ID))
         if error:
-            QtWidgets.QMessageBox.information(self, 'Elveflow ERROR', "Device initialization failure.")
-            print(error)
+            print("Device initialization error: ", error)
         else:
             print(self.Instr_ID.value)
             self.bAcquiring = True
@@ -121,24 +123,24 @@ class uF(QtWidgets.QMainWindow):
         set_pressure = c_double(set_pressure)  # convert to c_double
         error = self.OB1_Set_Press(self.Instr_ID.value, set_channel, set_pressure, byref(self.Cal), 1000)
 
-    def UpdateData(self):
-        data_in = c_double()
-        if self.OB1_Get_Press(self.Instr_ID.value, c_int32(1), 1, self.Cal, byref(data_in), 1000):
-            self.Pdata = np.append(self.Pdata, 0)
-        else:
-            self.Pdata = np.append(self.Pdata, float(data_in.value))
-        if self.OB1_Get_Sens_Data(self.Instr_ID.value, c_int32(1), 1, byref(data_in)):
-            self.Flowdata = np.append(self.Flowdata, 0)
-        else:
-            self.Flowdata = np.append(self.Flowdata, float(data_in.value))
-        self.Psetdata = np.append(self.Psetdata, self.pset)
+    def UpdateData(self, t):
+        if self.bAcquiring:
+            data_in = c_double()
+            if self.OB1_Get_Press(self.Instr_ID.value, c_int32(1), 1, self.Cal, byref(data_in), 1000):
+                self.Pdata = np.append(self.Pdata, 0)
+            else:
+                self.Pdata = np.append(self.Pdata, float(data_in.value))
+            if self.OB1_Get_Sens_Data(self.Instr_ID.value, c_int32(1), 1, byref(data_in)):
+                self.Flowdata = np.append(self.Flowdata, 0)
+            else:
+                self.Flowdata = np.append(self.Flowdata, float(data_in.value))
+            self.Psetdata = np.append(self.Psetdata, self.pset)
 
         if __debug__ and not self.bAcquiring:
             self.t = np.append(self.t, time.time())
-            self.Pdata = np.append(self.Pdata, (np.sin(self.t[-1])+1)*3000)
-            self.Flowdata = np.append(self.Flowdata, (np.sin(self.t[-1] + 1)+1))
+            self.Pdata = np.append(self.Pdata, (np.sin(t[-1])+1)*3000)
+            self.Flowdata = np.append(self.Flowdata, (np.sin(t[-1] + 1)+1))
             self.Psetdata = np.append(self.Psetdata, self.pset)
-            self.DataPlot()
 
     def DataAcquisitionThread(self):
         self.t0 = time.time()
@@ -146,7 +148,7 @@ class uF(QtWidgets.QMainWindow):
             time.sleep(0.01)
             self.t = np.append(self.t, time.time() - self.t0)
             self.UpdateData()
-            self.DataPlot()
+            self.DataPlot(self.t)
 
         if __debug__ and not self.bAcquiring:
             while True:
@@ -155,12 +157,12 @@ class uF(QtWidgets.QMainWindow):
                 self.Pdata = np.append(self.Pdata, (np.sin(self.t[-1])+1)*3000)
                 self.Flowdata = np.append(self.Flowdata, (np.sin(self.t[-1] + 1)+1))
                 self.Psetdata = np.append(self.Psetdata, self.pset)
-                self.DataPlot()
+                self.DataPlot(self.t)
 
-    def DataPlot(self):
-        self.pplot.setData(self.t, self.Pdata)
-        self.psetplot.setData(self.t, self.Psetdata)
-        self.flowplot.setData(self.t, self.Flowdata)
+    def DataPlot(self, t):
+        self.pplot.setData(t, self.Pdata)
+        self.psetplot.setData(t, self.Psetdata)
+        self.flowplot.setData(t, self.Flowdata)
 
     def OB1_Initialization(self, Device_Name, Reg_Ch_1, Reg_Ch_2, Reg_Ch_3, Reg_Ch_4, OB1_ID_out):
         X_OB1_Initialization = self.Elveflow.OB1_Initialization

@@ -6,7 +6,7 @@ import sys
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     window = ACCES()
-    window.DAQThread = threading.Thread(target=window.DataAcquisitionThread, daemon=True)
-    window.DAQThread.start()
+    window.DAQProcess = threading.Thread(target=window.DataAcquisitionProcess)
+    window.DAQProcess.start()
     window.show()
     sys.exit(app.exec_())
