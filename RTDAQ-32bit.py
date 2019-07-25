@@ -16,10 +16,10 @@ import ctypes
 from PyQt5 import QtWidgets, uic
 
 import threading, time
-import Video
+#import Video
 import ACCES
 import EDL
-import uF
+#import uF
 
 WINDOWS = False
 if sys.platform.startswith('win'):
@@ -50,10 +50,10 @@ class RTDAQApp(QtWidgets.QDialog):
         self.ui.pbREC.setStyleSheet("background-color:rgb(255,0,0)")
         self.ui.pbREC.clicked.connect(self.ToggleRecording)
         self.ui.bGetPorts.clicked.connect(self.GetPorts)
-        self.ui.bVideo.clicked.connect(self.VideoShow)
+       # self.ui.bVideo.clicked.connect(self.VideoShow)
         self.ui.bNanoControl.clicked.connect(self.NanoWindowShow)
         self.ui.bElements.clicked.connect(self.ElementsShow)
-        self.ui.buF.clicked.connect(self.uFluidicsShow)
+        #self.ui.buF.clicked.connect(self.uFluidicsShow)
 
         # Class attributes
         self.bRecord = False
@@ -64,12 +64,12 @@ class RTDAQApp(QtWidgets.QDialog):
         self.show()
 
         # Externally developed classes
-        self.VidWin = Video.VidWin()
-        self.VidWin.show()
+        #self.VidWin = Video.VidWin()
+        #self.VidWin.show()
         self.NanoControl = ACCES.ACCES()
         self.NanoControl.show()
-        self.uF = uF.uF()
-        self.uF.show()
+        #self.uF = uF.uF()
+        #self.uF.show()
         self.Elements = EDL.EDL()
         self.Elements.show()
 
@@ -79,7 +79,7 @@ class RTDAQApp(QtWidgets.QDialog):
 
     def DataAcquisitionProcess(self):
         self.InitDataArrays()
-        self.t0 = time.time()
+        self.t0 = self.t = time.time()
         while True:
             time.sleep(0.01)
             self.UpdateData(self.t)
@@ -89,14 +89,14 @@ class RTDAQApp(QtWidgets.QDialog):
         self.t = np.append(self.t, time.time()-self.t0)
         self.NanoControl.UpdateData(self.t)
         self.Elements.UpdateData()
-        self.uF.UpdateData(self.t)
+        #self.uF.UpdateData(self.t)
         if self.bRecord:
             self.ui.pbREC.setText("RECORDING: ", self.t[-1])
 
     def DataPlot(self):
         self.NanoControl.DataPlot(self.t)
         self.Elements.DataPlot()
-        self.uF.DataPlot(self.t)
+        #self.uF.DataPlot(self.t)
 
     def ToggleRecording(self):
         if self.bRecord == False:
@@ -126,9 +126,9 @@ class RTDAQApp(QtWidgets.QDialog):
 
         self.Elements.InitDataArrays()
 
-        self.uF.Psetdata = np.zeros(1, dtype=float)
-        self.uF.Pdata = np.zeros(1, dtype=float)
-        self.uF.Flowdata = np.zeros(1, dtype=float)
+        # self.uF.Psetdata = np.zeros(1, dtype=float)
+        # self.uF.Pdata = np.zeros(1, dtype=float)
+        # self.uF.Flowdata = np.zeros(1, dtype=float)
 
         self.t[0] = self.Elements.t[0] = time.time()
 
@@ -144,10 +144,10 @@ class RTDAQApp(QtWidgets.QDialog):
                                       self.NanoControl.ysetdata,
                                       self.NanoControl.zsetdata,
                                       self.NanoControl.xdata,
-                                      self.NanoControl.ydata,
-                                      self.uF.Psetdata,
-                                      self.uF.Pdata,
-                                      self.uF.Flowdata))
+                                      self.NanoControl.ydata))
+                                      # self.uF.Psetdata,
+                                      # self.uF.Pdata,
+                                      # self.uF.Flowdata))
 
         np.savetxt(savefilename,
                    DataToSave,
@@ -175,13 +175,13 @@ class RTDAQApp(QtWidgets.QDialog):
                 self.NanoControl.AIOUSB.GetDeviceSerialNumber(-3, ctypes.byref(sn))
                 self.ui.lPorts.addItem("ACCES USB-AO16-16A  Serial: "+str(sn.value))
 
-    def VideoShow(self):
-        if self.VidWin.bShow:
-            self.VidWin.hide()
-            self.VidWin.bShow = False
-        else:
-            self.VidWin.show()
-            self.VidWin.bShow = True
+    # def VideoShow(self):
+    #     if self.VidWin.bShow:
+    #         self.VidWin.hide()
+    #         self.VidWin.bShow = False
+    #     else:
+    #         self.VidWin.show()
+    #         self.VidWin.bShow = True
 
     def NanoWindowShow(self):
         if self.NanoControl.bShow:
@@ -199,19 +199,19 @@ class RTDAQApp(QtWidgets.QDialog):
             self.Elements.show()
             self.Elements.bShow = True
 
-    def uFluidicsShow(self):
-        if self.uF.bShow:
-            self.uF.hide()
-            self.uF.bShow = False
-        else:
-            self.uF.show()
-            self.uF.bShow = True
+    # def uFluidicsShow(self):
+    #     if self.uF.bShow:
+    #         self.uF.hide()
+    #         self.uF.bShow = False
+    #     else:
+    #         self.uF.show()
+    #         self.uF.bShow = True
 
     def Close(self):
         self.VidWin.close()
         self.NanoControl.close()
         self.Elements.close()
-        self.uF.close()
+        #self.uF.close()
 
     def closeEvent(self, event):
         reply = QtWidgets.QMessageBox.question(self,
@@ -220,7 +220,7 @@ class RTDAQApp(QtWidgets.QDialog):
                                            QtWidgets.QMessageBox.Yes,
                                            QtWidgets.QMessageBox.No)
         if reply == QtWidgets.QMessageBox.Yes:
-            if self.DAQProcess and self.DAQThread != None:
+            if self.DAQProcess != None:
                 self.DAQProcess.join()
             self.Close()
             event.accept()

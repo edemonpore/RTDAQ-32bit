@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="130a2fc3-7724-4cee-9acc-f95653ea6a93" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACCES/ACCES.py" beforeDir="false" afterPath="$PROJECT_DIR$/ACCES/ACCES.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACCES/debugACCES.py" beforeDir="false" afterPath="$PROJECT_DIR$/ACCES/debugACCES.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EDL/EDL.py" beforeDir="false" afterPath="$PROJECT_DIR$/EDL/EDL.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RTDAQ-32bit.py" beforeDir="false" afterPath="$PROJECT_DIR$/RTDAQ-32bit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uF/uF.py" beforeDir="false" afterPath="$PROJECT_DIR$/uF/uF.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,11 +13,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/RTDAQ-32bit.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
-              <caret line="75" column="46" lean-forward="true" selection-start-line="75" selection-start-column="46" selection-end-line="75" selection-end-column="46" />
+            <state relative-caret-position="270">
+              <caret line="223" selection-start-line="223" selection-end-line="223" />
               <folding>
                 <element signature="e#296#312#0" expanded="true" />
               </folding>
@@ -29,26 +25,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Video/Video.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="935">
-              <caret line="55" column="13" lean-forward="true" selection-start-line="55" selection-start-column="13" selection-end-line="55" selection-end-column="13" />
-              <folding>
-                <element signature="e#66#75#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uF/uF.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2448">
-              <caret line="150" column="32" selection-start-line="150" selection-start-column="32" selection-end-line="150" selection-end-column="32" />
-              <folding>
-                <element signature="e#293#302#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="1015">
+              <caret line="62" selection-start-line="62" selection-end-line="62" />
             </state>
           </provider>
         </entry>
@@ -56,11 +37,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ACCES/ACCES.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="606">
-              <caret line="173" column="45" selection-start-line="173" selection-start-column="45" selection-end-line="173" selection-end-column="45" />
-              <folding>
-                <element signature="e#181#190#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="3774">
+              <caret line="222" column="45" selection-start-line="222" selection-start-column="45" selection-end-line="222" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -68,11 +46,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/EDL/EDL.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="861">
-              <caret line="190" column="30" selection-start-line="190" selection-start-column="30" selection-end-line="190" selection-end-column="30" />
-              <folding>
-                <element signature="e#193#202#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-722">
+              <caret line="297" column="30" selection-start-line="297" selection-start-column="30" selection-end-line="297" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -97,6 +72,8 @@
       <find>UpdateData</find>
       <find>e4 a</find>
       <find>self.t</find>
+      <find>DataAcquisitionProcess</find>
+      <find>self.t0</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -116,9 +93,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="125" />
-    <option name="width" value="1685" />
-    <option name="height" value="2130" />
+    <option name="x" value="1999" />
+    <option name="y" value="13" />
+    <option name="width" value="1180" />
+    <option name="height" value="970" />
   </component>
   <component name="ProjectView">
     <navigator currentView="Scope" currentSubView="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope" proportions="" version="1">
@@ -141,22 +119,7 @@
           <expand>
             <path>
               <item name="RTDAQ-32bit" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="D:\0A\Consulting\Computing\Python\RTDAQ-32bit" type="442cc68d:ScopeViewTreeModel$RootNode" />
-            </path>
-            <path>
-              <item name="RTDAQ-32bit" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="D:\0A\Consulting\Computing\Python\RTDAQ-32bit" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="ACCES" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="RTDAQ-32bit" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="D:\0A\Consulting\Computing\Python\RTDAQ-32bit" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="EDL" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="RTDAQ-32bit" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="D:\0A\Consulting\Computing\Python\RTDAQ-32bit" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="uF" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
             </path>
           </expand>
           <select />
@@ -223,16 +186,16 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="100" y="0" width="1348" height="1704" extended-state="0" />
+    <frame x="1999" y="13" width="979" height="970" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22560975" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21997875" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.13483872" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.19032258" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.13390663" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.21990173" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -257,21 +220,9 @@
     <entry file="file://$PROJECT_DIR$/uF/Python_32/Example/_OB1_EX_.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../../a_DemonPore/Elveflow/SDK_V3_02_05/Python_32/Example/_OB1_EX_.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" selection-start-line="5" selection-end-line="5" selection-end-column="75" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://C:/../../a_DemonPore/Elveflow/SDK_V3_02_05/Python_32/Example/_OB1_EX_.py" />
     <entry file="file://$PROJECT_DIR$/.idea/misc.xml" />
-    <entry file="file://C:/ProgramData/Anaconda3-32bit/Lib/site-packages/pyparsing.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="3567" selection-start-line="3567" selection-end-line="3567" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3-32bit/Lib/site-packages/pyparsing.py" />
     <entry file="file://$PROJECT_DIR$/../DataAnalysis3/DataAnalysis3.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -282,27 +233,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/ProgramData/Anaconda3-32bit/Lib/site-packages/PyQt5/uic/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="567">
-          <caret line="197" selection-start-line="197" selection-end-line="197" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/ProgramData/Anaconda3-32bit/Lib/xml/etree/ElementTree.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="586" selection-start-line="586" selection-end-line="586" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/ProgramData/Anaconda3-32bit/Lib/ctypes/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="410">
-          <caret line="355" selection-start-line="355" selection-end-line="355" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3-32bit/Lib/site-packages/PyQt5/uic/__init__.py" />
+    <entry file="file://C:/ProgramData/Anaconda3-32bit/Lib/xml/etree/ElementTree.py" />
+    <entry file="file://C:/ProgramData/Anaconda3-32bit/Lib/ctypes/__init__.py" />
     <entry file="file://$PROJECT_DIR$/ACCES/debugACCES.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -314,13 +247,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/localtools.py" />
-    <entry file="file://$PROJECT_DIR$/../test/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="34" selection-start-line="21" selection-start-column="34" selection-end-line="21" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../test/test.py" />
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -328,9 +255,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://C:/ProgramData/Anaconda3-32bit/Lib/multiprocessing/reduction.py" />
+    <entry file="file://C:/ProgramData/Anaconda3-32bit/Lib/multiprocessing/spawn.py" />
+    <entry file="file://$PROJECT_DIR$/ACCES/ACCES.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3774">
+          <caret line="222" column="45" selection-start-line="222" selection-start-column="45" selection-end-line="222" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Video/Video.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1015">
+          <caret line="62" selection-start-line="62" selection-end-line="62" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/uF/uF.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2448">
+        <state relative-caret-position="862">
           <caret line="150" column="32" selection-start-line="150" selection-start-column="32" selection-end-line="150" selection-end-column="32" />
           <folding>
             <element signature="e#293#302#0" expanded="true" />
@@ -338,56 +281,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/ProgramData/Anaconda3-32bit/Lib/multiprocessing/reduction.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="850">
-          <caret line="59" selection-start-line="59" selection-end-line="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/ProgramData/Anaconda3-32bit/Lib/multiprocessing/spawn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="410">
-          <caret line="116" selection-start-line="116" selection-end-line="116" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ACCES/ACCES.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="606">
-          <caret line="173" column="45" selection-start-line="173" selection-start-column="45" selection-end-line="173" selection-end-column="45" />
-          <folding>
-            <element signature="e#181#190#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/EDL/EDL.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="861">
-          <caret line="190" column="30" selection-start-line="190" selection-start-column="30" selection-end-line="190" selection-end-column="30" />
-          <folding>
-            <element signature="e#193#202#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-722">
+          <caret line="297" column="30" selection-start-line="297" selection-start-column="30" selection-end-line="297" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/RTDAQ-32bit.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="75" column="46" lean-forward="true" selection-start-line="75" selection-start-column="46" selection-end-line="75" selection-end-column="46" />
+        <state relative-caret-position="270">
+          <caret line="223" selection-start-line="223" selection-end-line="223" />
           <folding>
             <element signature="e#296#312#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Video/Video.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="935">
-          <caret line="55" column="13" lean-forward="true" selection-start-line="55" selection-start-column="13" selection-end-line="55" selection-end-column="13" />
-          <folding>
-            <element signature="e#66#75#0" expanded="true" />
           </folding>
         </state>
       </provider>
