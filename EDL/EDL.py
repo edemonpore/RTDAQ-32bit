@@ -200,38 +200,39 @@ class EDL(QtWidgets.QMainWindow):
 
         status = edl_py.EdlDeviceStatus_t()
         readPacketsNum = [0]
-        res = self.edl.purgeData()
-        if self.edl.purgeData() != epc.EdlPySuccess and not self.bAcquiring and not __debug__:
-            print('Elements Old Data purge error. Result = ', res)
-
-        # Get number of available data packets EdlDeviceStatus_t::availableDataPackets.
+        # res = self.edl.purgeData()
+        # # if self.edl.purgeData() != epc.EdlPySuccess and not self.bAcquiring and not __debug__:
+        # #     print('Elements Old Data purge error. Result = ', res)
+        #
+        # # Get number of available data packets EdlDeviceStatus_t::availableDataPackets.
         res = self.edl.getDeviceStatus(status)
         if res != epc.EdlPySuccess:
             QtWidgets.QMessageBox.information(self,
                                               'Elements Connection Error',
                                               "Error getting device status")
             return res
-        if status.bufferOverflowFlag or status.lostDataFlag:
-            print('Elements Buffer overflow, data loss. Result = ', res)
-        if status.availableDataPackets >= 10:
-            data = [0.0] * 0
-            self.edl.readData(status.availableDataPackets, readPacketsNum, data)
-            self.LatestPackets = readPacketsNum[0]
+        # if status.bufferOverflowFlag or status.lostDataFlag:
+        #     print('Elements Buffer overflow, data loss. Result = ', res)
+        # if status.availableDataPackets >= 10:
+        data = [0.0] * 0
+        res = self.edl.readData(status.availableDataPackets, readPacketsNum, data)
+        print (res)
+        self.LatestPackets = readPacketsNum[0]
 
-            self.vHolddata = np.append(self.vHolddata, data[0::5])
-            self.ch1data = np.append(self.ch1data, data[1::5])
-            self.ch2data = np.append(self.ch2data, data[2::5])
-            self.ch3data = np.append(self.ch3data, data[3::5])
-            self.ch4data = np.append(self.ch4data, data[4::5])
+        self.vHolddata = np.append(self.vHolddata, data[0::5])
+        self.ch1data = np.append(self.ch1data, data[1::5])
+        self.ch2data = np.append(self.ch2data, data[2::5])
+        self.ch3data = np.append(self.ch3data, data[3::5])
+        self.ch4data = np.append(self.ch4data, data[4::5])
 
-            start = self.t[-1] + self.t_step
-            span = (readPacketsNum[0] + 1) * self.t_step
-            stop = self.t[-1] + span
-            step = self.t_step
-            self.t = np.append(self.t, np.arange(start, stop, step))
-        else:
-            # If no read, wait 1 ms and retry.
-            time.sleep(0.001)
+        start = self.t[-1] + self.t_step
+        span = (readPacketsNum[0] + 1) * self.t_step
+        stop = self.t[-1] + span
+        step = self.t_step
+        self.t = np.append(self.t, np.arange(start, stop, step))
+        # else:
+        #     # If no read, wait 1 ms and retry.
+        #     time.sleep(0.001)
 
     def DataAcquisitionThread(self):
         while self.bRun:
