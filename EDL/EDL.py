@@ -49,7 +49,7 @@ class EDL(QtWidgets.QMainWindow):
         self.ui.sbVhold.setRange(-500, 500)
         self.ui.sbVhold.setValue(0)
         self.Range = epc.EDL_PY_RADIO_RANGE_200_NA
-        self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_100_KHZ
+        self.SR = epc.EDL_PY_RADIO_SAMPLING_RATE_1_25_KHZ
         self.t_step = 1 / 100
         self.BandwidthDivisor = epc.EDL_PY_RADIO_FINAL_BANDWIDTH_SR_2
         self.UpdateSettings()
@@ -116,7 +116,7 @@ class EDL(QtWidgets.QMainWindow):
         self.p0.setLabel('bottom', 'Time (s)')
         self.p0.addLegend()
 
-        self.yLimit = 200
+        self.yLimit = 201
         self.p1 = self.ui.Ch1Data.addPlot()
         self.p1.setRange(yRange=[-self.yLimit, self.yLimit], padding=0)
         self.p1.showGrid(x=True, y=True, alpha=.8)
@@ -215,8 +215,7 @@ class EDL(QtWidgets.QMainWindow):
         #     print('Elements Buffer overflow, data loss. Result = ', res)
         # if status.availableDataPackets >= 10:
         data = [0.0] * 0
-        res = self.edl.readData(status.availableDataPackets, readPacketsNum, data)
-        print (res)
+        self.edl.readData(status.availableDataPackets, readPacketsNum, data)
         self.LatestPackets = readPacketsNum[0]
 
         self.vHolddata = np.append(self.vHolddata, data[0::5])
@@ -236,6 +235,7 @@ class EDL(QtWidgets.QMainWindow):
 
     def DataAcquisitionThread(self):
         while self.bRun:
+            time.sleep(.1)
             if self.bAcquiring:
                 self.UpdateData()
 
