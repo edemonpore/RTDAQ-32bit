@@ -14,6 +14,7 @@ import pyqtgraph
 import numpy as np
 from PyQt5 import QtWidgets, uic
 import threading, time
+from multiprocessing import Process, Queue
 
 
 class EDL(QtWidgets.QMainWindow):
@@ -146,11 +147,11 @@ class EDL(QtWidgets.QMainWindow):
         self.p4.setLabel('bottom', 'Time (s)')
         self.p4.addLegend()
 
-        self.Vhplot = self.p0.plot([], pen=(127, 127, 127), linewidth=.5, name='VHold')
-        self.ch1plot = self.p1.plot([], pen=(0, 0, 255), linewidth=.5, name='Ch1')
-        self.ch2plot = self.p2.plot([], pen=(0, 255, 0), linewidth=.5, name='Ch2')
-        self.ch3plot = self.p3.plot([], pen=(255, 0, 0), linewidth=.5, name='Ch3')
-        self.ch4plot = self.p4.plot([], pen=(255, 0, 255), linewidth=.5, name='Ch4')
+        self.Vhplot = self.p0.plot([], pen=(127, 127, 127), linewidth=.5, name='VHold', downsample=10)
+        self.ch1plot = self.p1.plot([], pen=(0, 0, 255), linewidth=.5, name='Ch1', downsample=10)
+        self.ch2plot = self.p2.plot([], pen=(0, 255, 0), linewidth=.5, name='Ch2', downsample=10)
+        self.ch3plot = self.p3.plot([], pen=(255, 0, 0), linewidth=.5, name='Ch3', downsample=10)
+        self.ch4plot = self.p4.plot([], pen=(255, 0, 255), linewidth=.5, name='Ch4', downsample=10)
 
         # Detect devices and set acquisition flag accordingly
         self.DetectandConnectDevices()
@@ -169,6 +170,7 @@ class EDL(QtWidgets.QMainWindow):
         self.ui.lCh3.hide()
         self.ui.Ch4Data.hide()
         self.ui.lCh4.hide()
+
         self.bShow = True
         self.MoveToStart()
 
@@ -206,11 +208,11 @@ class EDL(QtWidgets.QMainWindow):
         #
         # # Get number of available data packets EdlDeviceStatus_t::availableDataPackets.
         res = self.edl.getDeviceStatus(status)
-        if res != epc.EdlPySuccess:
-            QtWidgets.QMessageBox.information(self,
-                                              'Elements Connection Error',
-                                              "Error getting device status")
-            return res
+        # if res != epc.EdlPySuccess:
+        #     QtWidgets.QMessageBox.information(self,
+        #                                       'Elements Connection Error',
+        #                                       "Error getting device status")
+        #     return res
         # if status.bufferOverflowFlag or status.lostDataFlag:
         #     print('Elements Buffer overflow, data loss. Result = ', res)
         # if status.availableDataPackets >= 10:
@@ -260,11 +262,11 @@ class EDL(QtWidgets.QMainWindow):
 
     def DataPlot(self):
         if len(self.t) > self.maxLen:
-            self.Vhplot.setData(self.t[-self.maxLen:], self.vHolddata[-self.maxLen:])
-            self.ch1plot.setData(self.t[-self.maxLen:], self.ch1data[-self.maxLen:])
-            self.ch2plot.setData(self.t[-self.maxLen:], self.ch2data[-self.maxLen:])
-            self.ch3plot.setData(self.t[-self.maxLen:], self.ch3data[-self.maxLen:])
-            self.ch4plot.setData(self.t[-self.maxLen:], self.ch4data[-self.maxLen:])
+            if self.ui.showVhold.isChecked() == True: self.Vhplot.setData(self.t[-self.maxLen:], self.vHolddata[-self.maxLen:])
+            if self.ui.showCh1.isChecked() == True: self.ch1plot.setData(self.t[-self.maxLen:], self.ch1data[-self.maxLen:])
+            if self.ui.showCh2.isChecked() == True: self.ch2plot.setData(self.t[-self.maxLen:], self.ch2data[-self.maxLen:])
+            if self.ui.showCh3.isChecked() == True: self.ch3plot.setData(self.t[-self.maxLen:], self.ch3data[-self.maxLen:])
+            if self.ui.showCh4.isChecked() == True: self.ch4plot.setData(self.t[-self.maxLen:], self.ch4data[-self.maxLen:])
 
     def DetectandConnectDevices(self):
         res = 1

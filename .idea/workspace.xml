@@ -3,8 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="130a2fc3-7724-4cee-9acc-f95653ea6a93" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACCES/ACCESui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/ACCES/ACCESui.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACCES/ACCES.py" beforeDir="false" afterPath="$PROJECT_DIR$/ACCES/ACCES.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EDL/EDL.py" beforeDir="false" afterPath="$PROJECT_DIR$/EDL/EDL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EDL/EDLui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/EDL/EDLui.ui" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,8 +18,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RTDAQ-32bit.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="284">
-              <caret line="223" selection-start-line="223" selection-end-line="223" />
+            <state relative-caret-position="-237">
+              <caret line="40" column="34" lean-forward="true" selection-start-line="40" selection-start-column="34" selection-end-line="40" selection-end-column="34" />
               <folding>
                 <element signature="e#296#312#0" expanded="true" />
               </folding>
@@ -29,8 +30,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ACCES/ACCES.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3774">
-              <caret line="222" column="45" selection-start-line="222" selection-start-column="45" selection-end-line="222" selection-end-column="45" />
+            <state relative-caret-position="34">
+              <caret line="56" column="55" selection-start-line="56" selection-start-column="55" selection-end-line="56" selection-end-column="55" />
               <folding>
                 <element signature="e#181#190#0" expanded="true" />
               </folding>
@@ -41,8 +42,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/EDL/EDL.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="230" selection-start-line="230" selection-end-line="230" />
+            <state relative-caret-position="364">
+              <caret line="120" selection-start-line="120" selection-end-line="120" />
               <folding>
                 <element signature="e#193#202#0" expanded="true" />
               </folding>
@@ -73,6 +74,7 @@
       <find>DataAcquisitionProcess</find>
       <find>self.t0</find>
       <find>DataPlot</find>
+      <find>PyQtGraphTest</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -85,23 +87,35 @@
         <option value="$PROJECT_DIR$/Video/Video.py" />
         <option value="$PROJECT_DIR$/localtools.py" />
         <option value="$PROJECT_DIR$/uF/uF.py" />
-        <option value="$PROJECT_DIR$/ACCES/ACCES.py" />
         <option value="$PROJECT_DIR$/RTDAQ-32bit.py" />
+        <option value="$PROJECT_DIR$/ACCES/ACCES.py" />
+        <option value="$PROJECT_DIR$/../mp2/mp2.py" />
         <option value="$PROJECT_DIR$/EDL/EDL.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1999" />
-    <option name="y" value="13" />
-    <option name="width" value="1180" />
-    <option name="height" value="970" />
+    <option name="x" value="60" />
+    <option name="y" value="25" />
+    <option name="width" value="1482" />
+    <option name="height" value="2018" />
   </component>
   <component name="ProjectView">
     <navigator currentView="Scope" currentSubView="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope" proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
+          <expand>
+            <path>
+              <item name="RTDAQ-32bit" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="D:\0A\Consulting\Computing\Python\RTDAQ-32bit" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -113,22 +127,11 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope">
-        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
-          <expand>
-            <path>
-              <item name="RTDAQ-32bit" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../test/test.py" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -143,7 +146,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.RTDAQ-32bit">
     <configuration name="RTDAQ-32bit" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="RTDAQ-32bit" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -165,9 +168,53 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="mp2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="RTDAQ-32bit" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../mp2" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../mp2/mp2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="RTDAQ-32bit" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../test" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../test/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.RTDAQ-32bit" />
+        <item itemvalue="Python.test" />
+        <item itemvalue="Python.mp2" />
       </list>
     </recent_temporary>
   </component>
@@ -185,16 +232,15 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1999" y="13" width="1180" height="970" extended-state="0" />
-    <editor active="true" />
+    <frame x="48" y="20" width="1185" height="1614" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18126094" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14273281" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.13390663" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.21990173" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.13356164" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.21917808" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -246,7 +292,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/localtools.py" />
-    <entry file="file://$PROJECT_DIR$/../test/test.py" />
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -273,20 +318,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../mp/multiproc_queues.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2330">
+          <caret line="178" lean-forward="true" selection-start-line="178" selection-end-line="178" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ACCES/ACCES.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3774">
-          <caret line="222" column="45" selection-start-line="222" selection-start-column="45" selection-end-line="222" selection-end-column="45" />
+        <state relative-caret-position="34">
+          <caret line="56" column="55" selection-start-line="56" selection-start-column="55" selection-end-line="56" selection-end-column="55" />
           <folding>
             <element signature="e#181#190#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../mp2/mp2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="19" lean-forward="true" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="19" />
+          <folding>
+            <element signature="e#458#496#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../test/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="268">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/RTDAQ-32bit.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="223" selection-start-line="223" selection-end-line="223" />
+        <state relative-caret-position="-237">
+          <caret line="40" column="34" lean-forward="true" selection-start-line="40" selection-start-column="34" selection-end-line="40" selection-end-column="34" />
           <folding>
             <element signature="e#296#312#0" expanded="true" />
           </folding>
@@ -295,8 +370,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/EDL/EDL.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="230" selection-start-line="230" selection-end-line="230" />
+        <state relative-caret-position="364">
+          <caret line="120" selection-start-line="120" selection-end-line="120" />
           <folding>
             <element signature="e#193#202#0" expanded="true" />
           </folding>

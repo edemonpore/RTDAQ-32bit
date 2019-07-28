@@ -72,11 +72,11 @@ class ACCES(QtWidgets.QMainWindow):
         self.pz.setLabel('bottom', 'Time (s)')
         self.pz.addLegend()
 
-        self.xplot = self.px.plot([], pen=(0, 0, 255), linewidth=.5, name='x-pos')
-        self.xsetplot = self.px.plot([], pen=(255, 0, 0), linewidth=.5, name='x-set')
-        self.yplot = self.py.plot([], pen=(0, 255, 0), linewidth=.5, name='y-pos')
-        self.ysetplot = self.py.plot([], pen=(255, 0, 0), linewidth=.5, name='y-set')
-        self.zsetplot = self.pz.plot([], pen=(255, 0, 0), linewidth=.5, name='z-set')
+        self.xplot = self.px.plot([], pen=(0, 0, 255), linewidth=.5, name='x-pos', downsample=10)
+        self.xsetplot = self.px.plot([], pen=(255, 0, 0), linewidth=.5, name='x-set', downsample=10)
+        self.yplot = self.py.plot([], pen=(0, 255, 0), linewidth=.5, name='y-pos', downsample=10)
+        self.ysetplot = self.py.plot([], pen=(255, 0, 0), linewidth=.5, name='y-set', downsample=10)
+        self.zsetplot = self.pz.plot([], pen=(255, 0, 0), linewidth=.5, name='z-set', downsample=10)
 
         self.ui.vsX.setMinimum(0)
         self.ui.vsX.setMaximum(100)
