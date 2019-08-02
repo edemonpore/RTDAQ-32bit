@@ -110,7 +110,6 @@ class EDL(QtWidgets.QMainWindow):
         # Plot setups
         self.VhLimit = 500
         self.p0 = self.ui.VhData.addPlot()
-
         self.p0.setRange(yRange=[-self.VhLimit, self.VhLimit], padding=0)
         self.p0.showGrid(x=True, y=True, alpha=.8)
         self.p0.setLabel('left', 'Volts', 'mV')
@@ -118,6 +117,8 @@ class EDL(QtWidgets.QMainWindow):
         self.p0.addLegend()
 
         self.yLimit = 201
+        # self.p1 = self.ui.Ch1Data.pyqtgraph.PlotItem()
+        # self.ui.Ch1Data.setCentralItem(self.p1)
         self.p1 = self.ui.Ch1Data.addPlot()
         self.p1.setRange(yRange=[-self.yLimit, self.yLimit], padding=0)
         self.p1.showGrid(x=True, y=True, alpha=.8)
