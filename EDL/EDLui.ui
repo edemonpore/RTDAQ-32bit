@@ -126,7 +126,7 @@
         <item row="1" column="0">
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="GraphicsLayoutWidget" name="VhData"/>
+           <widget class="RemoteGraphicsView" name="VhData"/>
           </item>
           <item>
            <widget class="QLabel" name="lVhold">
@@ -143,7 +143,7 @@
         <item row="2" column="0">
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
-           <widget class="GraphicsLayoutWidget" name="Ch1Data"/>
+           <widget class="RemoteGraphicsView" name="Ch1Data"/>
           </item>
           <item>
            <widget class="QLabel" name="lCh1">
@@ -160,7 +160,7 @@
         <item row="3" column="0">
          <layout class="QVBoxLayout" name="verticalLayout_7">
           <item>
-           <widget class="GraphicsLayoutWidget" name="Ch2Data"/>
+           <widget class="RemoteGraphicsView" name="Ch2Data"/>
           </item>
           <item>
            <widget class="QLabel" name="lCh2">
@@ -177,7 +177,7 @@
         <item row="4" column="0">
          <layout class="QVBoxLayout" name="verticalLayout_8">
           <item>
-           <widget class="GraphicsLayoutWidget" name="Ch3Data"/>
+           <widget class="RemoteGraphicsView" name="Ch3Data"/>
           </item>
           <item>
            <widget class="QLabel" name="lCh3">
@@ -194,7 +194,7 @@
         <item row="5" column="0">
          <layout class="QVBoxLayout" name="verticalLayout_9">
           <item>
-           <widget class="GraphicsLayoutWidget" name="Ch4Data"/>
+           <widget class="RemoteGraphicsView" name="Ch4Data"/>
           </item>
           <item>
            <widget class="QLabel" name="lCh4">
@@ -784,7 +784,7 @@
      <x>0</x>
      <y>0</y>
      <width>857</width>
-     <height>31</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -812,6 +812,11 @@
    <class>GraphicsLayoutWidget</class>
    <extends>QGraphicsView</extends>
    <header>pyqtgraph</header>
+  </customwidget>
+  <customwidget>
+   <class>RemoteGraphicsView</class>
+   <extends>QGraphicsView</extends>
+   <header>pyqtgraph.widgets.RemoteGraphicsView</header>
   </customwidget>
  </customwidgets>
  <resources/>

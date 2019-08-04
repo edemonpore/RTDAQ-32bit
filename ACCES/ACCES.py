@@ -4,14 +4,14 @@ Class for USB-AO16-16A
 Acquires USB data:  x-y analog position feedback
 Sets USB data:      x-y-z position settings into PI E-664 LVPZT Servo
 E.Yafuso
-March 2019
+2019
 """
 
 import os
 import ctypes
 import pandas
 import numpy as np
-import pyqtgraph
+import pyqtgraph as pg
 from PyQt5 import QtWidgets, uic
 import threading, time
 # import collections, struct
@@ -26,7 +26,7 @@ class ACCES(QtWidgets.QMainWindow):
             Ui_ACCES = uic.loadUiType(path)[0]
         except:
             Ui_ACCES = uic.loadUiType('ACCESui.ui')[0]
-        pyqtgraph.setConfigOption('background', 'k')
+        pg.setConfigOption('background', 'k')
         self.ui = Ui_ACCES()
         self.ui.setupUi(self)
         self.AIOUSB = ctypes.CDLL("AIOUSB")
@@ -37,13 +37,15 @@ class ACCES(QtWidgets.QMainWindow):
         # Class attributes
         self.bAcquiring = False
         self.bManual = True
-        self.maxLen = 1000
-        self.xsetdata = np.zeros(1, dtype=float)
-        self.ysetdata = np.zeros(1, dtype=float)
-        self.zsetdata = np.zeros(1, dtype=float)
-        self.xdata = np.zeros(1, dtype=float)
-        self.ydata = np.zeros(1, dtype=float)
-        self.t = np.zeros(1, dtype=float)
+        self.datawindow = 100
+        self.maxLen = 1000000
+        self.ptr = 0
+        self.xsetdata = np.zeros(self.maxLen, dtype=float)
+        self.ysetdata = np.zeros(self.maxLen, dtype=float)
+        self.zsetdata = np.zeros(self.maxLen, dtype=float)
+        self.xdata = np.zeros(self.maxLen, dtype=float)
+        self.ydata = np.zeros(self.maxLen, dtype=float)
+        self.t = np.zeros(self.maxLen, dtype=float)
 
         # Set stage at zero position
         self.xset = 0.0
@@ -51,32 +53,29 @@ class ACCES(QtWidgets.QMainWindow):
         self.zset = 0.0
         self.setPI()
 
-        self.px = self.ui.XData.addPlot()
+        self.px = self.ui.XData.pg.PlotItem()
+        self.px._setProxyOptions(deferGetattr=True)
+        self.ui.XData.setCentralItem(self.px)
         self.px.setRange(yRange=[0, 100])
         self.px.showGrid(x=True, y=True, alpha=.8)
         self.px.setLabel('left', 'Position', 'microns')
         self.px.setLabel('bottom', 'Time (s)')
-        self.px.addLegend()
 
-        self.py = self.ui.YData.addPlot()
+        self.py = self.ui.YData.pg.PlotItem()
+        self.py._setProxyOptions(deferGetattr=True)
+        self.ui.YData.setCentralItem(self.py)
         self.py.setRange(yRange=[0, 100])
         self.py.showGrid(x=True, y=True, alpha=.8)
         self.py.setLabel('left', 'Position', 'microns')
         self.py.setLabel('bottom', 'Time (s)')
-        self.py.addLegend()
 
-        self.pz = self.ui.ZData.addPlot()
+        self.pz = self.ui.ZData.pg.PlotItem()
+        self.pz._setProxyOptions(deferGetattr=True)
+        self.ui.ZData.setCentralItem(self.pz)
         self.pz.setRange(yRange=[0, 100])
         self.pz.showGrid(x=True, y=True, alpha=.8)
         self.pz.setLabel('left', 'Position', 'microns')
         self.pz.setLabel('bottom', 'Time (s)')
-        self.pz.addLegend()
-
-        self.xplot = self.px.plot([], pen=(0, 0, 255), linewidth=.5, name='x-pos', downsample=10)
-        self.xsetplot = self.px.plot([], pen=(255, 0, 0), linewidth=.5, name='x-set', downsample=10)
-        self.yplot = self.py.plot([], pen=(0, 255, 0), linewidth=.5, name='y-pos', downsample=10)
-        self.ysetplot = self.py.plot([], pen=(255, 0, 0), linewidth=.5, name='y-set', downsample=10)
-        self.zsetplot = self.pz.plot([], pen=(255, 0, 0), linewidth=.5, name='z-set', downsample=10)
 
         self.ui.vsX.setMinimum(0)
         self.ui.vsX.setMaximum(100)
@@ -155,66 +154,56 @@ class ACCES(QtWidgets.QMainWindow):
         if self.zset < 0.0: self.zset = 0.0
 
         self.setPI()
+    def SetFiducials(self, t):
+        self.t[0] = t
+        self.ptr = 0
 
-    def UpdateData(self, t):
+    def UpdateData(self):
+        self.t[self.ptr] = time.time() - self.t[0]
         if self.bAcquiring:
             data_in = ctypes.c_longdouble()  # double-precision IEEE floating point data from ADC
             if self.AIOUSB.ADC_GetChannelV(-3, 0, ctypes.byref(data_in)) is 0:
-                self.xdata = np.append(self.xdata, float(data_in.value) * 20)  # Convert 0-5V to 0-100nm
+                self.xdata[self.ptr] = float(data_in.value) * 20  # Convert 0-5V to 0-100nm
             else:
-                self.xdata = np.append(self.xdata, 0)
+                self.xdata[self.ptr] = 0
             if self.AIOUSB.ADC_GetChannelV(-3, 1, ctypes.byref(data_in)) is 0:
-                self.ydata = np.append(self.ydata, float(data_in.value) * 20)
+                self.ydata[self.ptr] = float(data_in.value) * 20
             else:
-                self.ydata = np.append(self.ydata, 0)
-            self.xsetdata = np.append(self.xsetdata, self.xset)
-            self.ysetdata = np.append(self.ysetdata, self.yset)
-            self.zsetdata = np.append(self.zsetdata, self.zset)
+                self.ydata[self.ptr] = 0
+            self.xsetdata[self.ptr] = self.xset
+            self.ysetdata[self.ptr] = self.yset
+            self.zsetdata[self.ptr] = self.zset
 
         if __debug__ and not self.bAcquiring:
-            self.xdata = np.append(self.xdata, (np.sin(t[-1]) + 1) * 50)
-            self.ydata = np.append(self.ydata, (np.sin(t[-1] + 1) + 1) * 50)
-            self.xsetdata = np.append(self.xsetdata, self.xset)
-            self.ysetdata = np.append(self.ysetdata, self.yset)
-            self.zsetdata = np.append(self.zsetdata, self.zset)
+            self.xdata[self.ptr] = (np.sin(self.t[-1]) + 1) * 50
+            self.ydata[self.ptr] = (np.sin(self.t[-1] + 1) + 1) * 50
+            self.xsetdata[self.ptr] = self.xset
+            self.ysetdata[self.ptr] = self.yset
+            self.zsetdata[self.ptr] = self.zset
+
+        self.ptr = self.ptr + 1
+        if len(self.t) > self.datawindow:
+            self.DataPlot(self.t[self.ptr-self.datawindow:],
+                          self.xdata[self.ptr-self.datawindow:],
+                          self.xsetdata[self.ptr-self.datawindow:],
+                          self.ydata[self.ptr-self.datawindow:],
+                          self.ysetdata[self.ptr-self.datawindow:],
+                          self.zsetdata[self.ptr-self.datawindow:])
 
     def DataAcquisitionProcess(self):
-        self.t0 = time.time()
+        self.t[0] = time.time()
+        while True:
+            time.sleep(.01)
+            self.UpdateData()
 
-        while (self.bAcquiring):
-            time.sleep(0.01)
-            self.t = np.append(self.t, time.time() - self.t0)
-            data_in = ctypes.c_longdouble()  # double-precision IEEE floating point data from ADC
-            if self.AIOUSB.ADC_GetChannelV(-3, 0, ctypes.byref(data_in)) is 0:
-                self.xdata = np.append(self.xdata, float(data_in.value) * 20)  # Convert 0-5V to 0-100nm
-            else:
-                self.xdata = np.append(self.xdata, 0)
-            if self.AIOUSB.ADC_GetChannelV(-3, 1, ctypes.byref(data_in)) is 0:
-                self.ydata = np.append(self.ydata, float(data_in.value) * 20)
-            else:
-                self.ydata = np.append(self.ydata, 0)
-            self.xsetdata = np.append(self.xsetdata, self.xset)
-            self.ysetdata = np.append(self.ysetdata, self.yset)
-            self.zsetdata = np.append(self.zsetdata, self.zset)
-            self.DataPlot(self.t)
 
-        if __debug__ and not self.bAcquiring:
-            while True:
-                time.sleep(.01)
-                self.t = np.append(self.t, time.time() - self.t0)
-                self.xdata = np.append(self.xdata, (np.sin(self.t[-1]) + 1) * 50)
-                self.ydata = np.append(self.ydata, (np.sin(self.t[-1] + 1) + 1) * 50)
-                self.xsetdata = np.append(self.xsetdata, self.xset)
-                self.ysetdata = np.append(self.ysetdata, self.yset)
-                self.zsetdata = np.append(self.zsetdata, self.zset)
-                self.DataPlot(self.t)
+    def DataPlot(self, t, x1, x2, y1, y2, z2):
+        self.px.plot(x=t, y=x1, pen=(0, 0, 255), linewidth=.5, clear=True,  _callSync='off')
+        self.px.plot(x=t, y=x2, pen=(255, 0, 0), linewidth=.5, clear=False, _callSync='off')
+        self.py.plot(x=t, y=y1, pen=(0, 255, 0), linewidth=.5, clear=True,  _callSync='off')
+        self.py.plot(x=t, y=y2, pen=(255, 0, 0), linewidth=.5, clear=False, _callSync='off')
+        self.pz.plot(x=t, y=z2, pen=(255, 0, 0), linewidth=.5, clear=False, _callSync='off')
 
-    def DataPlot(self, t):
-        self.xplot.setData(t[-self.maxLen:], self.xdata[-self.maxLen:])
-        self.xsetplot.setData(t[-self.maxLen:], self.xsetdata[-self.maxLen:])
-        self.yplot.setData(t[-self.maxLen:], self.ydata[-self.maxLen:])
-        self.ysetplot.setData(t[-self.maxLen:], self.ysetdata[-self.maxLen:])
-        self.zsetplot.setData(t[-self.maxLen:], self.zsetdata[-self.maxLen:])
 
     def OpenScriptDialog(self):
         self.filename = QtWidgets.QFileDialog.getOpenFileName(self,

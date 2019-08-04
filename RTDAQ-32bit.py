@@ -80,23 +80,28 @@ class RTDAQApp(QtWidgets.QDialog):
     def DataAcquisitionProcess(self):
         self.InitDataArrays()
         self.t0 = self.t = time.time()
+        self.SetFiducials(self.t0)
         while True:
             time.sleep(0.01)
-            self.UpdateData(self.t)
-            self.DataPlot()
+            self.UpdateData()
+            #self.DataPlot()
 
-    def UpdateData(self, t):
+    def SetFiducials(self):
+        self.Elements.SetFiducials(self.t0)
+        self.NanoControl.SetFiducials(self.t0)
+
+    def UpdateData(self):
         self.t = np.append(self.t, time.time()-self.t0)
-        self.NanoControl.UpdateData(self.t)
+        self.NanoControl.UpdateData()
         self.Elements.UpdateData()
         #self.uF.UpdateData(self.t)
         if self.bRecord:
             self.ui.pbREC.setText("RECORDING: ", self.t[-1])
 
-    def DataPlot(self):
-        self.NanoControl.DataPlot(self.t)
-        self.Elements.DataPlot()
-        #self.uF.DataPlot(self.t)
+    # def DataPlot(self):
+    #     self.NanoControl.DataPlot(self.t)
+    #     self.Elements.DataPlot()
+    #     #self.uF.DataPlot(self.t)
 
     def ToggleRecording(self):
         if self.bRecord == False:

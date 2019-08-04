@@ -10,12 +10,10 @@ import os
 import edl_py
 import edl_py_constants as epc
 from localtools import ElementsData
-import pyqtgraph
+import pyqtgraph as pg
 import numpy as np
 from PyQt5 import QtWidgets, uic
 import threading, time
-from multiprocessing import Process, Queue
-
 
 class EDL(QtWidgets.QMainWindow):
     def __init__(self):
@@ -25,7 +23,7 @@ class EDL(QtWidgets.QMainWindow):
             Ui_EDL = uic.loadUiType(path)[0]
         except:
             Ui_EDL = uic.loadUiType('EDLui.ui')[0]
-        pyqtgraph.setConfigOption('background', 'k')
+        pg.setConfigOption('background', 'k')
         self.ui = Ui_EDL()
         self.ui.setupUi(self)
         self.bRun = True
@@ -109,50 +107,48 @@ class EDL(QtWidgets.QMainWindow):
 
         # Plot setups
         self.VhLimit = 500
-        self.p0 = self.ui.VhData.addPlot()
+        self.p0 = self.ui.VhData.pg.PlotItem()
+        self.p0._setProxyOptions(deferGetattr=True)
+        self.ui.VhData.setCentralItem(self.p0)
         self.p0.setRange(yRange=[-self.VhLimit, self.VhLimit], padding=0)
         self.p0.showGrid(x=True, y=True, alpha=.8)
         self.p0.setLabel('left', 'Volts', 'mV')
         self.p0.setLabel('bottom', 'Time (s)')
-        self.p0.addLegend()
+        #self.p0.addLegend()
 
         self.yLimit = 201
-        # self.p1 = self.ui.Ch1Data.pyqtgraph.PlotItem()
-        # self.ui.Ch1Data.setCentralItem(self.p1)
-        self.p1 = self.ui.Ch1Data.addPlot()
+        self.p1 = self.ui.Ch1Data.pg.PlotItem()
+        self.ui.Ch1Data.setCentralItem(self.p1)
         self.p1.setRange(yRange=[-self.yLimit, self.yLimit], padding=0)
         self.p1.showGrid(x=True, y=True, alpha=.8)
         self.p1.setLabel('left', 'Current', 'nA')
         self.p1.setLabel('bottom', 'Time (s)')
-        self.p1.addLegend()
+        #self.p1.addLegend()
 
-        self.p2 = self.ui.Ch2Data.addPlot()
+        self.p2 = self.ui.Ch2Data.pg.PlotItem()
+        self.ui.Ch2Data.setCentralItem(self.p2)
         self.p2.setRange(yRange=[-self.yLimit, self.yLimit], padding=0)
         self.p2.showGrid(x=True, y=True, alpha=.8)
         self.p2.setLabel('left', 'Current', 'nA')
         self.p2.setLabel('bottom', 'Time (s)')
-        self.p2.addLegend()
+        #self.p2.addLegend()
 
-        self.p3 = self.ui.Ch3Data.addPlot()
+        self.p3 = self.ui.Ch3Data.pg.PlotItem()
+        self.ui.Ch3Data.setCentralItem(self.p3)
         self.p3.setRange(yRange=[-self.yLimit, self.yLimit], padding=0)
         self.p3.showGrid(x=True, y=True, alpha=.8)
         self.p3.setLabel('left', 'Current', 'nA')
         self.p3.setLabel('bottom', 'Time (s)')
-        self.p3.addLegend()
+        #self.p3.addLegend()
 
-        self.p4 = self.ui.Ch4Data.addPlot()
-
+        self.p4 = self.ui.Ch4Data.pg.PlotItem()
+        self.ui.Ch4Data.setCentralItem(self.p4)
         self.p4.setRange(yRange=[-self.yLimit, self.yLimit], padding=0)
         self.p4.showGrid(x=True, y=True, alpha=.8)
         self.p4.setLabel('left', 'Current', 'nA')
         self.p4.setLabel('bottom', 'Time (s)')
-        self.p4.addLegend()
+        #self.p4.addLegend()
 
-        self.Vhplot = self.p0.plot([], pen=(127, 127, 127), linewidth=.5, name='VHold', downsample=10)
-        self.ch1plot = self.p1.plot([], pen=(0, 0, 255), linewidth=.5, name='Ch1', downsample=10)
-        self.ch2plot = self.p2.plot([], pen=(0, 255, 0), linewidth=.5, name='Ch2', downsample=10)
-        self.ch3plot = self.p3.plot([], pen=(255, 0, 0), linewidth=.5, name='Ch3', downsample=10)
-        self.ch4plot = self.p4.plot([], pen=(255, 0, 255), linewidth=.5, name='Ch4', downsample=10)
 
         # Detect devices and set acquisition flag accordingly
         self.DetectandConnectDevices()
@@ -175,7 +171,6 @@ class EDL(QtWidgets.QMainWindow):
         self.bShow = True
         self.MoveToStart()
 
-
     def InitDataArrays(self):
         self.vHolddata = np.zeros(1, dtype=float)
         self.ch1data = np.zeros(1, dtype=float)
@@ -183,6 +178,9 @@ class EDL(QtWidgets.QMainWindow):
         self.ch3data = np.zeros(1, dtype=float)
         self.ch4data = np.zeros(1, dtype=float)
         self.t = np.zeros(1, dtype=float)
+
+    def SetFiducials(self, t):
+        self.t[0] = t
 
     def UpdateData(self):
         if __debug__ and not self.bAcquiring:
@@ -199,82 +197,74 @@ class EDL(QtWidgets.QMainWindow):
             self.ch2data = np.sin(self.t + 2) * 100
             self.ch3data = np.sin(self.t + 3) * 100
             self.ch4data = np.sin(self.t + 4) * 100
-            return
 
-        status = edl_py.EdlDeviceStatus_t()
-        readPacketsNum = [0]
-        # res = self.edl.purgeData()
-        # # if self.edl.purgeData() != epc.EdlPySuccess and not self.bAcquiring and not __debug__:
-        # #     print('Elements Old Data purge error. Result = ', res)
-        #
-        # # Get number of available data packets EdlDeviceStatus_t::availableDataPackets.
-        res = self.edl.getDeviceStatus(status)
-        # if res != epc.EdlPySuccess:
-        #     QtWidgets.QMessageBox.information(self,
-        #                                       'Elements Connection Error',
-        #                                       "Error getting device status")
-        #     return res
-        # if status.bufferOverflowFlag or status.lostDataFlag:
-        #     print('Elements Buffer overflow, data loss. Result = ', res)
-        # if status.availableDataPackets >= 10:
-        data = [0.0] * 0
-        self.edl.readData(status.availableDataPackets, readPacketsNum, data)
-        self.LatestPackets = readPacketsNum[0]
+        if self.bAcquiring:
+            status = edl_py.EdlDeviceStatus_t()
+            readPacketsNum = [0]
+            res = self.edl.purgeData()
+            # if self.edl.purgeData() != epc.EdlPySuccess and not self.bAcquiring and not __debug__:
+            #     print('Elements Old Data purge error. Result = ', res)
 
-        self.vHolddata = np.append(self.vHolddata, data[0::5])
-        self.ch1data = np.append(self.ch1data, data[1::5])
-        self.ch2data = np.append(self.ch2data, data[2::5])
-        self.ch3data = np.append(self.ch3data, data[3::5])
-        self.ch4data = np.append(self.ch4data, data[4::5])
+            # Get number of available data packets EdlDeviceStatus_t::availableDataPackets.
+            res = self.edl.getDeviceStatus(status)
+            if res != epc.EdlPySuccess:
+                QtWidgets.QMessageBox.information(self,
+                                                  'Elements Connection Error',
+                                                  "Error getting device status")
+                return res
+            if status.bufferOverflowFlag or status.lostDataFlag:
+                print('Elements Buffer overflow, data loss. Result = ', res)
+            if status.availableDataPackets >= 10:
+                data = [0.0] * 0
+                self.edl.readData(status.availableDataPackets, readPacketsNum, data)
+                self.LatestPackets = readPacketsNum[0]
 
-        start = self.t[-1] + self.t_step
-        span = (readPacketsNum[0] + 1) * self.t_step
-        stop = self.t[-1] + span
-        step = self.t_step
-        self.t = np.append(self.t, np.arange(start, stop, step))
-        # else:
-        #     # If no read, wait 1 ms and retry.
-        #     time.sleep(0.001)
+                self.vHolddata = np.append(self.vHolddata, data[0::5])
+                self.ch1data = np.append(self.ch1data, data[1::5])
+                self.ch2data = np.append(self.ch2data, data[2::5])
+                self.ch3data = np.append(self.ch3data, data[3::5])
+                self.ch4data = np.append(self.ch4data, data[4::5])
+
+                start = self.t[-1] + self.t_step
+                span = (readPacketsNum[0] + 1) * self.t_step
+                stop = self.t[-1] + span
+                step = self.t_step
+                self.t = np.append(self.t, np.arange(start, stop, step))
+            else:
+                # If no read, wait 1 ms and retry.
+                time.sleep(0.001)
+
+        self.DataPlot(self.t[-self.maxLen:],
+                      self.vHolddata[-self.maxLen:],
+                      self.ch1data[-self.maxLen:],
+                      self.ch2data[-self.maxLen:],
+                      self.ch3data[-self.maxLen:],
+                      self.ch4data[-self.maxLen:])
 
     def DataAcquisitionThread(self):
         while self.bRun:
-            time.sleep(.1)
-            if self.bAcquiring:
-                self.UpdateData()
+            self.UpdateData()
 
-            # # Debug: Data generator which assumes no e4 thus self.bAcquiring == False
-            elif __debug__ and not self.bAcquiring:
-                time.sleep(.01)
-                readPacketsNum = 10
-
-                start = self.t[-1] + self.t_step
-                span = (readPacketsNum+1) * self.t_step
-                stop = self.t[-1]+span
-                step = self.t_step
-                self.t = np.append(self.t,
-                                   np.arange(start, stop, step))
-                self.vHolddata = np.sin(self.t)*100
-                self.ch1data = np.sin(self.t+1)*100
-                self.ch2data = np.sin(self.t+2)*100
-                self.ch3data = np.sin(self.t+3)*100
-                self.ch4data = np.sin(self.t+4)*100
-
-            self.DataPlot()
-
-    def DataPlot(self):
+    def DataPlot(self, t, data0, data1, data2, data3, data4):
         if len(self.t) > self.maxLen:
-            if self.ui.showVhold.isChecked() == True: self.Vhplot.setData(self.t[-self.maxLen:], self.vHolddata[-self.maxLen:])
-            if self.ui.showCh1.isChecked() == True: self.ch1plot.setData(self.t[-self.maxLen:], self.ch1data[-self.maxLen:])
-            if self.ui.showCh2.isChecked() == True: self.ch2plot.setData(self.t[-self.maxLen:], self.ch2data[-self.maxLen:])
-            if self.ui.showCh3.isChecked() == True: self.ch3plot.setData(self.t[-self.maxLen:], self.ch3data[-self.maxLen:])
-            if self.ui.showCh4.isChecked() == True: self.ch4plot.setData(self.t[-self.maxLen:], self.ch4data[-self.maxLen:])
+            if self.ui.showVhold.isChecked() == True:
+                self.p0.plot(x=t, y=data0, pen=(127, 127, 127), linewidth=.5, clear=True, _callSync='off')
+            if self.ui.showCh1.isChecked() == True:
+                self.p1.plot(x=t, y=data1, pen=(0, 0, 255), linewidth=.5, clear=True, _callSync='off')
+            if self.ui.showCh2.isChecked() == True:
+                self.p2.plot(x=t, y=data2, pen=(0, 255, 0), linewidth=.5, clear=True, _callSync='off')
+            if self.ui.showCh3.isChecked() == True:
+                self.p3.plot(x=t, y=data3, pen=(255, 0, 0), linewidth=.5, clear=True, _callSync='off')
+            if self.ui.showCh4.isChecked() == True:
+                self.p4.plot(x=t, y=data4, pen=(255, 0, 255), linewidth=.5, clear=True, _callSync='off')
+
 
     def DetectandConnectDevices(self):
         res = 1
         count = 0
         while res != epc.EdlPySuccess:
             count = count + 1
-            if count > 50:
+            if count > 5:
                 break
             res = self.edl.detectDevices(self.devices)
             time.sleep(.1)
@@ -463,4 +453,10 @@ class EDL(QtWidgets.QMainWindow):
         self.bRun = False
         if self.DAQThread != None:
             self.DAQThread.join()
+        # At end of acquisition, close remote processes
+        self.ui.VhData.close()
+        self.ui.Ch1Data.close()
+        self.ui.Ch2Data.close()
+        self.ui.Ch3Data.close()
+        self.ui.Ch4Data.close()
         event.accept()

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1420</width>
-    <height>838</height>
+    <width>796</width>
+    <height>665</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -67,7 +67,7 @@
            </widget>
           </item>
           <item row="0" column="0">
-           <widget class="GraphicsLayoutWidget" name="XData"/>
+           <widget class="RemoteGraphicsView" name="XData"/>
           </item>
          </layout>
         </item>
@@ -107,7 +107,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="GraphicsLayoutWidget" name="YData"/>
+           <widget class="RemoteGraphicsView" name="YData"/>
           </item>
          </layout>
         </item>
@@ -147,7 +147,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="GraphicsLayoutWidget" name="ZData"/>
+           <widget class="RemoteGraphicsView" name="ZData"/>
           </item>
          </layout>
         </item>
@@ -601,8 +601,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1420</width>
-     <height>21</height>
+     <width>796</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -627,9 +627,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>GraphicsLayoutWidget</class>
+   <class>RemoteGraphicsView</class>
    <extends>QGraphicsView</extends>
-   <header>pyqtgraph</header>
+   <header>pyqtgraph.widgets.RemoteGraphicsView</header>
   </customwidget>
  </customwidgets>
  <resources/>
