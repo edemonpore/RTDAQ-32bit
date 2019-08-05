@@ -32,25 +32,26 @@ class ACCES(QtWidgets.QMainWindow):
         self.AIOUSB = ctypes.CDLL("AIOUSB")
         self.AIOUSB.ADC_GetChannelV.argtypes = (ctypes.c_ulong, ctypes.c_ulong, ctypes.POINTER(ctypes.c_double))
         self.AIOUSB.ADC_GetChannelV.restype = ctypes.c_ulong
-        self.DAQProcess = 0
+        self.DAQThread = 0
 
         # Class attributes
         self.bAcquiring = False
         self.bManual = True
-        self.datawindow = 100
-        self.maxLen = 1000000
+        self.datawindow = 1000
+        self.DataLength = 1000000
         self.ptr = 0
-        self.xsetdata = np.zeros(self.maxLen, dtype=float)
-        self.ysetdata = np.zeros(self.maxLen, dtype=float)
-        self.zsetdata = np.zeros(self.maxLen, dtype=float)
-        self.xdata = np.zeros(self.maxLen, dtype=float)
-        self.ydata = np.zeros(self.maxLen, dtype=float)
-        self.t = np.zeros(self.maxLen, dtype=float)
+        self.xsetdata = []
+        self.ysetdata = [] #np.zeros(self.DataLength, dtype=np.uint16)
+        self.zsetdata = [] #np.zeros(self.DataLength, dtype=np.uint16)
+        self.xdata = [] #np.zeros(self.DataLength, dtype=float)
+        self.ydata = [] #np.zeros(self.DataLength, dtype=float)
+        self.t = [] #np.zeros(self.DataLength, dtype=float)
 
         # Set stage at zero position
-        self.xset = 0.0
-        self.yset = 0.0
-        self.zset = 0.0
+        # Use xset, yset, zset as values for DAQ such that they store 16 bit ints
+        self.xset = 0
+        self.yset = 0
+        self.zset = 0
         self.setPI()
 
         self.px = self.ui.XData.pg.PlotItem()
@@ -78,13 +79,13 @@ class ACCES(QtWidgets.QMainWindow):
         self.pz.setLabel('bottom', 'Time (s)')
 
         self.ui.vsX.setMinimum(0)
-        self.ui.vsX.setMaximum(100)
+        self.ui.vsX.setMaximum(65535)
         self.ui.vsX.setValue(self.xset)
         self.ui.vsY.setMinimum(0)
-        self.ui.vsY.setMaximum(100)
+        self.ui.vsY.setMaximum(65535)
         self.ui.vsY.setValue(self.yset)
         self.ui.vsZ.setMinimum(0)
-        self.ui.vsZ.setMaximum(100)
+        self.ui.vsZ.setMaximum(65535)
         self.ui.vsZ.setValue(self.zset)
 
         #Signals to slots
@@ -115,51 +116,52 @@ class ACCES(QtWidgets.QMainWindow):
     def setPI(self):
         if self.bManual:
             self.xset = self.ui.vsX.value()
-            self.ui.lxset.setText(str(self.xset))
+            self.ui.lxset.setText(str(float(self.xset*100/65535)))
             self.yset = self.ui.vsY.value()
-            self.ui.lyset.setText(str(self.yset))
+            self.ui.lyset.setText(str(float(self.yset*100/65535)))
             self.zset = self.ui.vsZ.value()
-            self.ui.lzset.setText(str(self.zset))
+            self.ui.lzset.setText(str(float(self.zset*100/65535)))
         else:
             self.ui.vsX.setValue(self.xset)
-            self.ui.lxset.setText(str(self.xset))
+            self.ui.lxset.setText(str(float(self.xset*100/65535)))
             self.ui.vsY.setValue(self.yset)
-            self.ui.lyset.setText(str(self.yset))
+            self.ui.lyset.setText(str(float(self.yset*100/65535)))
             self.ui.vsZ.setValue(self.zset)
-            self.ui.lzset.setText(str(self.zset))
+            self.ui.lzset.setText(str(float(self.zset*100/65535)))
             self.bManual = True
 
         if self.bAcquiring:
             DAQin = ctypes.c_int16()
-            DAQin.value = int(self.xset * 65535 / 100)
+            DAQin.value = self.xset
             result = self.AIOUSB.DACDirect(-3, 0, DAQin)
-            DAQin.value = int(self.yset * 65535 / 100)
+            DAQin.value = self.yset
             result = self.AIOUSB.DACDirect(-3, 1, DAQin)
-            DAQin.value = int(self.zset * 65535 / 100)
+            DAQin.value = self.zset
             result = self.AIOUSB.DACDirect(-3, 2, DAQin)
 
     def moveAxes(self, dx, dy, dz):
         self.bManual = False
 
-        self.xset = self.xset + dx
-        if self.xset > 100.0: self.xset = 100.0
-        if self.xset < 0.0: self.xset = 0.0
+        self.xset = self.xset + (dx*65535/100)
+        if self.xset > 65535: self.xset = 65535
+        if self.xset < 0: self.xset = 0
 
-        self.yset = self.yset + dy
-        if self.yset > 100.0: self.yset = 100.0
-        if self.yset < 0.0: self.yset = 0.0
+        self.yset = self.yset + (dy*65535/100)
+        if self.yset > 65535: self.yset = 65535
+        if self.yset < 0: self.yset = 0
 
-        self.zset = self.zset + dz
-        if self.zset > 100.0: self.zset = 100.0
-        if self.zset < 0.0: self.zset = 0.0
+        self.zset = self.zset + (dz*65535/100)
+        if self.zset > 65535: self.zset = 65535
+        if self.zset < 0: self.zset = 0
 
         self.setPI()
+
     def SetFiducials(self, t):
-        self.t[0] = t
-        self.ptr = 0
+        self.t.append(t)
+        self.ptr = 1
 
     def UpdateData(self):
-        self.t[self.ptr] = time.time() - self.t[0]
+        self.t.append(time.time() - self.t[0])
         if self.bAcquiring:
             data_in = ctypes.c_longdouble()  # double-precision IEEE floating point data from ADC
             if self.AIOUSB.ADC_GetChannelV(-3, 0, ctypes.byref(data_in)) is 0:
@@ -170,40 +172,36 @@ class ACCES(QtWidgets.QMainWindow):
                 self.ydata[self.ptr] = float(data_in.value) * 20
             else:
                 self.ydata[self.ptr] = 0
-            self.xsetdata[self.ptr] = self.xset
-            self.ysetdata[self.ptr] = self.yset
-            self.zsetdata[self.ptr] = self.zset
 
         if __debug__ and not self.bAcquiring:
-            self.xdata[self.ptr] = (np.sin(self.t[-1]) + 1) * 50
-            self.ydata[self.ptr] = (np.sin(self.t[-1] + 1) + 1) * 50
-            self.xsetdata[self.ptr] = self.xset
-            self.ysetdata[self.ptr] = self.yset
-            self.zsetdata[self.ptr] = self.zset
+            self.xdata.append((np.sin(self.t[-1]) + 1) * 50)
+            self.ydata.append((np.sin(self.t[-1] + 1) + 1) * 50)
+
+        self.xsetdata.append(self.xset*100/65535)
+        self.ysetdata.append(self.yset*100/65535)
+        self.zsetdata.append(self.zset*100/65535)
 
         self.ptr = self.ptr + 1
         if len(self.t) > self.datawindow:
-            self.DataPlot(self.t[self.ptr-self.datawindow:],
-                          self.xdata[self.ptr-self.datawindow:],
-                          self.xsetdata[self.ptr-self.datawindow:],
-                          self.ydata[self.ptr-self.datawindow:],
-                          self.ysetdata[self.ptr-self.datawindow:],
-                          self.zsetdata[self.ptr-self.datawindow:])
+            self.DataPlot(self.t[-self.datawindow:],
+                          self.xdata[-self.datawindow:],
+                          self.xsetdata[-self.datawindow:],
+                          self.ydata[-self.datawindow:],
+                          self.ysetdata[-self.datawindow:],
+                          self.zsetdata[-self.datawindow:])
 
-    def DataAcquisitionProcess(self):
-        self.t[0] = time.time()
+    def DataAcquisitionThread(self):
+        self.SetFiducials(time.time())
         while True:
             time.sleep(.01)
             self.UpdateData()
 
-
     def DataPlot(self, t, x1, x2, y1, y2, z2):
-        self.px.plot(x=t, y=x1, pen=(0, 0, 255), linewidth=.5, clear=True,  _callSync='off')
+        self.px.plot(x=t, y=x1, pen=(0, 0, 255), linewidth=.5, clear=True, _callSync='off')
         self.px.plot(x=t, y=x2, pen=(255, 0, 0), linewidth=.5, clear=False, _callSync='off')
-        self.py.plot(x=t, y=y1, pen=(0, 255, 0), linewidth=.5, clear=True,  _callSync='off')
+        self.py.plot(x=t, y=y1, pen=(0, 255, 0), linewidth=.5, clear=True, _callSync='off')
         self.py.plot(x=t, y=y2, pen=(255, 0, 0), linewidth=.5, clear=False, _callSync='off')
-        self.pz.plot(x=t, y=z2, pen=(255, 0, 0), linewidth=.5, clear=False, _callSync='off')
-
+        self.pz.plot(x=t, y=z2, pen=(255, 0, 0), linewidth=.5, clear=True, _callSync='off')
 
     def OpenScriptDialog(self):
         self.filename = QtWidgets.QFileDialog.getOpenFileName(self,
@@ -260,7 +258,7 @@ class ACCES(QtWidgets.QMainWindow):
 
     def closeEvent(self, event):
         self.bAcquiring = False
-        if self.DAQProcess and self.DAQProcess != None:
-            self.DAQProcess.join()
+        if self.DAQThread and self.DAQThread != None:
+            self.DAQThread.join()
         event.accept()
 
