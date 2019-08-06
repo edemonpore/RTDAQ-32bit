@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>857</width>
-    <height>734</height>
+    <width>927</width>
+    <height>886</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -128,32 +128,12 @@
           <item>
            <widget class="RemoteGraphicsView" name="VhData"/>
           </item>
-          <item>
-           <widget class="QLabel" name="lVhold">
-            <property name="text">
-             <string>V-Hold</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignHCenter|Qt::AlignTop</set>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
         <item row="2" column="0">
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
            <widget class="RemoteGraphicsView" name="Ch1Data"/>
-          </item>
-          <item>
-           <widget class="QLabel" name="lCh1">
-            <property name="text">
-             <string>Channel 1</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignHCenter|Qt::AlignTop</set>
-            </property>
-           </widget>
           </item>
          </layout>
         </item>
@@ -162,32 +142,12 @@
           <item>
            <widget class="RemoteGraphicsView" name="Ch2Data"/>
           </item>
-          <item>
-           <widget class="QLabel" name="lCh2">
-            <property name="text">
-             <string>Channel 2</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignHCenter|Qt::AlignTop</set>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
         <item row="4" column="0">
          <layout class="QVBoxLayout" name="verticalLayout_8">
           <item>
            <widget class="RemoteGraphicsView" name="Ch3Data"/>
-          </item>
-          <item>
-           <widget class="QLabel" name="lCh3">
-            <property name="text">
-             <string>Channel 3</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignHCenter|Qt::AlignTop</set>
-            </property>
-           </widget>
           </item>
          </layout>
         </item>
@@ -196,17 +156,14 @@
           <item>
            <widget class="RemoteGraphicsView" name="Ch4Data"/>
           </item>
-          <item>
-           <widget class="QLabel" name="lCh4">
-            <property name="text">
-             <string>Channel 4</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignHCenter|Qt::AlignTop</set>
-            </property>
-           </widget>
-          </item>
          </layout>
+        </item>
+        <item row="6" column="0" alignment="Qt::AlignHCenter">
+         <widget class="QLabel" name="lTimeAxis">
+          <property name="text">
+           <string>Time (s)</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -783,7 +740,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>857</width>
+     <width>927</width>
      <height>26</height>
     </rect>
    </property>

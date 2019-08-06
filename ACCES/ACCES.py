@@ -10,6 +10,7 @@ E.Yafuso
 import os
 import ctypes
 import pandas
+import math
 import numpy as np
 import pyqtgraph as pg
 from PyQt5 import QtWidgets, uic
@@ -38,14 +39,8 @@ class ACCES(QtWidgets.QMainWindow):
         self.bAcquiring = False
         self.bManual = True
         self.datawindow = 1000
-        self.DataLength = 1000000
-        self.ptr = 0
-        self.xsetdata = []
-        self.ysetdata = [] #np.zeros(self.DataLength, dtype=np.uint16)
-        self.zsetdata = [] #np.zeros(self.DataLength, dtype=np.uint16)
-        self.xdata = [] #np.zeros(self.DataLength, dtype=float)
-        self.ydata = [] #np.zeros(self.DataLength, dtype=float)
-        self.t = [] #np.zeros(self.DataLength, dtype=float)
+        self.DataLength = 100000
+        self.SetFiducials(time.time())
 
         # Set stage at zero position
         # Use xset, yset, zset as values for DAQ such that they store 16 bit ints
@@ -59,24 +54,21 @@ class ACCES(QtWidgets.QMainWindow):
         self.ui.XData.setCentralItem(self.px)
         self.px.setRange(yRange=[0, 100])
         self.px.showGrid(x=True, y=True, alpha=.8)
-        self.px.setLabel('left', 'Position', 'microns')
-        self.px.setLabel('bottom', 'Time (s)')
+        self.px.setLabel('left', 'x-Axis Position', 'microns')
 
         self.py = self.ui.YData.pg.PlotItem()
         self.py._setProxyOptions(deferGetattr=True)
         self.ui.YData.setCentralItem(self.py)
         self.py.setRange(yRange=[0, 100])
         self.py.showGrid(x=True, y=True, alpha=.8)
-        self.py.setLabel('left', 'Position', 'microns')
-        self.py.setLabel('bottom', 'Time (s)')
+        self.py.setLabel('left', 'y-Axis Position', 'microns')
 
         self.pz = self.ui.ZData.pg.PlotItem()
         self.pz._setProxyOptions(deferGetattr=True)
         self.ui.ZData.setCentralItem(self.pz)
         self.pz.setRange(yRange=[0, 100])
         self.pz.showGrid(x=True, y=True, alpha=.8)
-        self.pz.setLabel('left', 'Position', 'microns')
-        self.pz.setLabel('bottom', 'Time (s)')
+        self.pz.setLabel('left', 'z-Axis Position', 'microns')
 
         self.ui.vsX.setMinimum(0)
         self.ui.vsX.setMaximum(65535)
@@ -116,11 +108,11 @@ class ACCES(QtWidgets.QMainWindow):
     def setPI(self):
         if self.bManual:
             self.xset = self.ui.vsX.value()
-            self.ui.lxset.setText(str(float(self.xset*100/65535)))
+            self.ui.lxset.setText("{0:.1f}".format(self.xset*100/65535))
             self.yset = self.ui.vsY.value()
-            self.ui.lyset.setText(str(float(self.yset*100/65535)))
+            self.ui.lyset.setText("{0:.1f}".format(float(self.yset*100/65535)))
             self.zset = self.ui.vsZ.value()
-            self.ui.lzset.setText(str(float(self.zset*100/65535)))
+            self.ui.lzset.setText("{0:.1f}".format(float(self.zset*100/65535)))
         else:
             self.ui.vsX.setValue(self.xset)
             self.ui.lxset.setText(str(float(self.xset*100/65535)))
@@ -157,11 +149,17 @@ class ACCES(QtWidgets.QMainWindow):
         self.setPI()
 
     def SetFiducials(self, t):
-        self.t.append(t)
-        self.ptr = 1
+        self.xsetdata = np.zeros(self.DataLength, dtype=float)
+        self.ysetdata = np.zeros(self.DataLength, dtype=float)
+        self.zsetdata = np.zeros(self.DataLength, dtype=float)
+        self.xdata    = np.zeros(self.DataLength, dtype=float)
+        self.ydata    = np.zeros(self.DataLength, dtype=float)
+        self.t        = np.zeros(self.DataLength, dtype=float)
+        self.t[0]     = t
+        self.ptr      = 1
 
     def UpdateData(self):
-        self.t.append(time.time() - self.t[0])
+        self.t[self.ptr] = time.time() - self.t[0]
         if self.bAcquiring:
             data_in = ctypes.c_longdouble()  # double-precision IEEE floating point data from ADC
             if self.AIOUSB.ADC_GetChannelV(-3, 0, ctypes.byref(data_in)) is 0:
@@ -174,21 +172,22 @@ class ACCES(QtWidgets.QMainWindow):
                 self.ydata[self.ptr] = 0
 
         if __debug__ and not self.bAcquiring:
-            self.xdata.append((np.sin(self.t[-1]) + 1) * 50)
-            self.ydata.append((np.sin(self.t[-1] + 1) + 1) * 50)
+            self.xdata[self.ptr] = (math.sin(self.t[self.ptr]) + 1) * 50
+            self.ydata[self.ptr] = (math.cos(self.t[self.ptr]) + 1) * 50
 
-        self.xsetdata.append(self.xset*100/65535)
-        self.ysetdata.append(self.yset*100/65535)
-        self.zsetdata.append(self.zset*100/65535)
+        self.xsetdata[self.ptr] = self.xset*100/65535
+        self.ysetdata[self.ptr] = self.yset*100/65535
+        self.zsetdata[self.ptr] = self.zset*100/65535
+
+        if self.ptr > self.datawindow:
+            self.DataPlot(self.t[self.ptr-self.datawindow:self.ptr],
+                          self.xdata[self.ptr-self.datawindow:self.ptr],
+                          self.xsetdata[self.ptr-self.datawindow:self.ptr],
+                          self.ydata[self.ptr-self.datawindow:self.ptr],
+                          self.ysetdata[self.ptr-self.datawindow:self.ptr],
+                          self.zsetdata[self.ptr-self.datawindow:self.ptr])
 
         self.ptr = self.ptr + 1
-        if len(self.t) > self.datawindow:
-            self.DataPlot(self.t[-self.datawindow:],
-                          self.xdata[-self.datawindow:],
-                          self.xsetdata[-self.datawindow:],
-                          self.ydata[-self.datawindow:],
-                          self.ysetdata[-self.datawindow:],
-                          self.zsetdata[-self.datawindow:])
 
     def DataAcquisitionThread(self):
         self.SetFiducials(time.time())
@@ -197,11 +196,11 @@ class ACCES(QtWidgets.QMainWindow):
             self.UpdateData()
 
     def DataPlot(self, t, x1, x2, y1, y2, z2):
-        self.px.plot(x=t, y=x1, pen=(0, 0, 255), linewidth=.5, clear=True, _callSync='off')
-        self.px.plot(x=t, y=x2, pen=(255, 0, 0), linewidth=.5, clear=False, _callSync='off')
-        self.py.plot(x=t, y=y1, pen=(0, 255, 0), linewidth=.5, clear=True, _callSync='off')
-        self.py.plot(x=t, y=y2, pen=(255, 0, 0), linewidth=.5, clear=False, _callSync='off')
-        self.pz.plot(x=t, y=z2, pen=(255, 0, 0), linewidth=.5, clear=True, _callSync='off')
+        self.px.plot(x=t, y=x1, pen=(0, 0, 255), clear=True, _callSync='off')
+        self.px.plot(x=t, y=x2, pen=(255, 0, 0), clear=False, _callSync='off')
+        self.py.plot(x=t, y=y1, pen=(0, 255, 0), clear=True, _callSync='off')
+        self.py.plot(x=t, y=y2, pen=(255, 0, 0), clear=False, _callSync='off')
+        self.pz.plot(x=t, y=z2, pen=(255, 0, 0), clear=True, _callSync='off')
 
     def OpenScriptDialog(self):
         self.filename = QtWidgets.QFileDialog.getOpenFileName(self,

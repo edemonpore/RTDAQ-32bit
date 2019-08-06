@@ -32,8 +32,8 @@ class EDL(QtWidgets.QMainWindow):
 
 
         # Class attributes
-        self.maxLen = 1000
-        self.InitDataArrays()
+        self.datawindow = 1000
+        self.maxData = 1000000
         self.DetectionThreshold = 0
         self.LatestPackets = 0
 
@@ -112,8 +112,7 @@ class EDL(QtWidgets.QMainWindow):
         self.ui.VhData.setCentralItem(self.p0)
         self.p0.setRange(yRange=[-self.VhLimit, self.VhLimit], padding=0)
         self.p0.showGrid(x=True, y=True, alpha=.8)
-        self.p0.setLabel('left', 'Volts', 'mV')
-        self.p0.setLabel('bottom', 'Time (s)')
+        self.p0.setLabel('left', 'V-Hold', 'mV')
         #self.p0.addLegend()
 
         self.yLimit = 201
@@ -121,32 +120,28 @@ class EDL(QtWidgets.QMainWindow):
         self.ui.Ch1Data.setCentralItem(self.p1)
         self.p1.setRange(yRange=[-self.yLimit, self.yLimit], padding=0)
         self.p1.showGrid(x=True, y=True, alpha=.8)
-        self.p1.setLabel('left', 'Current', 'nA')
-        self.p1.setLabel('bottom', 'Time (s)')
+        self.p1.setLabel('left', 'CHANNEL 1', 'nA')
         #self.p1.addLegend()
 
         self.p2 = self.ui.Ch2Data.pg.PlotItem()
         self.ui.Ch2Data.setCentralItem(self.p2)
         self.p2.setRange(yRange=[-self.yLimit, self.yLimit], padding=0)
         self.p2.showGrid(x=True, y=True, alpha=.8)
-        self.p2.setLabel('left', 'Current', 'nA')
-        self.p2.setLabel('bottom', 'Time (s)')
+        self.p2.setLabel('left', 'CHANNEL 2', 'nA')
         #self.p2.addLegend()
 
         self.p3 = self.ui.Ch3Data.pg.PlotItem()
         self.ui.Ch3Data.setCentralItem(self.p3)
         self.p3.setRange(yRange=[-self.yLimit, self.yLimit], padding=0)
         self.p3.showGrid(x=True, y=True, alpha=.8)
-        self.p3.setLabel('left', 'Current', 'nA')
-        self.p3.setLabel('bottom', 'Time (s)')
+        self.p3.setLabel('left', 'CHANNEL 3', 'nA')
         #self.p3.addLegend()
 
         self.p4 = self.ui.Ch4Data.pg.PlotItem()
         self.ui.Ch4Data.setCentralItem(self.p4)
         self.p4.setRange(yRange=[-self.yLimit, self.yLimit], padding=0)
         self.p4.showGrid(x=True, y=True, alpha=.8)
-        self.p4.setLabel('left', 'Current', 'nA')
-        self.p4.setLabel('bottom', 'Time (s)')
+        self.p4.setLabel('left', 'CHANNEL 4', 'nA')
         #self.p4.addLegend()
 
 
@@ -160,27 +155,22 @@ class EDL(QtWidgets.QMainWindow):
 
         # Initial graph tab should only have Ch1 data graph showing.
         self.ui.VhData.hide()
-        self.ui.lVhold.hide()
         self.ui.Ch2Data.hide()
-        self.ui.lCh2.hide()
         self.ui.Ch3Data.hide()
-        self.ui.lCh3.hide()
         self.ui.Ch4Data.hide()
-        self.ui.lCh4.hide()
 
         self.bShow = True
         self.MoveToStart()
 
-    def InitDataArrays(self):
+    def SetFiducials(self, t):
         self.vHolddata = np.zeros(1, dtype=float)
         self.ch1data = np.zeros(1, dtype=float)
         self.ch2data = np.zeros(1, dtype=float)
         self.ch3data = np.zeros(1, dtype=float)
         self.ch4data = np.zeros(1, dtype=float)
         self.t = np.zeros(1, dtype=float)
-
-    def SetFiducials(self, t):
-        self.t[0] = t
+        self.t[0]     = t
+        self.ptr      = 1
 
     def UpdateData(self):
         if __debug__ and not self.bAcquiring:
@@ -234,21 +224,23 @@ class EDL(QtWidgets.QMainWindow):
                 # If no read, wait 1 ms and retry.
                 time.sleep(0.001)
 
-        self.DataPlot(self.t[-self.maxLen:],
-                      self.vHolddata[-self.maxLen:],
-                      self.ch1data[-self.maxLen:],
-                      self.ch2data[-self.maxLen:],
-                      self.ch3data[-self.maxLen:],
-                      self.ch4data[-self.maxLen:])
+        self.DataPlot(self.t[-self.datawindow:],
+                      self.vHolddata[-self.datawindow:],
+                      self.ch1data[-self.datawindow:],
+                      self.ch2data[-self.datawindow:],
+                      self.ch3data[-self.datawindow:],
+                      self.ch4data[-self.datawindow:])
+        self.ptr = self.ptr + 1
 
     def DataAcquisitionThread(self):
+        self.SetFiducials(time.time())
         while self.bRun:
             self.UpdateData()
 
     def DataPlot(self, t, data0, data1, data2, data3, data4):
-        if len(self.t) > self.maxLen:
+        if len(self.t) > self.datawindow:
             if self.ui.showVhold.isChecked() == True:
-                self.p0.plot(x=t, y=data0, pen=(127, 127, 127), linewidth=.5, clear=True, _callSync='off')
+                self.p0.plot(x=t, y=data0, pen=(127, 127, 127), linewidth=1, clear=True, _callSync='off')
             if self.ui.showCh1.isChecked() == True:
                 self.p1.plot(x=t, y=data1, pen=(0, 0, 255), linewidth=.5, clear=True, _callSync='off')
             if self.ui.showCh2.isChecked() == True:
@@ -389,34 +381,24 @@ class EDL(QtWidgets.QMainWindow):
     def ToggleChannelView(self):
         if self.ui.showVhold.isChecked() == True:
             self.ui.VhData.show()
-            self.ui.lVhold.show()
         else:
             self.ui.VhData.hide()
-            self.ui.lVhold.hide()
         if self.ui.showCh1.isChecked() == True:
             self.ui.Ch1Data.show()
-            self.ui.lCh1.show()
         else:
             self.ui.Ch1Data.hide()
-            self.ui.lCh1.hide()
         if self.ui.showCh2.isChecked() == True:
             self.ui.Ch2Data.show()
-            self.ui.lCh2.show()
         else:
             self.ui.Ch2Data.hide()
-            self.ui.lCh2.hide()
         if self.ui.showCh3.isChecked() == True:
             self.ui.Ch3Data.show()
-            self.ui.lCh3.show()
         else:
             self.ui.Ch3Data.hide()
-            self.ui.lCh3.hide()
         if self.ui.showCh4.isChecked() == True:
             self.ui.Ch4Data.show()
-            self.ui.lCh4.show()
         else:
             self.ui.Ch4Data.hide()
-            self.ui.lCh4.hide()
 
     def SaveData(self, savefilename):
         savefilename = 1
@@ -451,12 +433,5 @@ class EDL(QtWidgets.QMainWindow):
     def closeEvent(self, event):
         self.bAcquiring = False
         self.bRun = False
-        if self.DAQThread != None:
-            self.DAQThread.join()
-        # At end of acquisition, close remote processes
-        self.ui.VhData.close()
-        self.ui.Ch1Data.close()
-        self.ui.Ch2Data.close()
-        self.ui.Ch3Data.close()
-        self.ui.Ch4Data.close()
+        if self.DAQThread != None: self.DAQThread.join()
         event.accept()

@@ -80,13 +80,14 @@ class RTDAQApp(QtWidgets.QDialog):
     def DataAcquisitionProcess(self):
         self.InitDataArrays()
         self.t0 = self.t = time.time()
-        self.SetFiducials(self.t0)
+        self.SetFiducials()
         while True:
             time.sleep(0.01)
             self.UpdateData()
             #self.DataPlot()
 
     def SetFiducials(self):
+        self.t0 = time.time()
         self.Elements.SetFiducials(self.t0)
         self.NanoControl.SetFiducials(self.t0)
 
